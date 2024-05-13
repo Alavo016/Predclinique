@@ -19,7 +19,7 @@
                                 src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}" alt></span>
                         <span> Disponiblites </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href= "#">Liste des disponiblités</a></li>
+                        <li><a href= "{{ route('doctor.liste.dispo') }}">Liste des disponiblités</a></li>
                         <li><a href="{{ route('doctor.dispo') }}">Ajouter Disponibilltés</a></li>
 
                         <li><a href="doctor-profile.html">Doctor Profile</a></li>

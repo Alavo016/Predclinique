@@ -76,6 +76,16 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/disponibilites', [DoctorDashboardController::class, 'dispo'])
             ->name("doctor.dispo");
+
+        Route::post('/disponibilites', [DoctorDashboardController::class, 'disponiblites'])
+            ->name("doctor.store.dispo");
+
+        Route::get('/listedisponibilités', [DoctorDashboardController::class, 'showdispo'])
+            ->name("doctor.liste.dispo");
+        Route::get('/Disponibilites/modifier{id}', [DoctorDashboardController::class, 'modifierdispo'])->name('edit_disponibilite');
+
+        Route::post('/Disponibilites/modifier', [DoctorDashboardController::class, 'updateDispo'])
+            ->name("doctor.updatedispo");
     });
 
     Route::prefix('infirmier')->group(function () {

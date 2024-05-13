@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-
+<x-session />
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">

@@ -42,6 +42,7 @@
 <script src="{{ asset('assets/assets/plugins/apexchart/apexcharts.min.js') }}"></script>
 <script src="{{ asset('assets/assets/plugins/apexchart/chart-data.js') }}"></script>
 <script src="{{ asset('assets/assets/js/app.js') }}"></script>
+<script src="{{ asset('assets/assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 
 </body>

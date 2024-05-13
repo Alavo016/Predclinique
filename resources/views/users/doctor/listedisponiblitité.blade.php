@@ -1,107 +1,130 @@
 @extends('users.doctor.masterdoc')
 <link rel="stylesheet" href="{{ asset('assets/assets/css/bootstrap-datetimepicker.min.css
 ') }}">
-
 @section('title', 'Disponibilités')
 
 @section('content')
 
     <div class="page-wrapper">
         <div class="content">
+
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="schedule.html">Doctor Shedule </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <i class="feather-chevron-right"></i>
-                            </li>
-                            <li class="breadcrumb-item active">Ajout de disponibilité</li>
+                            <li class="breadcrumb-item"><a href="schedule.html">Doctor Shedule </a></li>
+                            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+                            <li class="breadcrumb-item active">Schedule List</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <x-session />
-
+<x-session />
             <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <form method="POST" action="{{ route('doctor.store.dispo') }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div id='datetimepicker1' class="input-block local-forms  ">
-                                <label>Jours disponibles
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input class="form-control datetimepicker" type="date" name="jour">
-                            </div>
-                        </div>
+                <div class="col-sm-12">
+                    <div class="card card-table show-entire">
+                        <div class="card-body">
 
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block local-forms">
-                                <label>Début
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input type="time" class="form-control"  name="heure_debut">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block local-forms">
-                                <label>Fin
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input type="time" class="form-control"  name="heure_fin">
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12">
-                            <div class="input-block local-forms">
-                                <label>Notes
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <textarea class="form-control" rows="3" cols="30" name="notes"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block select-gender">
-                                <label class="gen-label">Statut
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <div class="form-check-inline">
-                                    <label class="form-check-label">
-                                        <input type="radio" name="status" class="form-check-input" value="active"> Actif
-                                    </label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <label class="form-check-label">
-                                        <input type="radio" name="status" class="form-check-input" value="inactive"> Inactif
-                                    </label>
+                            <div class="page-table-header mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="doctor-table-blk">
+                                            <h3>Schedule List</h3>
+                                            <div class="doctor-search-blk">
+                                                <div class="top-nav-search table-search-blk">
+                                                    <form>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search here">
+                                                        <a class="btn"><img src="assets/img/icons/search-normal.svg"
+                                                                alt></a>
+                                                    </form>
+                                                </div>
+                                                <div class="add-group">
+                                                    <a href="add-schedule.html" class="btn btn-primary add-pluss ms-2"><img
+                                                            src="assets/img/icons/plus.svg" alt></a>
+                                                    <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
+                                                            src="assets/img/icons/re-fresh.svg" alt></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+                                        <a href="javascript:;" class=" me-2"><img src="assets/img/icons/pdf-icon-01.svg"
+                                                alt></a>
+                                        <a href="javascript:;" class=" me-2"><img src="assets/img/icons/pdf-icon-02.svg"
+                                                alt></a>
+                                        <a href="javascript:;" class=" me-2"><img src="assets/img/icons/pdf-icon-03.svg"
+                                                alt></a>
+                                        <a href="javascript:;"><img src="assets/img/icons/pdf-icon-04.svg" alt></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="doctor-submit text-end">
-                                <button type="submit" class="btn btn-primary submit-form me-2">
-                                    Créer un emploi du temps
-                                </button>
-                                <button type="button" class="btn btn-primary add-another-schedule">
-                                    Ajouter un autre emploi du temps
-                                </button>
-                                <button type="reset" class="btn btn-primary cancel-form">
-                                    Annuler
-                                </button>
+
+                            <div class="table-responsive">
+                                <table class="table border-0 custom-table comman-table datatable mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-check check-tables">
+                                                    <input class="form-check-input" type="checkbox" value="something">
+                                                </div>
+                                            </th>
+                                            <th>Dates</th>
+                                            <th>Heure de debut</th>
+                                            <th>Heure de fin</th>
+                                            <th>Notes</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($disponibilites as $dispo)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check check-tables">
+                                                        <input class="form-check-input" type="checkbox" value="something">
+                                                    </div>
+                                                </td>
+                                                <td class="profile-image">
+                                                    {{ $dispo->jour }}</td>
+                                                <td>{{ $dispo->heure_debut }}</td>
+                                                <td>{{ $dispo->heure_fin }}</td>
+                                                <td>{{ $dispo->notes }}</td>
+                                                <td>
+                                                    @if ($dispo->status == 'active')
+                                                        <span
+                                                            class="badge
+                                                    bg-success">Disponible</span>
+                                                    @else
+                                                        <span
+                                                            class="badge
+                                                    bg-danger">Indisposable</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle"
+                                                            data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                class="fa fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item"
+                                                                href="{{ Route('edit_disponibilite', ['id' => $dispo->id]) }}"><i
+                                                                    class="fa-solid fa-pen-to-square m-r-5"></i>
+                                                                Modifier</a>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delete_patient"><i
+                                                                    class="fa fa-trash-alt m-r-5"></i> Supprimer</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
         </div>
         <div class="notification-box">
             <div class="msg-sidebar notifications msg-noti">
@@ -330,17 +353,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <img src="assets/img/sent.png" alt width="50" height="46" />
+                    <img src="assets/img/sent.png" alt width="50" height="46">
                     <h3>Are you sure want to delete this ?</h3>
-                    <div class="m-t-20">
-                        <a href="#" class="btn btn-white" data-bs-dismiss="modal">Close</a>
+                    <div class="m-t-20"> <a href="#" class="btn btn-white" data-bs-dismiss="modal">Close</a>
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-    <div class="sidebar-overlay" data-reff></div>
 
 @endsection

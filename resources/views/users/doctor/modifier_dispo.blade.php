@@ -18,89 +18,94 @@
                             <li class="breadcrumb-item">
                                 <i class="feather-chevron-right"></i>
                             </li>
-                            <li class="breadcrumb-item active">Ajout de disponibilité</li>
+                            <li class="breadcrumb-item active">Modifier une disponibilités</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <x-session />
+
 
             <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <form method="POST" action="{{ route('doctor.store.dispo') }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div id='datetimepicker1' class="input-block local-forms  ">
-                                <label>Jours disponibles
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input class="form-control datetimepicker" type="date" name="jour">
-                            </div>
-                        </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('doctor.updatedispo') }}">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <div id='datetimepicker1' class="input-block local-forms  ">
+                                            <label>Jours disponibles
+                                                <span class="login-danger">*</span>
+                                            </label>
+                                            <input class="form-control datetimepicker" type="date" name="jour"
+                                                value="{{ $disponibilite->jour }}">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id" value="{{ $disponibilite->id }}">
 
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block local-forms">
-                                <label>Début
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input type="time" class="form-control"  name="heure_debut">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block local-forms">
-                                <label>Fin
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <input type="time" class="form-control"  name="heure_fin">
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12">
-                            <div class="input-block local-forms">
-                                <label>Notes
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <textarea class="form-control" rows="3" cols="30" name="notes"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="input-block select-gender">
-                                <label class="gen-label">Statut
-                                    <span class="login-danger">*</span>
-                                </label>
-                                <div class="form-check-inline">
-                                    <label class="form-check-label">
-                                        <input type="radio" name="status" class="form-check-input" value="active"> Actif
-                                    </label>
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <div class="input-block local-forms">
+                                            <label>Début
+                                                <span class="login-danger">*</span>
+                                            </label>
+                                            <input type="time" class="form-control" name="heure_debut"
+                                                value="{{ $disponibilite->heure_debut }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <div class="input-block local-forms">
+                                            <label>Fin
+                                                <span class="login-danger">*</span>
+                                            </label>
+                                            <input type="time" class="form-control" name="heure_fin"
+                                                value="{{ $disponibilite->heure_fin }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12">
+                                        <div class="input-block local-forms">
+                                            <label>Notes
+                                                <span class="login-danger">*</span>
+                                            </label>
+                                            <textarea class="form-control" rows="3" cols="30" name="notes" >{{ $disponibilite->notes}}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <div class="input-block select-gender">
+                                            <label class="gen-label">Statut <span class="login-danger">*</span></label>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" name="status" class="form-check-input"
+                                                        value="active"
+                                                        {{ $disponibilite->status == 'active' ? 'checked' : '' }}> Actif
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" name="status" class="form-check-input"
+                                                        value="inactive"
+                                                        {{ $disponibilite->status == 'inactive' ? 'checked' : '' }}> Inactif
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="doctor-submit text-end">
+                                            <button type="submit" class="btn btn-success submit-form me-2">
+                                                Modifier
+                                            </button>
+
+                                            <button type="reset" class="btn btn-primary cancel-form">
+                                                Annuler
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check-inline">
-                                    <label class="form-check-label">
-                                        <input type="radio" name="status" class="form-check-input" value="inactive"> Inactif
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="doctor-submit text-end">
-                                <button type="submit" class="btn btn-primary submit-form me-2">
-                                    Créer un emploi du temps
-                                </button>
-                                <button type="button" class="btn btn-primary add-another-schedule">
-                                    Ajouter un autre emploi du temps
-                                </button>
-                                <button type="reset" class="btn btn-primary cancel-form">
-                                    Annuler
-                                </button>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
         </div>
         <div class="notification-box">

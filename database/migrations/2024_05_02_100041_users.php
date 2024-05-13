@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('prenom');
-            $table->string('pseudo');
+            $table->string('name')->nullable();
+            $table->string('prenom')->nullable();
+            $table->string('pseudo')->nullable();
             $table->string('email')->unique();
-            $table->string('telephone');
-            $table->string('sexe');
-            $table->string('nationalite');
-            $table->string('ville');
-            $table->string('photo');
-            $table->string('etat_civile');
-            $table->string('allergie');
-            $table->string('status');
-            $table->date('date_naissance'); // Ajout de la colonne date_naissance
+            $table->string('telephone')->nullable();
+            $table->string('sexe')->nullable();
+            $table->string('nationalite')->nullable();
+            $table->string('ville')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('etat_civile')->nullable();
+            $table->string('allergie')->nullable();
+            $table->string('status')->nullable();
+            $table->date('date_naissance')->nullable(); // Ajout de la colonne date_naissance
 
             $table->unsignedBigInteger('id_role');
             $table->foreign('id_role')->references('id')->on('roles')->onDelete('cascade'); // Correction de la référence à la table roles
@@ -41,6 +41,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
 
     }
 

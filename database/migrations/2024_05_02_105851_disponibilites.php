@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('doctor_id');
             $table->foreign('doctor_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('jour');
+            $table->date('jour');
             $table->time('heure_debut');
             $table->time('heure_fin');
+            $table->string('notes');
+            $table->string('status');
 
 
             $table->timestamps();

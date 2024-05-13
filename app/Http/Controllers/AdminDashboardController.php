@@ -115,7 +115,7 @@ class AdminDashboardController extends Controller
         $docteur = User::find($id);
         if (!$docteur) {
             return redirect()->route('users.admin.listdocteur')->with('error', 'Le docteur sélectionné n\'existe pas.');
-        }
+        }   
 
         $roles = Roles::all();
         $specialites = Specialites::all();

@@ -24,45 +24,101 @@ class DoctorDashboardController extends Controller
         }
     }
 
-    public function dispo(){
+
+
+    public function dispo()
+    {
         return view('users.doctor.disponiblites');
     }
 
-    public function store_schedule(Request $request){ {
-            // Validation des données du formulaire
-            $validatedData = $request->validate([
-                'available_days' => 'required|array',
-                'from' => 'required|array',
-                'to' => 'required|array',
-                'notes' => 'required|array',
-                'status' => 'required|array',
-                'available_days.*' => 'required|date_format:l',
-                'from.*' => 'required|date_format:H:i',
-                'to.*' => 'required|date_format:H:i|after:from.*',
-                'notes.*' => 'nullable|string|max:255',
-                'status.*' => 'required|in:Active,Inactive',
-            ], [
-                'available_days.required' => 'Le jour de disponibilité est requis.',
-                'available_days.*.date_format' => 'Le jour de disponibilité doit être au format jour de la semaine (par exemple, "Monday").',
-                'from.required' => 'L\'heure de début est requise.',
-                'from.*.date_format' => 'L\'heure de début doit être au format HH:MM.',
-                'to.required' => 'L\'heure de fin est requise.',
-                'to.*.date_format' => 'L\'heure de fin doit être au format HH:MM.',
-                'to.*.after' => 'L\'heure de fin doit être postérieure à l\'heure de début.',
-                'notes.*.max' => 'La note ne peut pas dépasser :max caractères.',
-                'status.required' => 'Le statut est requis.',
-                'status.*.in' => 'Le statut doit être "Actif" ou "Inactif".',
-            ]);
-            $id_auth = Auth::user()->id;
+    public function disponiblites(Request $request)
+    {
 
-            // Boucle sur chaque disponibilité soumise
-                $dispo = new Disponibilites();
-                $dispo->doctor_id = $id_auth;
-                $dispo ->jour = $validatedData[''];
-                $dispo->save();
-            }
+        // Validation des données reçues du formulaire
+        $request->validate([
+            'jour' => 'required|date',
+            'heure_debut' => 'required|date_format:H:i',
+            'heure_fin' => 'required|date_format:H:i|after:heure_debut',
+            'notes' => 'required|string',
+            'status' => 'required|in:active,inactive',
+        ]);
+        $id_auth = Auth::user()->id;
+        // Création d'une nouvelle disponibilité
+        $disponibilite = new Disponibilites();
+        $disponibilite->jour = $request->jour;
+        $disponibilite->heure_debut = $request->heure_debut;
+        $disponibilite->heure_fin = $request->heure_fin;
+        $disponibilite->notes = $request->notes;
+        $disponibilite->status = $request->status;
+        $disponibilite->doctor_id = $id_auth;
 
-            // Redirection avec un message de succès
-            return redirect()->route('schedule.index')->with('success', 'Les disponibilités ont été enregistrées avec succès.');
-        }}
+        // Sauvegarde de la disponibilité
+        $disponibilite->save();
 
+        // Redirection avec un message de succès
+        return redirect()->back()->with('success', 'Disponibilité créée avec succès.');
+    }
+
+    public function showdispo()
+    {
+        // Récupérer l'ID du docteur connecté
+        $id_auth = Auth::user()->id;
+
+        // Récupérer toutes les disponibilités du docteur connecté
+        $disponibilites = Disponibilites::where('doctor_id', $id_auth)->get(); // Ajoutez ->get() pour exécuter la requête
+
+        // Vérifier si des disponibilités ont été récupérées
+        if ($disponibilites->isEmpty()) {
+            // Aucune disponibilité trouvée, faites quelque chose (par exemple, redirigez avec un message d'erreur)
+            return redirect()->route('doctor.dashboard')->with('error', 'Aucune disponibilité trouvée.');
+        }
+
+        // Retourner la vue avec les disponibilités
+        return view('users.doctor.listedisponiblitité', compact('disponibilites'));
+    }
+    public function modifierdispo($id)
+    {
+        if (!$id) {
+            return redirect()->route('doctor.liste.dispo')->with('error', 'Aucune disponibilités n\'a été sélectionné pour la modification.');
+        }
+
+        $disponibilite = Disponibilites::find($id);
+        if (!$disponibilite) {
+            return redirect()->route('doctor.liste.dispo')->with('error', 'La disponibilités sélectionnée n\'existe pas.');
+        }
+
+        return view('users.doctor.modifier_dispo', compact('disponibilite'));
+    }
+
+
+
+
+    public function updateDispo(Request $request)
+    {
+        // Validation des données reçues du formulaire
+        $request->validate([
+            'id' => 'required|integer',
+            'jour' => 'required|date',
+            'heure_debut' => 'required|date_format:H:i',
+            'heure_fin' => 'required|date_format:H:i|after:heure_debut',
+            'notes' => 'required|string',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        // Récupérer la disponibilité à modifier
+        $disponibilite = Disponibilites::findOrFail($request->id);
+
+        // Mettre à jour la disponibilité avec les données du formulaire
+        $disponibilite->update([
+            'jour' => $request->jour,
+            'heure_debut' => $request->heure_debut,
+            'heure_fin' => $request->heure_fin,
+            'notes' => $request->notes,
+            'status' => $request->status,
+        ]);
+
+        // Redirection avec un message de succès
+        return redirect()->route('doctor.liste.dispo')->with('success', 'Disponibilité mise à jour avec succès.');
+    }
+
+}
