@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Departement;
 use App\Http\Controllers\DoctorDashboardController;
+use App\Http\Controllers\Infirmier;
 use App\Http\Controllers\InfirmierDashboardController;
 use App\Http\Controllers\patient;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\search_controller;
+use App\Http\Controllers\Specialités;
+use App\Models\Specialites;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,6 +72,24 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/search', [search_controller::class, 'search'])
             ->name('search');
+
+        Route::resource('/infirmier',Infirmier::class)->names('adm_infirmier');
+
+        Route::resource('/patient', Patient::class)->names('adm_Patient');
+
+
+       Route::resource('/Specialites',Departement::class)->names('adm_specialites');
+
+
+
+
+
+
+
+
+
+
+
     });
 
     Route::prefix('doctor')->group(function () {
@@ -82,10 +104,14 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/listedisponibilités', [DoctorDashboardController::class, 'showdispo'])
             ->name("doctor.liste.dispo");
-        Route::get('/Disponibilites/modifier{id}', [DoctorDashboardController::class, 'modifierdispo'])->name('edit_disponibilite');
 
-        Route::post('/Disponibilites/modifier', [DoctorDashboardController::class, 'updateDispo'])
-            ->name("doctor.updatedispo");
+        Route::get('/Disponibilites/modifier{id}', [DoctorDashboardController::class, 'modifierdisponi'])->name('edit_disponibilite');
+
+        Route::put('/Disponibilites/modifier/{id}',[DoctorDashboardController::class,"updateDispo"])
+                ->name('updateDispo');
+
+        Route::delete('/disponibilites/{id}', [DoctorDashboardController::class,"destroydispo"])->name('disponibilites.destroy');
+
     });
 
     Route::prefix('infirmier')->group(function () {

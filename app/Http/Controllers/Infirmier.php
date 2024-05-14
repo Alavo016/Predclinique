@@ -8,18 +8,19 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class Patient extends Controller
+class Infirmier extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $roles = Roles::all();
+
+        $roles = Roles::all();
         $specialites = Specialites::all();
 
-        $patients = User::where('id_role', 1)->get();
-        return view("users.admin.listepatient", compact('patients',  'specialites'));
+        $infirmiers = User::where('id_role', 3)->get();
+        return view("users.admin.listinfirmier  ", compact('infirmiers', 'roles', 'specialites'));
     }
 
     /**
@@ -28,7 +29,7 @@ class Patient extends Controller
     public function create()
     {
         $specialites = Specialites::all();
-        return view('users.admin.ajtpatient', compact('specialites'));
+        return view('users.admin.ajtinfirmier', compact('specialites'));
     }
 
     /**
@@ -47,7 +48,7 @@ class Patient extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_naissance' => ['required', 'date'],
             'sexe' => ['required', 'string', 'in:male,female'],
-
+            'specialite' => ['required', 'integer'],
             'address' => ['nullable', 'string'],
             'ville' => ['nullable', 'string'],
             'nationalite' => ['nullable', 'string'],
@@ -58,7 +59,7 @@ class Patient extends Controller
 
         // Créez un nouvel utilisateur avec les données validées
         $user = new User();
-        $user->id_role = 1;
+        $user->id_role = 3;
         $user->prenom = $validatedData['prenom'];
         $user->name = $validatedData['name'];
         $user->pseudo = $validatedData['pseudo'];
@@ -67,7 +68,7 @@ class Patient extends Controller
         $user->password = Hash::make($validatedData['password']);
         $user->date_naissance = $validatedData['date_naissance'];
         $user->sexe = $validatedData['sexe'];
-
+        $user->specialite_id = $validatedData['specialite'];
         $user->address = $validatedData['address'];
         $user->ville = $validatedData['ville'];
         $user->nationalite = $validatedData['nationalite'];
@@ -85,7 +86,7 @@ class Patient extends Controller
         $user->save();
 
         // Redirigez l'utilisateur vers une autre page après l'enregistrement
-        return redirect()->route('adm_Patient.store')->with('success', 'Utilisateur créé avec succès.');
+        return redirect()->route('adm_infirmier.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
     /**
@@ -102,19 +103,20 @@ class Patient extends Controller
     public function edit(string $id)
     {
         if (!$id) {
-            return redirect()->route('adm_Patient.index')->with('error', 'Aucun patient n\'a été sélectionné pour la modification.');
+            return redirect()->route('adm_infirmier.index')->with('error', 'Aucun infirmier n\'a été sélectionné pour la modification.');
         }
 
-        $patient = User::find($id);
-        if (!$patient) {
-            return redirect()->route('adm_Patient.index')->with('error', 'Le patient sélectionné n\'existe pas.');
+        $infirmier = User::find($id);
+        if (!$infirmier) {
+            return redirect()->route('adm_infirmier.index')->with('error', 'L\' infirmier sélectionné n\'existe pas.');
         }
 
 
         $specialites = Specialites::all();
 
-        return view('users.admin.modifierpatient', compact('patient',  'specialites'));
+        return view('users.admin.modifoer_inf', compact('infirmier',  'specialites'));
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -130,6 +132,7 @@ class Patient extends Controller
 
             'date_naissance' => 'required|date',
             'sexe' => 'required|in:male,female',
+            'specialite' => 'required|exists:specialites,id',
             'address' => 'nullable|string',
             'ville' => 'nullable|string',
             'nationalite' => 'nullable|string',
@@ -138,48 +141,47 @@ class Patient extends Controller
 
         ]);
 
-        // Trouver le Patient à mettre à jour
-        $Patient = User::findOrFail($id);
+        // Trouver le infirmier à mettre à jour
+        $infirmier = User::findOrFail($id);
 
-        // Mettre à jour les informations du Patient
-        $Patient->name = $request->name;
-        $Patient->prenom = $request->prenom;
-        $Patient->pseudo = $request->pseudo;
-        $Patient->email = $request->email;
-        $Patient->specialite_id = $request->specialite;
-        $Patient->telephone = $request->telephone;
-        $Patient->date_naissance = $request->date_naissance;
-        $Patient->sexe = $request->sexe;
-        $Patient->address = $request->address;
-        $Patient->ville = $request->ville;
-        $Patient->nationalite = $request->nationalite;
-        $Patient->status = $request->status;
+        // Mettre à jour les informations du infirmier
+        $infirmier->name = $request->name;
+        $infirmier->prenom = $request->prenom;
+        $infirmier->pseudo = $request->pseudo;
+        $infirmier->email = $request->email;
+        $infirmier->specialite_id = $request->specialite;
+        $infirmier->telephone = $request->telephone;
+        $infirmier->date_naissance = $request->date_naissance;
+        $infirmier->sexe = $request->sexe;
+        $infirmier->address = $request->address;
+        $infirmier->ville = $request->ville;
+        $infirmier->nationalite = $request->nationalite;
+        $infirmier->status = $request->status;
 
         // Si une nouvelle photo est soumise, enregistrer
         if ($request->hasFile('photo')) {
             // Gérer l'enregistrement de la nouvelle photo
             $photoPath = $request->photo->store('avatars'); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
-            $Patient->photo = $photoPath;
+            $infirmier->photo = $photoPath;
         }
 
-        $Patient->save();
+        $infirmier->save();
 
         // Redirection avec un message de succès
-        return redirect()->route('adm_Patient.index')->with('success', 'Les informations du Patient ont été mises à jour avec succès.');
+        return redirect()->route('adm_infirmier.index')->with('success', 'Les informations du infirmier ont été mises à jour avec succès.');
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $Patient = User::find($id);
-        if ($Patient) {
-            $Patient->delete();
-            return redirect()->route('adm_Patient.index')->with('success', "L 'Patient a été supprimé avec succès.");
+        $infirmier = User::find($id);
+        if ($infirmier) {
+            $infirmier->delete();
+            return redirect()->route('adm_infirmier.index')->with('success', "L 'infirmier a été supprimé avec succès.");
         } else {
-            return redirect()->back()->with('error', "L'Patient n\'a pas été trouvé.");
+            return redirect()->back()->with('error', "L'infirmier n\'a pas été trouvé.");
         }
     }
 }

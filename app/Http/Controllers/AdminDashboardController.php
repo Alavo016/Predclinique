@@ -115,52 +115,70 @@ class AdminDashboardController extends Controller
         $docteur = User::find($id);
         if (!$docteur) {
             return redirect()->route('users.admin.listdocteur')->with('error', 'Le docteur sélectionné n\'existe pas.');
-        }   
+        }
 
         $roles = Roles::all();
         $specialites = Specialites::all();
 
-        return view('users.admin.modifier_doc', compact('docteur', 'roles', 'specialites'));
+        return view('users.admin.modifier_doc', compact('docteur',  'specialites'));
     }
 
 
 
 
-    public function updateDocteur(Request $request)
+
+    public function updateDocteur(Request $request, $id)
     {
         // Valider les données du formulaire
         $request->validate([
-            'id' => 'required|exists:users,id',
-            'name' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
-            'pseudo' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-
-            'specialite' => 'nullable|exists:specialites,id',
+            'name' => 'required|string|max:255',
+            'pseudo' => 'required|string|max:255|unique:users,pseudo,' . $id,
             'telephone' => 'required|string|max:255',
-            'password' => 'nullable|string|min:6', // Le mot de passe est facultatif
+            'email' => 'required|email|unique:users,email,' . $id,
+
+            'date_naissance' => 'required|date',
+            'sexe' => 'required|in:male,female',
+            'specialite' => 'required|exists:specialites,id',
+            'address' => 'nullable|string',
+            'ville' => 'nullable|string',
+            'nationalite' => 'nullable|string',
+            'photo' => 'nullable|image|max:2048', // Taille maximale de l'image : 2MB
+            'status' => 'required|in:active,inactive',
+
         ]);
 
         // Trouver le docteur à mettre à jour
-        $docteur = User::findOrFail($request->id);
+        $docteur = User::findOrFail($id);
 
         // Mettre à jour les informations du docteur
         $docteur->name = $request->name;
         $docteur->prenom = $request->prenom;
         $docteur->pseudo = $request->pseudo;
         $docteur->email = $request->email;
-
         $docteur->specialite_id = $request->specialite;
         $docteur->telephone = $request->telephone;
-        if ($request->has('password')) {
-            $docteur->password = bcrypt($request->password);
+        $docteur->date_naissance = $request->date_naissance;
+        $docteur->sexe = $request->sexe;
+        $docteur->address = $request->address;
+        $docteur->ville = $request->ville;
+        $docteur->nationalite = $request->nationalite;
+        $docteur->status = $request->status;
+
+        // Si une nouvelle photo est soumise, enregistrer
+        if ($request->hasFile('photo')) {
+            // Gérer l'enregistrement de la nouvelle photo
+            $photoPath = $request->photo->store('avatars'); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
+            $docteur->photo = $photoPath;
         }
+
         $docteur->save();
 
         // Redirection avec un message de succès
-        return redirect()->route('users.admin.listdocteur')->with('success', 'Les informations du docteur ont été mises à jour avec succès.');
+        return redirect()->route('admin.listdocteur')->with('success', 'Les informations du docteur ont été mises à jour avec succès.');
     }
-   public function profile($id)
+
+    public function profile($id)
     {
         // Récupérer les informations de l'utilisateur depuis la base de données
         $user = User::findOrFail($id);

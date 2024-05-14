@@ -76,49 +76,53 @@ class DoctorDashboardController extends Controller
         // Retourner la vue avec les disponibilités
         return view('users.doctor.listedisponiblitité', compact('disponibilites'));
     }
-    public function modifierdispo($id)
+    public function modifierdisponi($id)
     {
-        if (!$id) {
-            return redirect()->route('doctor.liste.dispo')->with('error', 'Aucune disponibilités n\'a été sélectionné pour la modification.');
-        }
+        // Recherche de la disponibilité par son ID
+        $disponibilite = Disponibilites::findOrFail($id);
 
-        $disponibilite = Disponibilites::find($id);
+        // Vérification de l'existence de la disponibilité
         if (!$disponibilite) {
-            return redirect()->route('doctor.liste.dispo')->with('error', 'La disponibilités sélectionnée n\'existe pas.');
+            return redirect()->route('doctor.liste.dispo')->with('error', 'La disponibilité sélectionnée n\'existe pas.');
         }
 
+        // Affichage du formulaire de modification avec la disponibilité trouvée
         return view('users.doctor.modifier_dispo', compact('disponibilite'));
     }
 
 
-
-
-    public function updateDispo(Request $request)
+    public function updateDispo(Request $request, $id)
     {
+
         // Validation des données reçues du formulaire
         $request->validate([
-            'id' => 'required|integer',
             'jour' => 'required|date',
-            'heure_debut' => 'required|date_format:H:i',
-            'heure_fin' => 'required|date_format:H:i|after:heure_debut',
+            'heure_debut' => 'required',
+            'heure_fin' => 'required|after:heure_debut',
             'notes' => 'required|string',
             'status' => 'required|in:active,inactive',
+
         ]);
+
+
+        
 
         // Récupérer la disponibilité à modifier
         $disponibilite = Disponibilites::findOrFail($request->id);
 
         // Mettre à jour la disponibilité avec les données du formulaire
-        $disponibilite->update([
-            'jour' => $request->jour,
-            'heure_debut' => $request->heure_debut,
-            'heure_fin' => $request->heure_fin,
-            'notes' => $request->notes,
-            'status' => $request->status,
-        ]);
+        $disponibilite->update($request->all());
 
         // Redirection avec un message de succès
         return redirect()->route('doctor.liste.dispo')->with('success', 'Disponibilité mise à jour avec succès.');
+    }
+
+    public function destroydispo($id)
+    {
+        $disponibilite = Disponibilites::findOrFail($id);
+        $disponibilite->delete();
+
+        return redirect()->route('doctor.liste.dispo')->with('success', 'Disponibilité supprimée avec succès.');
     }
 
 }

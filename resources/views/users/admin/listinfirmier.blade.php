@@ -1,6 +1,6 @@
 @extends('users.admin.masteradm')
 
-@section('title', 'Admin Ajout docteur')
+@section('title', 'Admin Liste Infirmier')
 @section('content')
     <div class="page-wrapper">
         <div class="content">
@@ -9,9 +9,9 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.listdocteur') }}">Doctors </a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard </a></li>
                             <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
-                            <li class="breadcrumb-item active">Liste des docteurs</li>
+                            <li class="breadcrumb-item active">Liste des infirmiers</li>
                         </ul>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="doctor-table-blk">
-                                            <h3>Doctors List</h3>
+                                            <h3>Liste des infirmiers</h3>
                                             <div class="doctor-search-blk">
                                                 <div class="top-nav-search table-search-blk">
                                                     <form>
@@ -39,7 +39,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="add-group">
-                                                    <a href="{{ route('ajtdoc') }}"
+                                                    <a href="{{ route('adm_infirmier.create') }}"
                                                         class="btn btn-primary add-pluss ms-2"><img
                                                             src="{{ asset('assets/assets/img/icons/plus.svg') }}" alt></a>
                                                     <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
@@ -80,7 +80,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($listdocteurs as $docteur)
+                                        @foreach ($infirmiers as $infirmier)
                                             <tr>
                                                 <td>
                                                     <div class="form-check check-tables">
@@ -90,16 +90,19 @@
                                                 <td class="profile-image">
                                                     <a href="profile.html">
                                                         <img width="28" height="28"
-                                                            src="{{ asset($docteur->photo) }}" class="rounded-circle m-r-5">
-                                                        {{ $docteur->prenom }} {{ $docteur->name }}
+                                                            src="{{ asset($infirmier->photo) }}"
+                                                            class="rounded-circle m-r-5">
+                                                        {{ $infirmier->prenom }} {{ $infirmier->name }}
                                                     </a>
                                                 </td>
-                                                <td>{{ $docteur->specialite['nom'] }}</td>
-                                                <td>{{ $docteur->pseudo }}</td>
-                                                <td><a href="mailto:{{ $docteur->email }}">{{ $docteur->email }}</a></td>
-                                                <td><a href="tel:{{ $docteur->telephone }}">{{ $docteur->telephone }}</a>
+                                                <td>{{ $infirmier->specialite['nom'] }}</td>
+                                                <td>{{ $infirmier->pseudo }}</td>
+                                                <td><a href="mailto:{{ $infirmier->email }}">{{ $infirmier->email }}</a>
                                                 </td>
-                                                <td><a href="{{ route('admin.profile', ['id' => $docteur->id]) }}"
+                                                <td><a
+                                                        href="tel:{{ $infirmier->telephone }}">{{ $infirmier->telephone }}</a>
+                                                </td>
+                                                <td><a href="{{ route('admin.profile', ['id' => $infirmier->id]) }}"
                                                         class="btn btn-primary">
                                                         Détails
                                                     </a></td>
@@ -110,12 +113,20 @@
                                                                 class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <a class="dropdown-item"
-                                                                href="{{ route('admin.modifier', ['id' => $docteur->id]) }}"><i
-                                                                    class="fa-solid fa-pen-to-square m-r-5"></i>
-                                                                Edit</a>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.supprimer.docteur', ['id' => $docteur->id]) }}"
-                                                                ><i class="fa fa-trash-alt m-r-5"></i> Supprimer</a>
+                                                                href="{{ route('adm_infirmier.edit', $infirmier->id) }}">
+                                                                <i class="fa-solid fa-pen-to-square m-r-5"></i> Edit
+                                                            </a>
+                                                            <form
+                                                                action="{{ route('adm_infirmier.destroy', $infirmier->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item">
+                                                                    <i class="fa fa-trash-alt m-r-5"></i> Supprimer
+                                                                </button>
+                                                            </form>
+
+
                                                         </div>
                                                     </div>
                                                 </td>
@@ -132,7 +143,7 @@
             </div>
         </div>
     </div>
-    <div class="notification-box">
+    {{-- <div class="notification-box">
         <div class="msg-sidebar notifications msg-noti">
             <div class="topnav-dropdown-header">
                 <span>Messages</span>
@@ -355,7 +366,7 @@
         </div>
     </div>
     </div>
-    <div id="delete_patient" class="modal fade delete-modal" role="dialog">
+    <div id="delete_infirmier" class="modal fade delete-modal" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-center">
@@ -367,7 +378,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
 @endsection

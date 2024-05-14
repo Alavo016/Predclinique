@@ -22,34 +22,31 @@
                         <li><a href= "{{ route('admin.listdocteur') }}">Liste des Médecins</a></li>
                         <li><a href="{{ route('ajtdoc') }}">Ajouter Médecin</a></li>
 
-                        <li><a href="doctor-profile.html">Doctor Profile</a></li>
+
                     </ul>
                 </li>
+                <li class="submenu">
+                    <a href="#"><span class="menu-side"><img
+                                src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}" alt></span>
+                        <span>Infirmier </span> <span class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        <li><a href="{{ route('adm_infirmier.index') }}">Infirmier liste</a></li>
+                        <li><a href="{{ route('adm_infirmier.create') }}">Ajout infirmier</a></li>
+
+                    </ul>
+                </li>
+
                 <li class="submenu">
                     <a href="#"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-03.svg') }}" alt></span>
                         <span>Patients </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="patients.html">Patients List</a></li>
-                        <li><a href="add-patient.html">Add Patients</a></li>
-                        <li><a href="edit-patient.html">Edit Patients</a></li>
-                        <li><a href="patient-profile.html">Patients Profile</a></li>
+                        <li><a href="{{ route('adm_Patient.index') }}">Patients Listes</a></li>
+                        <li><a href="{{ route('adm_Patient.create') }}">Ajout Patient</a></li>
                     </ul>
                 </li>
-                <li class="submenu">
-                    <a href="#"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-08.svg') }}" alt></span>
-                        <span> Staff </span> <span class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        <li><a href="staff-list.html">Staff List</a></li>
-                        <li><a href="add-staff.html">Add Staff</a></li>
-                        <li><a href="staff-profile.html">Staff Profile</a></li>
-                        <li><a href="staff-leave.html">Leaves</a></li>
-                        <li><a href="staff-holiday.html">Holidays</a></li>
-                        <li><a href="staff-attendance.html">Attendance</a></li>
-                    </ul>
-                </li>
-                <li class="submenu">
+
+                {{-- <li class="submenu">
                     <a href="#"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-04.svg') }}" alt></span>
                         <span> Appointments </span> <span class="menu-arrow"></span></a>
@@ -68,21 +65,21 @@
                         <li><a href="add-schedule.html">Add Schedule</a></li>
                         <li><a href="edit-schedule.html">Edit Schedule</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="submenu">
                     <a href="#"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-06.svg') }}" alt></span>
                         <span> Departments </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a href="departments.html">Department List</a></li>
-                        <li><a href="add-department.html">Add Department</a></li>
-                        <li><a href="edit-department.html">Edit Department</a></li>
+                        <li><a href="{{ route('adm_specialites.index')}}">Liste Specialiates</a></li>
+                        <li><a href="{{ route('adm_specialites.create') }}">Ajout specialité</a></li>
+
                     </ul>
                 </li>
+
                 <li class="submenu">
-                    <a href="#"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-07.svg') }}" alt></span>
-                        <span> Accounts </span> <span class="menu-arrow"></span></a>
+                    <a href="#"><span class="menu-side"><i class="fa-solid fa-stethoscope"></i></span>
+                        <span> Type d'instruments </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li><a href="invoices.html">Invoices</a></li>
                         <li><a href="payments.html">Payments</a></li>
@@ -294,26 +291,32 @@
                     </ul>
                 </li>
                 <li class="submenu">
-                    <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Multi Level</span> <span
-                            class="menu-arrow"></span></a>
+                    <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Fourniture Medical</span>
+                        <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li class="submenu">
-                            <a href="javascript:void(0);"><span>Level 1</span> <span class="menu-arrow"></span></a>
+                            <a href="javascript:void(0);"><span>Instrument</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
+
                                 <li class="submenu">
-                                    <a href="javascript:void(0);"> <span> Level 2</span> <span
-                                            class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        <li><a href="javascript:void(0);">Level 3</a></li>
-                                        <li><a href="javascript:void(0);">Level 3</a></li>
-                                    </ul>
+                                    <a href="#"> <span>Liste Instrument Medicale </span> </a>
+                                    <a href="#"> <span>Ajout Instrument Medicale </span> </a>
                                 </li>
-                                <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
+
                             </ul>
                         </li>
-                        <li>
-                            <a href="javascript:void(0);"><span>Level 1</span></a>
+
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><span>Type Instrument</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+
+                                <li class="submenu">
+                                    <a href="javascript:void(0);"> <span>Liste Instrument Medicale </span> </a>
+                                    <a href="javascript:void(0);"> <span>Ajout Instrument Medicale </span> </a>
+                                </li>
+
+                            </ul>
                         </li>
                     </ul>
                 </li>
@@ -321,8 +324,9 @@
             <div class="logout-btn">
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn p-2"><h4><img
-                            src="{{ asset('assets/assets/img/icons/logout.svg') }}" > Se deconnecter</h4></button>
+                    <button type="submit" class="btn p-2">
+                        <h4><img src="{{ asset('assets/assets/img/icons/logout.svg') }}"> Se deconnecter</h4>
+                    </button>
                 </form>
 
             </div>
