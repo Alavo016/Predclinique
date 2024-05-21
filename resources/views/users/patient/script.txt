@@ -1,0 +1,358 @@
+<script>
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        function showLoadingSpinner() {
+            loadingSpinner.style.display = 'block';
+        }
+
+        function hideLoadingSpinner() {
+            loadingSpinner.style.display = 'none';
+        }
+
+        function displayDisponibilites(disponibilites) {
+            const disponibilitesWrapper = document.getElementById('disponibilites-wrapper');
+            disponibilitesWrapper.innerHTML = '';
+
+            if (disponibilites.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = 'Aucune disponibilité pour ce médecin.';
+                disponibilitesWrapper.appendChild(message);
+            } else {
+                disponibilites.forEach(disponibilite => {
+                    const dateDebut = new Date(); // Créer une date de référence
+                    const heureDebut = new Date(dateDebut.toDateString() + ' ' + disponibilite.heure_debut);
+                    const heureFin = new Date(dateDebut.toDateString() + ' ' + disponibilite.heure_fin);
+
+                    const options = {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    };
+                    const jourLabel = document.createElement('p');
+                    jourLabel.textContent =
+                        `${new Intl.DateTimeFormat('fr-FR', options).format(new Date(disponibilite.jour))}`;
+                    disponibilitesWrapper.appendChild(jourLabel);
+
+                    for (let heure = new Date(heureDebut); heure < heureFin; heure.setHours(heure.getHours() + 1)) {
+                        const disponibiliteRadio = document.createElement('input');
+                        disponibiliteRadio.type = 'radio';
+                        disponibiliteRadio.name = 'disponibilite';
+                        disponibiliteRadio.value = heure.getTime(); // Utiliser le timestamp comme valeur
+                        disponibiliteRadio.id = `disponibilite-${heure.getTime()}`;
+
+                        const label = document.createElement('label');
+                        label.for = `disponibilite-${heure.getTime()}`;
+                        label.textContent = `${heure.getHours()}h`;
+
+                        disponibilitesWrapper.appendChild(disponibiliteRadio);
+                        disponibilitesWrapper.appendChild(label);
+                        disponibilitesWrapper.appendChild(document.createElement('br'));
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const appointmentForm = document.getElementById('appointment-form');
+
+            appointmentForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const selectedSpecialiteId = document.getElementById('specialite').value;
+                showLoadingSpinner();
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/api/specialites/${selectedSpecialiteId}/medecins`);
+                    if (!response.ok) {
+                        throw new Error('La réponse du serveur n\'est pas valide');
+                    }
+
+                    const data = await response.json();
+                    updateMedecinSelect(data);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des médecins:', error);
+                } finally {
+                    hideLoadingSpinner(); // Masquer le spinner une fois les données chargées
+                }
+            });
+
+            function updateMedecinSelect(data) {
+                const medecinSelect = document.createElement('select');
+                medecinSelect.name = 'medecin';
+                medecinSelect.id = 'medecin';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.text = 'Sélectionnez un médecin';
+                medecinSelect.appendChild(defaultOption);
+
+                data.forEach(medecin => {
+                    const option = document.createElement('option');
+                    option.value = medecin.id;
+                    option.text = medecin.name;
+                    medecinSelect.appendChild(option);
+                });
+
+                const medecinSelectWrapper = document.getElementById('medecin-select-wrapper');
+                medecinSelectWrapper.innerHTML = '';
+                medecinSelectWrapper.appendChild(medecinSelect);
+            }
+
+            async function fetchDisponibilites(medecinId) {
+                showLoadingSpinner(); // Afficher le spinner pendant le chargement
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/api/medecins/${medecinId}/disponibilites`);
+                    if (!response.ok) {
+                        throw new Error('La réponse du serveur n\'est pas valide');
+                    }
+
+                    const disponibilites = await response.json();
+                    console.log('Disponibilités récupérées :', disponibilites);
+                    displayDisponibilites(disponibilites);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des disponibilités:', error);
+                } finally {
+                    hideLoadingSpinner(); // Masquer le spinner une fois les données chargées
+                }
+            }
+
+            document.getElementById('medecin-select-wrapper').addEventListener('change', function() {
+                const selectedMedecinId = document.getElementById('medecin').value;
+                fetchDisponibilites(selectedMedecinId);
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+************************************************************************************************
+@extends('users.patient.masterpat')
+@section('title', 'Dashboard Patient')
+@section('content')
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard </a></li>
+                            <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+                            <li class="breadcrumb-item active">Patient Dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10 ">
+                        <div class="card p-3">
+                            <div class="card-header text-center">
+                                <h2 class=" text-muted">Prendre un Rendez-vous</h2>
+                            </div>
+
+                            <form id="appointment-form">
+                                @csrf
+
+                                <div class="form-group">
+                                    <label for="specialite" class="form-label mt-2">Choisissez une spécialité :</label>
+                                    <select class="form-control mt-2" id="specialite" name="specialite">
+                                        <option value="">Sélectionnez une spécialité</option>
+                                        @foreach ($specialites as $specialite)
+                                            <option value="{{ $specialite->id }}">{{ $specialite->nom }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div id="loading-spinner" style="display: none;">
+                                    <img src="{{ asset('load (2).gif') }}" alt="" srcset="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="medecin">Choisissez un médecin :</label>
+                                    <div id="medecin-select-wrapper">
+                                        <select name="docteur_id" class="form-control" id="">
+                                            <option value="">Selectionnez un docteur </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="disponibilites">Choisissez une disponibilité :</label>
+                                    <div id="disponibilites-wrapper"></div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Continuez</button>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-overlay" data-reff></div>
+
+    <script src="https://cdn.kkiapay.me/k.js"></script>
+
+    <script>
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        function showLoadingSpinner() {
+            loadingSpinner.style.display = 'block';
+        }
+
+        function hideLoadingSpinner() {
+            loadingSpinner.style.display = 'none';
+        }
+
+        function displayDisponibilites(disponibilites) {
+            const disponibilitesWrapper = document.getElementById('disponibilites-wrapper');
+            disponibilitesWrapper.innerHTML = '';
+
+            if (disponibilites.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = 'Aucune disponibilité pour ce médecin.';
+                message.classList.add('text-muted', 'font-italic', 'text-center', 'mt-3');
+                disponibilitesWrapper.appendChild(message);
+            } else {
+                disponibilites.forEach(disponibilite => {
+                    const dateDebut = new Date();
+                    const heureDebut = new Date(dateDebut.toDateString() + ' ' + disponibilite.heure_debut);
+                    const heureFin = new Date(dateDebut.toDateString() + ' ' + disponibilite.heure_fin);
+
+                    const options = {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    };
+                    const jourLabel = document.createElement('p');
+                    jourLabel.textContent =
+                        `Disponibilité le ${new Intl.DateTimeFormat('fr-FR', options).format(new Date(disponibilite.jour))}:`;
+                    jourLabel.classList.add('font-weight-bold', 'mt-3');
+                    disponibilitesWrapper.appendChild(jourLabel);
+
+                    for (let heure = new Date(heureDebut); heure < heureFin; heure.setHours(heure.getHours() + 1)) {
+                        const disponibiliteRadio = document.createElement('input');
+                        disponibiliteRadio.type = 'radio';
+                        disponibiliteRadio.name = 'disponibilite';
+                        disponibiliteRadio.value = heure.getTime();
+                        disponibiliteRadio.id = `disponibilite-${heure.getTime()}`;
+                        disponibiliteRadio.classList.add('form-check-input', 'me-2');
+
+                        const label = document.createElement('label');
+                        label.for = `disponibilite-${heure.getTime}`;
+                        label.textContent = `${heure.getHours()}h`;
+                        label.classList.add('form-check-label', 'me-3');
+
+                        const br = document.createElement('br');
+
+                        disponibilitesWrapper.appendChild(disponibiliteRadio);
+                        disponibilitesWrapper.appendChild(label);
+                        disponibilitesWrapper.appendChild(br);
+                    }
+                });
+
+                // Changer le bouton en bouton de soumission avec la valeur "Rdv"
+                const prendreRendezVousButton = document.querySelector('button[type="submit"]');
+                prendreRendezVousButton.textContent = 'Prendre rendez-vous';
+                prendreRendezVousButton.value = 'Rdv';
+
+                // Masquer le loader une fois les disponibilités affichées
+                hideLoadingSpinner();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const appointmentForm = document.getElementById('appointment-form');
+
+            appointmentForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const selectedSpecialiteId = document.getElementById('specialite').value;
+                showLoadingSpinner();
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/api/specialites/${selectedSpecialiteId}/medecins`);
+                    if (!response.ok) {
+                        throw new Error('La réponse du serveur n\'est pas valide');
+                    }
+
+                    const data = await response.json();
+                    updateMedecinSelect(data);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des médecins:', error);
+                } finally {
+                    hideLoadingSpinner(); // Masquer le spinner une fois les données chargées
+                }
+            });
+
+            function updateMedecinSelect(data) {
+                const medecinSelect = document.createElement('select');
+                medecinSelect.classList.add('form-control'); // Ajouter la classe Bootstrap form-control
+                medecinSelect.name = 'medecin';
+                medecinSelect.id = 'medecin';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.classList.add('text-muted'); // Ajouter une classe pour le texte grisé
+                defaultOption.text = 'Sélectionnez un médecin';
+                medecinSelect.appendChild(defaultOption);
+
+                data.forEach(medecin => {
+                    const option = document.createElement('option');
+                    option.value = medecin.id;
+                    option.text = medecin.name;
+                    option.classList.add('text-dark'); // Ajouter une classe pour le texte foncé
+                    medecinSelect.appendChild(option);
+                });
+
+                const medecinSelectWrapper = document.getElementById('medecin-select-wrapper');
+                medecinSelectWrapper.innerHTML = '';
+                medecinSelectWrapper.classList.add('mb-3'); // Ajouter une marge inférieure Bootstrap
+                medecinSelectWrapper.appendChild(medecinSelect);
+            }
+
+            async function fetchDisponibilites(medecinId) {
+                showLoadingSpinner(); // Afficher le spinner pendant le chargement
+
+                try {
+                    const response = await fetch(
+                        `http://127.0.0.1:8000/api/medecins/${medecinId}/disponibilites`);  
+                    if (!response.ok) {
+                        throw new Error('La réponse du serveur n\'est pas valide');
+                    }
+
+                    const disponibilites = await response.json();
+                    console.log('Disponibilités récupérées :', disponibilites);
+                    displayDisponibilites(disponibilites);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des disponibilités:', error);
+                } finally {
+                    hideLoadingSpinner(); // Masquer le spinner une fois les données chargées
+                }
+            }
+
+            document.getElementById('medecin-select-wrapper').addEventListener('change', function() {
+                const selectedMedecinId = document.getElementById('medecin').value;
+                fetchDisponibilites(selectedMedecinId);
+            });
+        });
+    </script>
+    </script>
+
+@endsection

@@ -6,6 +6,7 @@ use App\Models\Roles;
 use App\Models\Specialites;
 use App\Models\User;
 use Illuminate\Http\Request;
+use WisdomDiala\Countrypkg\Models\Country;
 use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardController extends Controller
@@ -34,7 +35,13 @@ class AdminDashboardController extends Controller
     public function ajouterdoc()
     {
         $specialites = Specialites::all();
-        return view('users.admin.ajtdocteur', compact('specialites'));
+        $contries = Country::all();
+        return view('users.admin.ajtdocteur', compact('specialites','contries'));
+    }
+
+    public function states(){
+        $country_id = request('contrie');
+        return $country_id;
     }
 
     public function store(Request $request)

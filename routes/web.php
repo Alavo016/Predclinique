@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\contries;
 use App\Http\Controllers\Departement;
 use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\Infirmier;
 use App\Http\Controllers\InfirmierDashboardController;
+use App\Http\Controllers\mypatient;
 use App\Http\Controllers\patient;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\search_controller;
@@ -27,15 +29,15 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::post('/update-payment-data', [mypatient::class, 'updatePaymentData']);
+
 Route::get('/faqs', [patient::class, 'faqs'])
     ->name('patient.faqs');
 
 Route::get('/contact', [patient::class, 'contact'])
     ->name('patient.contact');
 
-Route::get('/dashboard', function () {
-    return view('users.patient.acceuil');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::resource('/dashboard', mypatient::class)->middleware(['auth', 'verified'])->names('patient');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -54,6 +56,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/ajout/docteur', [AdminDashboardController::class, 'ajouterdoc'])
             ->name('ajtdoc');
+
+
 
         // Route pour enregistrer un nouvel utilisateur
         Route::post('/listdocteur', [AdminDashboardController::class, 'store'])
@@ -122,13 +126,30 @@ Route::middleware('auth')->group(function () {
     Route::prefix('patient')->group(function () {
 
 
-
+        Route::resource('Patient',mypatient::class)->names("patient");
 
         Route::get('/dossier', [patient::class, 'dossier'])
             ->name('patient.dossier');
 
         Route::get('/rdv', [patient::class, 'rdv'])
             ->name('patient.rdv');
+
+        Route::get('/statistique',[mypatient::class, "statistique"])
+            ->name('patient.statistique');
+
+        Route::get('/Rendez-Vous', [mypatient::class, "rendez_vous"])
+            ->name('patient.rdv');
+
+        Route::post('/Rendez-Vous',[mypatient::class, "submitAppointmentForm"])
+            ->name('patient.rdv_form');
+
+        Route::get('/user/{id}/edit_password', [mypatient::class,"modipass"]
+        )->name('mdpass');
+
+
+
+
+
     });
 });
 

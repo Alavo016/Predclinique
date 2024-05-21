@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('specialites', function (Blueprint $table) {
-            // Ajouter la colonne 'prix'
-            $table->decimal('prix', 8, 2)->nullable();
+        Schema::create('prix_rdv', function (Blueprint $table) {
+            $table->id();
+            $table->float('montant_');
+
+
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('specialites', function (Blueprint $table) {
-            // Supprimer la colonne 'prix' si elle existe
-            $table->dropColumn('prix');
-        });
+        //
     }
 };

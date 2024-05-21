@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('infirmier.dashboard');
                 break;
             default: // Default redirect
-                return redirect()->route('dashboard');
+                return redirect()->route('patient.index');
                 break;
         }
     }
