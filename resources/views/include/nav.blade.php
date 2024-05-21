@@ -4,7 +4,7 @@
             <div class="main-responsive-menu">
                 <div class="logo">
                     <a href="index.html">
-                        <img src="assets/img/logo.png" alt="image">
+                        <img src="{{ asset('1-removebg-preview.png') }}" alt="image" width="300px" height="90px">
                     </a>
                 </div>
             </div>
@@ -14,7 +14,7 @@
         <nav class="navbar navbar-expand-md navbar-two bg-white">
             <div class="container p-relative">
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/logo.png" alt="image">
+                    <img src="{{ asset('1-removebg-preview.png') }}" alt="image" width="250px" height="90px">
                 </a>
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">

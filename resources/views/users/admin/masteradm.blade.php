@@ -7,7 +7,8 @@
     <title>@yield('title') - {{ config('app.name') }} </title>
 
     <link rel="stylesheet" href="{{ asset('assets/assets/css/bootstrap.min.css') }}">
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+        <link rel="icon" type="image/png" href="{{ asset('Blue_and_White_Illustrative_Doctor_Health_Care_Logo-removebg-preview.png') }}">
+
     <link rel="stylesheet" href="{{ asset('assets/assets/css/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/plugins/fontawesome/css/all.min.css') }}">

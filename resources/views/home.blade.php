@@ -8,13 +8,13 @@
 <div class="banner-slider owl-carousel owl-theme mt-0">
     <div class="banner-three-area banner-six">
         <video loop muted autoplay poster="#" class="background-video">
-            <source src="assets/img/banner-video.mp4" type="video/mp4">
+            <source src="{{ asset('proche en haut de femelle médecin en utilisant stéthoscope en mettant battre cœur diagnostiquer avec patient dans examen pièce à une hôpital, vérification corps, médical et santé se soucier concept. 20615803 Vidéo de s.mp4') }}" type="video/mp4">
         </video>
         <div class="container">
             <div class="banner-three-text">
-                <span>Explore us all</span>
-                <h1>Connect and get our full dental support</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                <span class="text-dark">Explore us all</span>
+                <h1 class="text-dark">Connect and get our full dental support</h1>
+                <p class="text-dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                     labore et dolore.</p>
                 <div class="b-three-btn">
                     <a href="appoinments.html" class="default-btn three">
@@ -27,7 +27,7 @@
     </div>
     <div class="banner-three-area banner-six">
         <video loop muted autoplay poster="#" class="background-video">
-            <source src="assets/img/banner-video.mp4" type="video/mp4">
+            <source src="{{ asset('video.mp4') }}" type="video/mp4">
         </video>
         <div class="container">
             <div class="banner-three-text">
@@ -723,7 +723,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 
 @endsection
