@@ -85,8 +85,10 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="row">
+                                                                    <button type="button" id="next-step" class="btn btn-primary mt-3 mx-auto">Continuer</button>
 
-                                <button type="button" id="next-step" class="btn btn-primary">Continuer</button>
+                                </div>
                             </form>
                         </div>
                     </div>

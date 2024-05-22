@@ -7,7 +7,7 @@
     <title>{{ config('app.name') }} -- @yield('title')</title>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
-    <link rel="icon" type="image/png" href="{{ asset('Blue_and_White_Illustrative_Doctor_Health_Care_Logo-removebg-preview.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('2.png') }}">
 </head>
 
 <body class="">
