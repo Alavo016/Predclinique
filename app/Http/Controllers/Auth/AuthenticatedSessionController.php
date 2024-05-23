@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('doctor.dashboard');
                 break;
             case 3: // Infirmier role ID
-                return redirect()->route('infirmier.dashboard');
+                return redirect()->route("infirmier.dashboard");
                 break;
             default: // Default redirect
                 return redirect()->route('patient.index');

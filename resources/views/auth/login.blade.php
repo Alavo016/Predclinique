@@ -85,8 +85,9 @@
                             <div class="login-right">
                                 <div class="login-right-wrap">
                                     <div class="account-logo">
-                                        <a href="index.html"><img src="assets/assets/img/login-logo.png" alt></a>
-                                    </div>
+                                        <a href="{{ route('home') }}"><img class="img-fluid mx-auto d-block"
+                                            style="max-width: 20%" style="max-height: 60px"
+                                            src="{{ asset('1-removebg-preview.png') }}" alt></a>                                    </div>
                                     <h2>Login</h2>
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
@@ -124,14 +125,7 @@
                                     <div class="next-sign">
                                         <p class="account-subtitle">Need an account? <a
                                                 href="{{ route('register') }}">Sign Up</a></p>
-                                        <div class="social-login">
-                                            <a href="javascript:;"><img src="assets/assets/img/icons/login-icon-01.svg"
-                                                    alt></a>
-                                            <a href="javascript:;"><img src="assets/assets/img/icons/login-icon-02.svg"
-                                                    alt></a>
-                                            <a href="javascript:;"><img src="assets/assets/img/icons/login-icon-03.svg"
-                                                    alt></a>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>

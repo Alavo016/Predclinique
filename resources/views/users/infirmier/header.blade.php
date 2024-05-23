@@ -8,14 +8,7 @@
     <a id="mobile_btn" class="mobile_btn float-start" href="#sidebar"><img
             src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
     <div class="top-nav-search mob-view">
-        <form action="{{ route('search') }}" method="POST">
-            @csrf
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search here" name="query">
-                <button class="btn" type="submit"><img
-                        src="{{ asset('assets/assets/img/icons/search-normal.svg') }}" alt></button>
-            </div>
-        </form>
+       
 
     </div>
     <ul class="nav user-menu float-end">
@@ -116,11 +109,11 @@
         <li class="nav-item dropdown has-arrow user-profile-list">
             <a href="#" class="dropdown-toggle nav-link user-link" data-bs-toggle="dropdown">
                 <div class="user-names">
-                    <h5>Liam Michael </h5>
-                    <span>Admin</span>
+                    <h5>{{ $user->name }} </h5>
+                    <span>Infirmier</span>
                 </div>
                 <span class="user-img">
-                    <img src="{{ asset('assets/assets/img/user-06.jpg') }}" alt="Admin">
+                    <img src="{{ URL::asset($user->photo) }}" alt="Admin">
                 </span>
             </a>
             <div class="dropdown-menu">

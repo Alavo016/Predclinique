@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}">
+                        <a href="{{ route('register') }}" class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}">
                             <i class="fas fa-user-plus icon"></i> Register
                         </a>
                     </li>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Infirmier;
 use App\Http\Controllers\InfirmierDashboardController;
 use App\Http\Controllers\mypatient;
 use App\Http\Controllers\patient;
+use App\Http\Controllers\Patient_inf;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\search_controller;
 use App\Http\Controllers\Specialités;
@@ -121,6 +122,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('infirmier')->group(function () {
         Route::get('/dashboard', [InfirmierDashboardController::class, 'index'])
             ->name('infirmier.dashboard');
+
+        Route::resource("/Liste Patient",Patient_inf::class)
+            ->names('Patient_infirmier');
+        
+           
     });
 
     Route::prefix('patient')->group(function () {

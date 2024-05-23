@@ -142,8 +142,9 @@
                             <div class="login-right">
                                 <div class="login-right-wrap">
                                     <div class="account-logo">
-                                        <a href="index.html"><img src="{{ asset('assets/assets/img/login-logo.png') }}"
-                                                alt></a>
+                                        <a href="{{ route('home') }}"><img class="img-fluid mx-auto d-block"
+                                                style="max-width: 20%" style="max-height: 60px"
+                                                src="{{ asset('1-removebg-preview.png') }}" alt></a>
                                     </div>
                                     <h2>Inscription</h2>
 
@@ -205,10 +206,11 @@
                                     </form>
 
                                     <div class="next-sign">
-                                        <p class="account-subtitle">Avez vous deja un compte ? <a href="{{ route('login') }}">Connexion</a>
+                                        <p class="account-subtitle">Avez vous deja un compte ? <a
+                                                href="{{ route('login') }}">Connexion</a>
                                         </p>
 
-                                        
+
 
                                     </div>
                                 </div>

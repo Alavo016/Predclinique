@@ -152,7 +152,7 @@ class mypatient extends Controller
     {
         $validatedData = $request->validate([
             'specialite' => 'required|integer',
-            'docteur_id' => 'required|integer',
+            'medecinRadio' => 'required|integer',
             'disponibilite' => 'required',
             'motif' => 'nullable|string',
             'statut' => 'nullable|string',
@@ -165,7 +165,7 @@ class mypatient extends Controller
         $rendezVous = new Rendez_vous();
         $rendezVous->specialites_id = $validatedData['specialite'];
         $rendezVous->patient_id = $patient_id;
-        $rendezVous->doctor_id = $validatedData['docteur_id'];
+        $rendezVous->doctor_id = $validatedData['medecinRadio'];
         $rendezVous->date = date("Y-m-d H:i:s", strtotime($validatedData['disponibilite']));
         $rendezVous->statut = "Rdv non cloturé";
         $rendezVous->prix = $specialite->prix; // Accéder à la propriété prix de l'instance de Specialites

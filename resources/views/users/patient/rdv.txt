@@ -38,7 +38,7 @@
                             <h2 class="text-muted">Prendre un Rendez-vous</h2>
                         </div>
 
-                        <form id="appointment-form" method="POST" action="{{ route("patient.rdv_form") }}">
+                        <form id="appointment-form" method="POST" action="{{ route('patient.rdv_form') }}">
                             @csrf
 
                             <input type="hidden" id="medecin" name="medecin" value="">
@@ -66,10 +66,10 @@
                                 <div class="form-group">
                                     <label for="medecin">Choisissez un médecin :</label>
                                     <div id="doctor-cards-wrapper" class="row">
-                                        <!-- Doctor cards will be inserted here -->
+                                        <!-- Cartes de docteurs insérées ici -->
                                     </div>
                                     <div id="pagination-wrapper" class="d-flex justify-content-center mt-4">
-                                        <!-- Pagination buttons will be inserted here -->
+                                        <!-- Boutons de pagination insérés ici -->
                                     </div>
                                     @error('docteur_id')
                                         <div class="text-danger">{{ $message }}</div>
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Add doctor cards
             paginatedData.forEach(medecin => {
-                const imageUrl = medecin.photo ? medecin.photo : 'no-photo'; // Default image URL if necessary
+                const imageUrl = medecin.photo ? medecin.photo : 'pas de photo'; // URL d'image par défaut si nécessaire
 
                 const card = document.createElement('div');
                 card.className = 'col-xl-3 col-lg-3 col-sm-3 mt-3';
@@ -173,8 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="profile-photo">
                                 <img src="${imageUrl}" width="100" class="img-fluid rounded-circle" alt="">
                             </div>
-                            <h3 class="mt-4
-                            mb-1">${medecin.name}</h3>
+                            <h3 class="mt-4 mb-1">${medecin.name}</h3>
                             <p class="text-muted">${medecin.prenom}</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="medecinRadio" id="medecin-${medecin.id}" value="${medecin.id}">
@@ -186,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
 
-                doctorCardsWrapper.appendChild(card); // Add doctor card to wrapper
+                doctorCardsWrapper.appendChild(card); // Ajoutez la carte de médecin au wrapper
             });
 
             // Add pagination buttons
@@ -204,13 +203,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     currentPage = i;
                     fetchDoctors(specialiteId, i);
                 });
-                paginationWrapper.appendChild(button); // Add the button to paginationWrapper
+                paginationWrapper.appendChild(button); // Ajoutez le bouton à la paginationWrapper
             }
 
-            doctorCardsWrapper.appendChild(paginationWrapper); // Add paginationWrapper to doctorCardsWrapper
+            doctorCardsWrapper.appendChild(paginationWrapper); // Ajoutez la paginationWrapper à doctorCardsWrapper
 
         } catch (error) {
-            console.error('Error fetching doctors:', error);
+            console.error('Erreur lors de la récupération des médecins:', error);
         } finally {
             hideLoadingSpinner();
         }
@@ -289,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         } catch (error) {
-            console.error('Error fetching disponibilites:', error);
+            console.error('Erreur lors de la récupération des disponibilités:', error);
         } finally {
             hideLoadingSpinner();
         }
@@ -308,3 +307,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 @endsection
+
