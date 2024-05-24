@@ -26,6 +26,6 @@ class ordonnances extends Model
      */
     public function consultations()
     {
-        return $this->hasMany('App\Models\Consultation');
+        return $this->hasMany(Consultations::class);
     }
 }

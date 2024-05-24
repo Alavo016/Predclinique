@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Creance;
 use App\Models\Creances;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,25 +16,34 @@ class CreanceSeeder extends Seeder
      */
     public function run()
     {
-        // Obtenez tous les IDs des utilisateurs ayant un id_role égal à 1 (patients)
+        // Obtenir tous les IDs des utilisateurs ayant un id_role égal à 1 (patients)
         $patientIds = User::where('id_role', 1)->pluck('id')->toArray();
 
-        // Créer 50 créances au hasard pour les patients
-        for ($i = 0; $i < 50; $i++) {
-            $montantTotal = rand(3000, 100000); // Montant total aléatoire entre 100 et 1000
-            $montantPaye = rand(0, $montantTotal); // Montant payé aléatoire entre 0 et le montant total
-            $montantRestant = $montantTotal - $montantPaye; // Calculer le montant restant
+        // Limiter le nombre maximum de patients à 150
+        $patientIds = array_slice($patientIds, 0, 150);
 
-            $date = Carbon::now()->subYears(random_int(0, 3));
+        // Créer au plus 10 créances pour chaque patient
+        foreach ($patientIds as $patientId) {
+            // Nombre de créances aléatoire pour ce patient (au plus 10)
+            $numCreances = rand(1, 10);
 
-            // Créer une nouvelle créance avec des attributs aléatoires pour un patient
-            Creances::create([
-                'montant_tot' => $montantTotal,
-                'date' => $date,
-                'montant_res' => $montantRestant,
-                'montant_paye' => $montantPaye,
-                'patient_id' => $patientIds[array_rand($patientIds)], // Sélectionner un patient au hasard
-            ]);
+            for ($i = 0; $i < $numCreances; $i++) {
+                $montantTotal = rand(3000, 100000); // Montant total aléatoire entre 3000 et 100000
+                $montantPaye = rand(0, $montantTotal); // Montant payé aléatoire entre 0 et le montant total
+                $montantRestant = $montantTotal - $montantPaye; // Calculer le montant restant
+
+                $date = Carbon::now()->subYears(random_int(0, 3));
+
+                // Créer une nouvelle créance avec des attributs aléatoires pour ce patient
+                Creances::create([
+                    'montant_tot' => $montantTotal,
+                    'date' => $date,
+                    'montant_res' => $montantRestant,
+                    'montant_paye' => $montantPaye,
+                    'patient_id' => $patientId,
+                ]);
+            }
         }
     }
 }
+

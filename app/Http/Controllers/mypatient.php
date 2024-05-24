@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultations;
 use App\Models\Disponibilites;
 use App\Models\Rendez_vous;
 use App\Models\Specialites;
@@ -236,4 +237,25 @@ class mypatient extends Controller
 
         return view('users.patient.modifier_pass',compact("user"));
     }
+
+    public function dossierMedical()
+    {
+        // Vérifie si l'utilisateur est connecté
+        if (Auth::check()) {
+            // Récupère l'utilisateur connecté
+            $user = Auth::user();
+
+            // Récupère les consultations du patient
+            $consultations = Consultations::with(['doctor', 'ordonnance'])
+            ->where('user_id', $user->id)
+            ->get();;
+
+            // Retourne la vue avec les données du dossier médical
+            return view("users.patient.dossier_medicale", compact('user', 'consultations'));
+        } else {
+            // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+            return redirect()->route('login');
+        }
+    }
+
 }

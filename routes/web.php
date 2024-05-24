@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\contries;
+use App\Http\Controllers\Creance;
 use App\Http\Controllers\Departement;
 use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\Infirmier;
@@ -38,7 +39,7 @@ Route::get('/faqs', [patient::class, 'faqs'])
 Route::get('/contact', [patient::class, 'contact'])
     ->name('patient.contact');
 
-    Route::resource('/dashboard', mypatient::class)->middleware(['auth', 'verified'])->names('patient');
+Route::resource('/dashboard', mypatient::class)->middleware(['auth', 'verified'])->names('patient');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -78,23 +79,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/search', [search_controller::class, 'search'])
             ->name('search');
 
-        Route::resource('/infirmier',Infirmier::class)->names('adm_infirmier');
+        Route::resource('/infirmier', Infirmier::class)->names('adm_infirmier');
 
         Route::resource('/patient', Patient::class)->names('adm_Patient');
 
 
-       Route::resource('/Specialites',Departement::class)->names('adm_specialites');
-
-
-
-
-
-
-
-
-
-
-
+        Route::resource('/Specialites', Departement::class)->names('adm_specialites');
     });
 
     Route::prefix('doctor')->group(function () {
@@ -112,50 +102,51 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/Disponibilites/modifier{id}', [DoctorDashboardController::class, 'modifierdisponi'])->name('edit_disponibilite');
 
-        Route::put('/Disponibilites/modifier/{id}',[DoctorDashboardController::class,"updateDispo"])
-                ->name('updateDispo');
+        Route::put('/Disponibilites/modifier/{id}', [DoctorDashboardController::class, "updateDispo"])
+            ->name('updateDispo');
 
-        Route::delete('/disponibilites/{id}', [DoctorDashboardController::class,"destroydispo"])->name('disponibilites.destroy');
-
+        Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');
     });
 
     Route::prefix('infirmier')->group(function () {
         Route::get('/dashboard', [InfirmierDashboardController::class, 'index'])
             ->name('infirmier.dashboard');
 
-        Route::resource("/Liste Patient",Patient_inf::class)
+        Route::resource("/Liste Patient", Patient_inf::class)
             ->names('Patient_infirmier');
-        
-           
+        Route::resource("Creance", Creance::class)
+            ->names("Creance");
+            
     });
 
     Route::prefix('patient')->group(function () {
 
 
-        Route::resource('Patient',mypatient::class)->names("patient");
+        Route::resource('Patient', mypatient::class)->names("patient");
 
-        Route::get('/dossier', [patient::class, 'dossier'])
-            ->name('patient.dossier');
+
+        Route::get('/dossier-medical', [mypatient::class, 'dossierMedical'])->name('dossier.medical');
 
         Route::get('/rdv', [patient::class, 'rdv'])
             ->name('patient.rdv');
 
-        Route::get('/statistique',[mypatient::class, "statistique"])
+        Route::get('/statistique', [mypatient::class, "statistique"])
             ->name('patient.statistique');
 
         Route::get('/Rendez-Vous', [mypatient::class, "rendez_vous"])
             ->name('patient.rdv');
 
-        Route::post('/Rendez-Vous',[mypatient::class, "submitAppointmentForm"])
+        Route::post('/Rendez-Vous', [mypatient::class, "submitAppointmentForm"])
             ->name('patient.rdv_form');
 
-        Route::get('/user/{id}/edit_password', [mypatient::class,"modipass"]
+        Route::get(
+            '/user/{id}/edit_password',
+            [mypatient::class, "modipass"]
         )->name('mdpass');
 
 
 
-
-
+        Route::get("ListeCreance", [Creance::class, "listeCreance"])->name("ListeCreance");
     });
 });
 

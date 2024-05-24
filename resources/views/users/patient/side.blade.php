@@ -11,7 +11,7 @@
                 </li>
 
                 <li >
-                    <a href="{{ route("patient.rdv") }}"><span class="menu-side"><img
+                    <a href="{{ route("dossier.medical") }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-04.svg') }}" alt></span>
                         <span> Dossier Médical </span> </a>
 
@@ -24,14 +24,11 @@
                 </li>
 
 
-                <li class="submenu">
-                    <a href="#"><span class="menu-side"><img
+                <li >
+                    <a href="{{ route("ListeCreance") }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-09.svg') }}" alt></span>
                         <span> Liste des Creances  </span> </a>
-                    <ul style="display: none;">
-                        <li><a href="salary.html"> Employee Salary </a></li>
-                        <li><a href="salary-view.html"> Payslip </a></li>
-                    </ul>
+                    
                 </li>
                 
 

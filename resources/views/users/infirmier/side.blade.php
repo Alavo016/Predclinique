@@ -40,12 +40,12 @@
                 <li class="submenu">
                     <a href="#">
                         <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-08.svg') }}" alt></span>
-                        <span> LIstes des Créances </span>
+                        <span> Créances </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: none;">
-                        <li><a href="" class="{{ request()->routeIs('creances.index') ? 'active' : '' }}">Liste des creances </a></li>
-                        <li><a href="add-staff.html" class="{{ request()->routeIs('creances.create') ? 'active' : '' }}">Ajouter une créances </a></li>
+                        <li><a href="{{ route('Creance.index') }}" class="{{ request()->routeIs('creances.index') ? 'active' : '' }}">Liste des creances </a></li>
+                        <li><a href="{{ route('Creance.create') }}" class="{{ request()->routeIs('creances.create') ? 'active' : '' }}">Ajouter une créances </a></li>
                     </ul>
                 </li>
             </ul>
