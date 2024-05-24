@@ -95,7 +95,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Gradient Bar Chart</h5>
+                            <h5 class="card-title">Graphique des Créances</h5>
                         </div>
                         <div class="card-body">
                             <div>
@@ -109,7 +109,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Donut Chart</h5>
+                            <h5 class="card-title">Fourniture Médical</h5>
                         </div>
                         <div class="card-body">
                             <div class="chartjs-wrapper-demo">
@@ -122,7 +122,7 @@
 
 
             </div>
-            
+
         </div>
         <div class="notification-box">
             <div class="msg-sidebar notifications msg-noti">
@@ -393,7 +393,7 @@
             }
         });
 
-       
+
         var datapie = {
             labels: {!! json_encode($labelsDonut) !!},
             datasets: [{

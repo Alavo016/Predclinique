@@ -33,11 +33,7 @@
                         <li><a href="salary-view.html"> Payslip </a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="chat.html"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-10.svg') }}" alt></span>
-                        <span>Chat</span></a>
-                </li>
+                
 
             </ul>
 

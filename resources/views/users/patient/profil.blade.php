@@ -147,11 +147,7 @@
                                                                 src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}" alt></span>Informations
                                                         </a>
                                                 </li>
-                                                <li>
-                                                    <a href="patient-setting.html"><span class="set-about-icon me-2"><img
-                                                                src="assets/img/icons/menu-icon-16.svg"
-                                                                alt></span>Settings</a>
-                                                </li>
+                                                
                                             </ul>
                                         </div>
                                         <div class="personal-list-out">

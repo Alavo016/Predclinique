@@ -1,7 +1,7 @@
 <div class="header">
     <div class="header-left">
         <a href="{{ route('patient.index') }}" class="logo">
-            <img src="{{ asset('assets/assets/img/logo.png"') }}" width="35" height="35" alt> <span>E-clinique/span>
+            <img src="{{ asset("1-removebg-preview.png") }}" width="35" height="35" alt> <span>E-clinique</span>
         </a>
     </div>
     <a id="toggle_btn" href="javascript:void(0);"><img src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
