@@ -1,4 +1,4 @@
-@extends('users.patient.masterpat')
+@extends("users.infirmier.masterinf")
 
 @section('title', 'Liste des Créances')
 @section('content')
@@ -14,16 +14,16 @@
                     </div>
                 </div>
             </div>
-            <a href="{{ route('ajtdoc') }}" class="btn btn-primary  mb-2">Ajouter</a>
+            <a href="{{ route("Creance.create") }}" class="btn btn-primary  mb-2">Ajouter</a>
             <x-session />
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Liste des Créances</h5>
-                            
+
                             <div class="table-responsive">
-                                <table class="table datatable">
+                                <table class="table datatable custom-table comman-table table-striped border-0  ">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -47,7 +47,7 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('Creance.edit', $creance->id) }}"
-                                                            class="btn btn-primary" title="Modifier"><i
+                                                            class="btn btn-success" title="Modifier"><i
                                                                 class="fa fa-edit"></i></a>
                                                         <form action="{{ route('Creance.destroy', $creance->id) }}"
                                                             method="POST">

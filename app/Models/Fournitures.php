@@ -37,6 +37,6 @@ class Fournitures extends Model
      */
     public function typeFourniture()
     {
-        return $this->belongsTo('App\Models\TypeFourniture');
+        return $this->belongsTo(Type_fourniture::class);
     }
 }

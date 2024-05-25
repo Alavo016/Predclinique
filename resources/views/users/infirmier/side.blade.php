@@ -3,17 +3,21 @@
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 <li class="menu-title">Main</li>
-                <li class="submenu">
+                <li class="">
                     <a href="{{ route('doctor.dashboard') }}">
                         <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
                         <span> Dashboard</span>
-                        <span class="menu-arrow"></span>
+
                     </a>
-                    <ul style="display: none;">
-                        <li><a href="{{ route('doctor.dashboard') }}" class="{{ request()->routeIs('doctor.dashboard') ? 'active' : '' }}">Statitique</a></li>
-                        <li><a href="#">Graphique </a></li>
-                        <li><a href="#">Rapport </a></li>
-                    </ul>
+
+                </li>
+                <li class="">
+                    <a href="">
+                        <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
+                        <span> Statistique</span>
+
+                    </a>
+
                 </li>
                 <li class="submenu">
                     <a href="#">
@@ -22,8 +26,8 @@
                         <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: none;">
-                        <li><a href="{{ route('doctor.liste.dispo') }}" class="{{ request()->routeIs('doctor.liste.dispo') ? 'active' : '' }}">Liste Fourniture</a></li>
-                        <li><a href="{{ route('doctor.dispo') }}" class="{{ request()->routeIs('doctor.dispo') ? 'active' : '' }}">Ajouter Fourniture</a></li>
+                        <li><a href="{{ route("fourniture.index") }}" class="{{ request()->routeIs("fourniture.index") ? 'active' : '' }}">Liste Fourniture</a></li>
+                        <li><a href="{{ route("fourniture.create") }}" class="{{ request()->routeIs("fourniture.create") ? 'active' : '' }}">Ajouter Fourniture</a></li>
                     </ul>
                 </li>
                 <li class="submenu">

@@ -5,6 +5,7 @@ use App\Http\Controllers\contries;
 use App\Http\Controllers\Creance;
 use App\Http\Controllers\Departement;
 use App\Http\Controllers\DoctorDashboardController;
+use App\Http\Controllers\Fourniture;
 use App\Http\Controllers\Infirmier;
 use App\Http\Controllers\InfirmierDashboardController;
 use App\Http\Controllers\mypatient;
@@ -116,7 +117,10 @@ Route::middleware('auth')->group(function () {
             ->names('Patient_infirmier');
         Route::resource("Creance", Creance::class)
             ->names("Creance");
-            
+        Route::resource("/Fourniture", Fourniture::class)
+            ->names("fourniture");
+
+
     });
 
     Route::prefix('patient')->group(function () {
