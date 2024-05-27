@@ -29,7 +29,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-heading">
-                                            <h4>Doctor Details</h4>
+                                            <h4>Ajout d'un docteur </h4>
                                         </div>
                                     </div>
                                     <!-- Colonne pour le prénom -->

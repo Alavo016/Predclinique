@@ -117,7 +117,7 @@
             <a href="#" class="dropdown-toggle nav-link user-link" data-bs-toggle="dropdown">
                 <div class="user-names">
                     <h5>Liam Michael </h5>
-                    <span>Admin</span>
+                    <span>Docteur</span>
                 </div>
                 <span class="user-img">
                     <img src="{{ asset('assets/assets/img/user-06.jpg') }}" alt="Admin">

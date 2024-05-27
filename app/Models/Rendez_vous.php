@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property integer $patient_id
  * @property integer $doctor_id
- * @property string $date
+ * @property datetime $date
  * @property string $motif
  * @property string $statut
  * @property string $created_at
