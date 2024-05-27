@@ -91,7 +91,7 @@
                                                 <td>{{ $dispo->heure_fin }}</td>
                                                 <td>{{ $dispo->notes }}</td>
                                                 <td>
-                                                    @if ($dispo->status == 'active')
+                                                    @if ($dispo->status == '1')
                                                         <span
                                                             class="badge
                                                     bg-success">Disponible</span>

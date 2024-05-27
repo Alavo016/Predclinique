@@ -87,16 +87,16 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input"
-                                                        value="active"
-                                                        {{ old('status', $disponibilite->status) == 'active' ? 'checked' : '' }}>
+                                                        value="1"
+                                                        {{ old('status', $disponibilite->status) == '1' ? 'checked' : '' }}>
                                                     Actif
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input"
-                                                        value="inactive"
-                                                        {{ old('status', $disponibilite->status) == 'inactive' ? 'checked' : '' }}>
+                                                        value="0"
+                                                        {{ old('status', $disponibilite->status) == '0' ? 'checked' : '' }}>
                                                     Inactif
                                                 </label>
                                             </div>

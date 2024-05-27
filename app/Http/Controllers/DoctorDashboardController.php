@@ -100,12 +100,12 @@ class DoctorDashboardController extends Controller
             'heure_debut' => 'required',
             'heure_fin' => 'required|after:heure_debut',
             'notes' => 'required|string',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
 
         ]);
 
 
-        
+
 
         // Récupérer la disponibilité à modifier
         $disponibilite = Disponibilites::findOrFail($request->id);

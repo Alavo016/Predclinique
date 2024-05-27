@@ -132,12 +132,16 @@ class mypatient extends Controller
     public function getDisponibilites($medecinId)
     {
         try {
-            $disponibilites = Disponibilites::where('doctor_id', $medecinId)->get();
+            // Récupérer les disponibilités du médecin avec le statut 1
+            $disponibilites = Disponibilites::where('doctor_id', $medecinId)
+                ->where('status', 1)
+                ->get();
             return response()->json($disponibilites);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erreur lors de la récupération des disponibilités: ' . $e->getMessage()], 500);
         }
     }
+
 
     public function getPrixConsultation($specialiteId)
     {

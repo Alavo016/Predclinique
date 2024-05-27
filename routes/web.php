@@ -16,6 +16,7 @@ use App\Http\Controllers\search_controller;
 use App\Http\Controllers\Specialités;
 use App\Models\Specialites;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RendezvousController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,12 @@ Route::middleware('auth')->group(function () {
         Route::put('/Disponibilites/modifier/{id}', [DoctorDashboardController::class, "updateDispo"])
             ->name('updateDispo');
 
+
+
+        Route::get('rendezvous', [RendezvousController::class, 'showRendezvous'])->name('doctor.rendezvous');
+        Route::get('rendezvous/events', [RendezvousController::class, 'getRendezvousEvents'])->name('doctor.rendezvous.events');
+
+
         Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');
     });
 
@@ -119,8 +126,6 @@ Route::middleware('auth')->group(function () {
             ->names("Creance");
         Route::resource("/Fourniture", Fourniture::class)
             ->names("fourniture");
-
-
     });
 
     Route::prefix('patient')->group(function () {

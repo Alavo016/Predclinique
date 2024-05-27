@@ -36,18 +36,11 @@
                         <li><a href="patient-profile.html">Patients Profile</a></li>
                     </ul>
                 </li>
-                <li class="submenu">
-                    <a href="#"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-08.svg') }}" alt></span>
-                        <span> Staff </span> <span class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        <li><a href="staff-list.html">Staff List</a></li>
-                        <li><a href="add-staff.html">Add Staff</a></li>
-                        <li><a href="staff-profile.html">Staff Profile</a></li>
-                        <li><a href="staff-leave.html">Leaves</a></li>
-                        <li><a href="staff-holiday.html">Holidays</a></li>
-                        <li><a href="staff-attendance.html">Attendance</a></li>
-                    </ul>
+                <li class="">
+                    <a href="{{ route('doctor.rendezvous') }}"><span class="menu-side"><img
+                                src="{{ asset('assets/assets/img/icons/menu-icon-04.svg') }}" alt></span>
+                        <span> Rendez-Vous</span> <span class="menu-arrow"></span></a>
+
                 </li>
                 <li class="submenu">
                     <a href="#"><span class="menu-side"><img
