@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-
+            <x-session />
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
@@ -96,14 +96,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12">
-                                        <div class="doctor-submit text-end">
-                                            <button type="submit"
-                                                class="btn btn-outline-success submit-form me-2">Enregistrer</button>
-                                            <button type="reset"
-                                                class="btn btn-outline-danger cancel-form">Annuler</button>
-                                        </div>
-                                    </div>
+                                    <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                                    <a href="{{ route('fourniture.index') }}" class="btn btn-secondary">Annuler</a>
+                                </div>
+                            </div>
                                 </div>
                             </form>
                         </div>

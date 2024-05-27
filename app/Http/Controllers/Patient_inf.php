@@ -14,10 +14,10 @@ class Patient_inf extends Controller
     public function index()
     {
         $user = Auth::user();
-        $patient = User::where('id_role',2)->get;
+        $patients = User::where('id_role',1)->get();
 
-        return view("users.infirmier.liste_patient", compact("user","patient"));
-        
+        return view("users.infirmier.liste_patient", compact("user","patients"));
+
     }
 
     /**

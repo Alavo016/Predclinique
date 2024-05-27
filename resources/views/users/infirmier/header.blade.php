@@ -8,7 +8,7 @@
     <a id="mobile_btn" class="mobile_btn float-start" href="#sidebar"><img
             src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
     <div class="top-nav-search mob-view">
-       
+
 
     </div>
     <ul class="nav user-menu float-end">
@@ -117,15 +117,13 @@
                 </span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="profile.html">My Profile</a>
-                <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-                <a class="dropdown-item" href="settings.html">Settings</a>
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button type="submit" class="nav-link">
-                        <span>Déconnection</span>
-                    </button>
-                </form>
+                <a class="dropdown-item" href="profile.html">Mon Profil</a>
+            <a class="dropdown-item" href="edit-profile.html">Modifier  Profile</a>
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="nav-link">
+                    <span>Déconnection</span>
+                </button>
             </div>
         </li>
         <li class="nav-item ">
@@ -137,9 +135,8 @@
         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
                 class="fa-solid fa-ellipsis-vertical"></i></a>
         <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="profile.html">My Profile</a>
-            <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-            <a class="dropdown-item" href="settings.html">Settings</a>
+            <a class="dropdown-item" href="profile.html">Mon Profil</a>
+            <a class="dropdown-item" href="edit-profile.html">Modifier  Profile</a>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="nav-link">

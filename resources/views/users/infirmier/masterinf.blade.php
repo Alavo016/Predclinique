@@ -21,7 +21,7 @@
 
 
 
-<body class="">
+<body >
 
     <div class="main-wrapper">
         @include("users.infirmier.header")

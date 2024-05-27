@@ -4,7 +4,7 @@
             <ul>
                 <li class="menu-title">Main</li>
                 <li class="">
-                    <a href="{{ route('doctor.dashboard') }}">
+                    <a href="{{ route("infirmier.dashboard") }}">
                         <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
                         <span> Dashboard</span>
 
