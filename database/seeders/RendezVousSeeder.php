@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -18,8 +19,7 @@ class RendezVousSeeder extends Seeder
         // Obtenez tous les patients (utilisateurs avec le rôle 1)
         $patients = User::where('id_role', 1)->get();
 
-        // Obtenez les spécialités que vous souhaitez analyser pour les statistiques
-        $specialitesAvecTauxEleve = Specialites::whereIn('id', [2, 4, 6, 10])->get();
+        // Obtenez toutes les spécialités
         $specialites = Specialites::all();
 
         foreach ($specialites as $specialite) {
@@ -32,7 +32,7 @@ class RendezVousSeeder extends Seeder
 
                 foreach ($disponibilites as $disponibilite) {
                     // Générez un nombre plus élevé de rendez-vous pris pour certaines spécialités
-                    $nombreRendezVousPris = $specialitesAvecTauxEleve->contains('id', $specialite->id) ? 10 : 3;
+                    $nombreRendezVousPris = $faker->randomElement([3, 3, 3, 10]); // Probabilité plus élevée pour 10
 
                     for ($i = 0; $i < $nombreRendezVousPris; $i++) {
                         // Créez un rendez-vous pour le médecin et le patient

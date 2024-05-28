@@ -14,14 +14,19 @@
                                 src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
                         <span>Statistique</span></a>
                 </li>
-                <li class="submenu {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'active' : '' }}">
+                <li
+                    class="submenu {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'active' : '' }}">
                     <a href="#"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-05.svg') }}" alt></span>
                         <span>Disponibilites</span> <span class="menu-arrow"></span>
                     </a>
-                    <ul style="display: {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'block' : 'none' }};">
-                        <li class="{{ request()->routeIs('doctor.liste.dispo') ? 'active' : '' }}"><a href="{{ route('doctor.liste.dispo') }}">Liste disponibilités</a></li>
-                        <li class="{{ request()->routeIs('doctor.dispo') ? 'active' : '' }}"><a href="{{ route('doctor.dispo') }}">Ajouter Disponibilités</a></li>
+                    <ul style="display:  none; }};">
+                        <li ><a href="{{ route('doctor.liste.dispo') }}" class="{{ request()->routeIs('doctor.liste.dispo') ? 'active' : '' }}">Liste disponibilités</a></li>
+                        <li ><a href="{{ route('doctor.dispo') }}"
+                            class="{{ request()->routeIs('doctor.dispo') ? 'active' : '' }}">Ajouter Disponibilités</a>
+                        </li>
+
+
                     </ul>
                 </li>
                 <li class="{{ request()->routeIs('doctor.rendezvous') ? 'active' : '' }}">
