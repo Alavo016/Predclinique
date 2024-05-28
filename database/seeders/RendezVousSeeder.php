@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -22,62 +21,79 @@ class RendezVousSeeder extends Seeder
         // Obtenez toutes les spécialités
         $specialites = Specialites::all();
 
-        foreach ($specialites as $specialite) {
-            // Obtenez les médecins associés à cette spécialité
-            $doctors = User::where('id_role', 2)->where('specialite_id', $specialite->id)->get();
+        foreach ($patients as $patient) {
+            $doctorsAlreadyAssigned = [];
 
-            foreach ($doctors as $doctor) {
-                // Obtenez les disponibilités avec un statut égal à 1 pour ce médecin
-                $disponibilites = Disponibilites::where('doctor_id', $doctor->id)->where('status', 1)->get();
+            for ($i = 0; $i < 5; $i++) {
+                // Choisissez une spécialité au hasard
+                $specialite = $specialites->random();
 
-                foreach ($disponibilites as $disponibilite) {
-                    // Générez un nombre plus élevé de rendez-vous pris pour certaines spécialités
-                    $nombreRendezVousPris = $faker->randomElement([3, 3, 3, 10]); // Probabilité plus élevée pour 10
+                // Obtenez les médecins associés à cette spécialité qui n'ont pas encore été assignés à ce patient
+                $doctors = User::where('id_role', 2)
+                    ->where('specialite_id', $specialite->id)
+                    ->whereNotIn('id', $doctorsAlreadyAssigned)
+                    ->get();
 
-                    for ($i = 0; $i < $nombreRendezVousPris; $i++) {
-                        // Créez un rendez-vous pour le médecin et le patient
-                        $startDateTime = Carbon::parse($disponibilite->jour)
-                            ->setTimeFromTimeString($disponibilite->heure_debut)
-                            ->addHour(rand(0, 3));
-
-                        // Vérifiez si le créneau horaire est disponible
-                        $rendezVousExistants = Rendez_vous::where('doctor_id', $doctor->id)
-                            ->where('date', '<=', $startDateTime->addHours(1)) // Supposez que chaque rendez-vous dure au moins 1 heure
-                            ->where('date', '>=', $startDateTime)
-                            ->exists();
-
-                        // Si le médecin n'a pas de rendez-vous à ce créneau horaire, créez un nouveau rendez-vous
-                        if (!$rendezVousExistants) {
-                            $rendezVous = new Rendez_vous();
-                            $rendezVous->date = $startDateTime;
-                            $rendezVous->motif = $faker->sentence();
-                            $rendezVous->statut = 'rdv pris';
-                            $rendezVous->patient_id = $patients->random()->id;
-                            $rendezVous->doctor_id = $doctor->id;
-                            $rendezVous->specialites_id = $specialite->id;
-                            $rendezVous->statut_paiement = 'Accepté';
-                            $rendezVous->prix = $specialite->prix;
-                            $rendezVous->save();
-                        }
-                    }
-
-                    // Ajout de rendez-vous passés
-                    for ($i = 0; $i < 10; $i++) {
-                        $pastDate = Carbon::now()->subDays(rand(1, 60))->setTime(rand(8, 17), rand(0, 59));
-
-                        $rendezVous = new Rendez_vous();
-                        $rendezVous->date = $pastDate;
-                        $rendezVous->motif = $faker->sentence();
-                        $rendezVous->statut = 'rdv pris';
-                        $rendezVous->patient_id = $patients->random()->id;
-                        $rendezVous->doctor_id = $doctor->id;
-                        $rendezVous->specialites_id = $specialite->id;
-                        $rendezVous->statut_paiement = 'Accepté';
-                        $rendezVous->prix = $specialite->prix;
-                        $rendezVous->fini = 1;
-                        $rendezVous->save();
-                    }
+                if ($doctors->isEmpty()) {
+                    continue; // Si aucun médecin n'est disponible, passez au prochain tour
                 }
+
+                $doctor = $doctors->random();
+                $doctorsAlreadyAssigned[] = $doctor->id;
+
+                // Obtenez les disponibilités avec un statut égal à 1 pour ce médecin
+                $disponibilites = Disponibilites::where('doctor_id', $doctor->id)
+                    ->where('status', 1)
+                    ->get();
+
+                if ($disponibilites->isEmpty()) {
+                    continue; // Si aucune disponibilité n'est disponible, passez au prochain tour
+                }
+
+                $disponibilite = $disponibilites->random();
+                $startDateTime = Carbon::parse($disponibilite->jour)
+                    ->setTimeFromTimeString($disponibilite->heure_debut)
+                    ->addMinutes(rand(0, Carbon::parse($disponibilite->heure_fin)->diffInMinutes($disponibilite->heure_debut) - 60));
+
+                // Créez un rendez-vous pour le médecin et le patient
+                $rendezVous = new Rendez_vous();
+                $rendezVous->date = $startDateTime;
+                $rendezVous->motif = $faker->sentence();
+                $rendezVous->statut = 'Rdv Pris';
+                $rendezVous->patient_id = $patient->id;
+                $rendezVous->doctor_id = $doctor->id;
+                $rendezVous->specialites_id = $specialite->id;
+                $rendezVous->statut_paiement = 'Accepté';
+                $rendezVous->prix = $specialite->prix;
+                $rendezVous->save();
+            }
+
+            // Ajout de rendez-vous passés avec le statut "fini"
+            for ($j = 0; $j < 10; $j++) {
+                $pastDate = Carbon::now()->subDays(rand(1, 60))->setTime(rand(8, 17), rand(0, 59));
+
+                // Choisissez une spécialité et un médecin au hasard pour les rendez-vous passés
+                $specialite = $specialites->random();
+                $doctors = User::where('id_role', 2)->where('specialite_id', $specialite->id)->get();
+
+                if ($doctors->isEmpty()) {
+                    continue; // Si aucun médecin n'est disponible, passez au prochain tour
+                }
+
+                $doctor = $doctors->random();
+
+                // Créez un rendez-vous passé pour le médecin et le patient
+                $rendezVous = new Rendez_vous();
+                $rendezVous->date = $pastDate;
+                $rendezVous->motif = $faker->sentence();
+                $rendezVous->statut = 'Rdv Pris';
+                $rendezVous->patient_id = $patient->id;
+                $rendezVous->doctor_id = $doctor->id;
+                $rendezVous->specialites_id = $specialite->id;
+                $rendezVous->statut_paiement = 'Accepté';
+                $rendezVous->prix = $specialite->prix;
+                $rendezVous->fini = 1;
+                $rendezVous->save();
             }
         }
     }

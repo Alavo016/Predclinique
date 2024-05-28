@@ -17,6 +17,7 @@ use App\Http\Controllers\Specialités;
 use App\Models\Specialites;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RendezvousController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +108,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/Disponibilites/modifier/{id}', [DoctorDashboardController::class, "updateDispo"])
             ->name('updateDispo');
 
+            Route::get('/Liste_patient', [DoctorDashboardController::class, "listepatient"])
+            ->name('doc.patien_liste');
+
+            Route::get('/{id}/dossier_medical', [DoctorDashboardController::class, 'dossierMedical'])->name('doc.dossier');
 
 
         Route::get('rendezvous', [RendezvousController::class, 'showRendezvous'])->name('doctor.rendezvous');
@@ -152,6 +157,9 @@ Route::middleware('auth')->group(function () {
             '/user/{id}/edit_password',
             [mypatient::class, "modipass"]
         )->name('mdpass');
+
+        Route::put('/patient/update-password', [mypatient::class, 'updatePassword'])->name('patient.updatePassword');
+
 
 
 

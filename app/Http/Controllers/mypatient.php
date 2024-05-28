@@ -7,9 +7,12 @@ use App\Models\Disponibilites;
 use App\Models\Rendez_vous;
 use App\Models\Specialites;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class mypatient extends Controller
 {
@@ -69,24 +72,113 @@ class mypatient extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
+        $historiqueRendezVous = Rendez_vous::where('patient_id', $id)
+            ->where('fini', 1)
+            ->with('doctor') // Assuming you have a relationship set up
+            ->paginate(5); // Limitez à 5 par page
 
-        return view("users.patient.profil", compact('user'));
+
+        return view("users.patient.profil", compact('user', "historiqueRendezVous"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+        return view("users.patient.modifier _profil", compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+    { {
+            $validator = Validator::make($request->all(), [
+                'prenom' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'pseudo' => 'required|string|max:255',
+                'etat_civile' => 'nullable|string',
+                'telephone' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+                'date_naissance' => 'required|date',
+                'sexe' => 'required|string|in:F,M',
+                'ville' => 'nullable|string|max:255',
+                'nationalite' => 'nullable|string|max:255',
+                'address' => 'nullable|string',
+                'allergie' => 'nullable|string',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ], [
+                'prenom.required' => 'Le prénom est requis.',
+                'prenom.string' => 'Le prénom doit être une chaîne de caractères.',
+                'prenom.max' => 'Le prénom ne peut pas dépasser 255 caractères.',
+                'name.required' => 'Le nom est requis.',
+                'name.string' => 'Le nom doit être une chaîne de caractères.',
+                'name.max' => 'Le nom ne peut pas dépasser 255 caractères.',
+                'pseudo.required' => 'Le nom d\'utilisateur est requis.',
+                'pseudo.string' => 'Le nom d\'utilisateur doit être une chaîne de caractères.',
+                'pseudo.max' => 'Le nom d\'utilisateur ne peut pas dépasser 255 caractères.',
+                'etat_civile.required' => 'Le statut matrimonial est requis.',
+                'etat_civile.string' => 'Le statut matrimonial doit être une chaîne de caractères.',
+                'etat_civile.in' => 'Le statut matrimonial n\'est pas valide.',
+                'telephone.required' => 'Le numéro de téléphone est requis.',
+                'telephone.string' => 'Le numéro de téléphone doit être une chaîne de caractères.',
+                'telephone.max' => 'Le numéro de téléphone ne peut pas dépasser 255 caractères.',
+                'email.required' => 'L\'adresse e-mail est requise.',
+                'email.string' => 'L\'adresse e-mail doit être une chaîne de caractères.',
+                'email.email' => 'L\'adresse e-mail doit être une adresse e-mail valide.',
+                'email.max' => 'L\'adresse e-mail ne peut pas dépasser 255 caractères.',
+                'email.unique' => 'Cette adresse e-mail est déjà utilisée.',
+                'date_naissance.required' => 'La date de naissance est requise.',
+                'date_naissance.date' => 'La date de naissance doit être une date valide.',
+                'sexe.required' => 'Le genre est requis.',
+                'sexe.string' => 'Le genre doit être une chaîne de caractères.',
+                'sexe.in' => 'Le genre n\'est pas valide.',
+                'ville.string' => 'La ville doit être une chaîne de caractères.',
+                'ville.max' => 'La ville ne peut pas dépasser 255 caractères.',
+                'nationalite.string' => 'La nationalité doit être une chaîne de caractères.',
+                'nationalite.max' => 'La nationalité ne peut pas dépasser 255 caractères.',
+                'address.string' => 'L\'adresse doit être une chaîne de caractères.',
+                'allergie.string' => 'Les allergies doivent être une chaîne de caractères.',
+                'photo.image' => 'Le fichier doit être une image.',
+                'photo.mimes' => 'Le fichier doit être de type : jpeg, png, jpg, gif ou svg.',
+                'photo.max' => 'Le fichier ne peut pas dépasser 2048 kilo-octets (2 Mo).',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Code de mise à jour du patient
+            $user = User::findOrFail($id);
+            $user->prenom = $request->input('prenom');
+            $user->name = $request->input('name');
+            $user->pseudo = $request->input('pseudo');
+            $user->etat_civile = $request->input('etat_civile');
+            $user->telephone = $request->input('telephone');
+            $user->email = $request->input('email');
+            $user->date_naissance = $request->input('date_naissance');
+            $user->sexe = $request->input('sexe');
+            $user->ville = $request->input('ville');
+            $user->nationalite = $request->input('nationalite');
+            $user->address = $request->input('address');
+            $user->allergie = $request->input('allergie');
+
+            // Gestion de l'upload de l'avatar
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $fileName = time() . '_' . $photo->getClientOriginalName();
+                $photo->move(public_path('avatars'), $fileName);
+                $user->photo = "avatars/" . $fileName;
+            }
+
+            $user->save();
+
+            return redirect()->route("patient.index")->with('success', 'Profil mis à jour avec succès.');
+        }
     }
 
     /**
@@ -136,11 +228,44 @@ class mypatient extends Controller
             $disponibilites = Disponibilites::where('doctor_id', $medecinId)
                 ->where('status', 1)
                 ->get();
-            return response()->json($disponibilites);
+
+            // Diviser chaque disponibilité en créneaux d'une heure et vérifier si le créneau est pris par un rendez-vous
+            $disponibilitesAvecCreneaux = [];
+            foreach ($disponibilites as $disponibilite) {
+                $heureDebut = Carbon::parse($disponibilite->heure_debut);
+                $heureFin = Carbon::parse($disponibilite->heure_fin);
+                $creneaux = [];
+
+                while ($heureDebut < $heureFin) {
+                    // Vérifier si le créneau est disponible en vérifiant s'il y a un rendez-vous à ce moment-là
+                    $rendezVousExistants = Rendez_vous::where('doctor_id', $medecinId)
+                        ->where('date', $heureDebut)
+                        ->exists();
+
+                    if (!$rendezVousExistants) {
+                        $creneaux[] = [
+                            'heure_debut' => $heureDebut->toIso8601String(),
+                            'heure_fin' => $heureDebut->addHour()->toIso8601String(), // Créneau d'une heure
+                        ];
+                    } else {
+                        // Passer au prochain créneau
+                        $heureDebut->addHour();
+                    }
+                }
+
+                $disponibilitesAvecCreneaux[] = [
+                    'id' => $disponibilite->id,
+                    'creneaux' => $creneaux,
+                ];
+            }
+
+            return response()->json($disponibilitesAvecCreneaux);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erreur lors de la récupération des disponibilités: ' . $e->getMessage()], 500);
         }
     }
+
+
 
 
     public function getPrixConsultation($specialiteId)
@@ -223,9 +348,10 @@ class mypatient extends Controller
                 $payment->statut_paiement = $statut_paiement;
                 $payment->save();
 
-                return response()->json(['message' => 'Données de paiement mises à jour avec succès'], 200);
+                // Si la mise à jour des données de paiement est réussie
+                return response()->json(['message' => 'Données de paiement mises à jour avec succès', 'redirect' => route('patient.index')], 200);
             } else {
-                return response()->json(['error' => 'Paiement non trouvé'], 404);
+                return response()->json(['error' => 'Rendez-vous non trouvé'], 404);
             }
         } catch (\Exception $e) {
             Log::error('Erreur lors de la mise à jour des données de paiement: ' . $e->getMessage());
@@ -239,8 +365,10 @@ class mypatient extends Controller
 
         $user = User::find($id);
 
-        return view('users.patient.modifier_pass',compact("user"));
+        return view('users.patient.modifier_pass', compact("user"));
     }
+
+
 
     public function dossierMedical()
     {
@@ -251,8 +379,8 @@ class mypatient extends Controller
 
             // Récupère les consultations du patient
             $consultations = Consultations::with(['doctor', 'ordonnance'])
-            ->where('user_id', $user->id)
-            ->get();;
+                ->where('user_id', $user->id)
+                ->get();;
 
             // Retourne la vue avec les données du dossier médical
             return view("users.patient.dossier_medicale", compact('user', 'consultations'));
@@ -262,4 +390,26 @@ class mypatient extends Controller
         }
     }
 
+    public function updatePassword(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // Check if old password matches
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
+            return back()->withErrors(['old_password' => 'The old password does not match our records.']);
+        }
+
+        // Update the password
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        // Redirect with success message
+        return back()->with('success', 'Password updated successfully.');
+    }
 }

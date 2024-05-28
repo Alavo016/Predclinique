@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Disponibilites;
 use App\Models\User;
+use Carbon\Carbon;
 use Faker\Factory as Faker;
 
 class DisponibilitesSeeder extends Seeder
@@ -19,7 +19,7 @@ class DisponibilitesSeeder extends Seeder
         foreach ($doctors as $doctor) {
             // Générer des disponibilités pour les deux prochains mois
             $startDate = now()->startOfDay(); // Date de début à partir d'aujourd'hui
-            $endDate = now()->addMonths(2)->endOfDay(); // Date de fin dans deux mois
+            $endDate = now()->addMonths(1)->endOfDay(); // Date de fin dans un mois
 
             // Parcourir les dates de début jusqu'à la date de fin
             while ($startDate <= $endDate) {
@@ -28,7 +28,7 @@ class DisponibilitesSeeder extends Seeder
                     // Générer une heure de début aléatoire entre 8h et 17h
                     $heureDebut = $faker->numberBetween(8, 17) . ':00'; 
                     // Ajouter 4 heures à l'heure de début pour obtenir l'heure de fin
-                    $heureFin = $startDate->copy()->addHours(4)->format('H:i');
+                    $heureFin = (Carbon::parse($heureDebut))->addHours(4)->format('H:i');
 
                     Disponibilites::create([
                         'doctor_id' => $doctor->id,

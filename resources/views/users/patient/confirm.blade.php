@@ -75,24 +75,31 @@
                         rendezVousId: rendezVousId
                     }),
                 })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Données mises à jour avec succès dans la base de données');
-                    } else {
-                        console.error('Erreur lors de la mise à jour des données dans la base de données');
+                // .then(response => {
+                //     if (response.ok) {
+                //         console.log('Données mises à jour avec succès dans la base de données');
+                //     } else {
+                //         console.error('Erreur lors de la mise à jour des données dans la base de données');
+                //     }
+                // })
+                .then(response => response.json()) // Ajout de cette ligne pour convertir la réponse en JSON
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect; // Rediriger vers l'URL spécifiée
                     }
                 })
+
                 .catch(error => {
                     console.error('Erreur lors de la mise à jour des données dans la base de données:', error);
                 });
         }
 
         addSuccessListener(response => {
-            updatePayment('Rdv Prix', 'Accepté');
+            updatePayment('Rdv Pris', 'Accepté');
         });
 
         addFailedListener(error => {
-            updatePayment('Rdv Non Prix', 'Refusé');
+            updatePayment('Rdv non cloturé', 'Refusé');
         });
     </script>
 

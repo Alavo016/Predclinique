@@ -45,4 +45,12 @@ class Rendez_vous extends Model
     {
         return $this->belongsTo('App\Models\User', 'patient_id');
     }
+
+    // Dans Rendez_vous.php (modèle)
+
+public function doctor()
+{
+    return $this->belongsTo(User::class, 'doctor_id');
+}
+
 }

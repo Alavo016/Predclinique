@@ -36,7 +36,7 @@
                                             <div class="col-lg-9 col-xl-4 col-md-4">
                                                 <div class="profile-user-box">
                                                     <div class="profile-user-img">
-                                                        <img src=" {{ URL::asset($user->photo)}}" alt="Profile">
+                                                        <img src=" {{ URL::asset($user->photo) }}" alt="Profile">
                                                         <div class="input-block doctor-up-files profile-edit-icon mb-0">
 
                                                         </div>
@@ -67,8 +67,8 @@
                                             <div class="col-lg-5 col-xl-4 d-flex align-items-center">
                                                 <div class="follow-btn-group py-3">
 
-                                                    <a href="{{ route('mdpass',['id' => $user->id]) }}"
-                                                        class="btn btn-outline-danger ">Modifier password</a >
+                                                    <a href="{{ route('mdpass', ['id' => $user->id]) }}"
+                                                        class="btn btn-outline-danger ">Modifier password</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,21 +84,24 @@
                                     <div class="card-body">
                                         <div class="heading-detail ">
                                             <h3 class="mb-3" style="color: blue">A Propos</h3>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, quo!p>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus,
+                                                quo!p>
                                         </div>
                                         <div class="about-me-list">
                                             <ul class="list-space">
                                                 <li>
                                                     <h4>Sexe</h4>
-                                                    <span>@if ($user->sexe == 'M')
-                                                    <a href="">Masculin</a>
-                                                @else
-                                                    <a href="">Feminin</a>
-                                                @endif</span>
+                                                    <span>
+                                                        @if ($user->sexe == 'M')
+                                                            <a href="">Masculin</a>
+                                                        @else
+                                                            <a href="">Feminin</a>
+                                                        @endif
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <h4>Ville</h4>
-                                                    <span>{{$user->ville }}</span>
+                                                    <span>{{ $user->ville }}</span>
                                                 </li>
                                                 <li>
                                                     <h4>Date de naissance</h4>
@@ -112,26 +115,26 @@
                             <div class="doctor-personals-grp">
                                 <div class="card">
                                     <div class="card-body">
-                                <h3 class="  " style="color: blue">Allergies</h3>
-                                <div class="experience-box">
-                                    <ul class="experience-list">
-                                        @foreach (explode(',', $user->allergie) as $allergie)
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <p class="name text-dark fs-6">
-                                                            <strong>{{ $allergie }}</strong>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
+                                        <h3 class="  " style="color: blue">Allergies</h3>
+                                        <div class="experience-box">
+                                            <ul class="experience-list">
+                                                @foreach (explode(',', $user->allergie) as $allergie)
+                                                    <li>
+                                                        <div class="experience-user">
+                                                            <div class="before-circle"></div>
+                                                        </div>
+                                                        <div class="experience-content">
+                                                            <div class="timeline-content">
+                                                                <p class="name text-dark fs-6">
+                                                                    <strong>{{ $allergie }}</strong>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -144,17 +147,18 @@
                                                 <li>
                                                     <a href="patient-profile.html" class="active"><span
                                                             class="set-about-icon me-2"><img
-                                                                src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}" alt></span>Informations
-                                                        </a>
+                                                                src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}"
+                                                                alt></span>Informations
+                                                    </a>
                                                 </li>
-                                                
+
                                             </ul>
                                         </div>
                                         <div class="personal-list-out">
                                             <div class="row">
                                                 <div class="col-xl-3 col-md-6">
                                                     <div class="detail-personal">
-                                                        <h2> {{ $user->name  }}</h2>
+                                                        <h2> {{ $user->name }}</h2>
                                                         <h3>{{ $user->prenom }}</h3>
                                                     </div>
                                                 </div>
@@ -186,14 +190,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                    use Carbon\Carbon;
+                                @endphp
+
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title ">Medical History</h4>
+                                        <h4 class="card-title">Medical History</h4>
                                     </div>
                                     <div class="card-body p-0 table-dash">
                                         <div class="table-responsive">
-                                            <table
-                                                class="table mb-0 border-0 datatable custom-table patient-profile-table">
+                                            <table class="table mb-0 border-0 datatable custom-table patient-profile-table">
                                                 <thead>
                                                     <tr>
                                                         <th>
@@ -210,101 +217,43 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-check check-tables">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="something">
-                                                            </div>
-                                                        </td>
-                                                        <td>29/09/2022 </td>
-                                                        <td>Dr.Jenny Smith</td>
-                                                        <td>Check up</td>
-                                                        <td>$ 60</td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown dropdown-action">
-                                                                <a href="#" class="action-icon dropdown-toggle"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                                        class="fa fa-ellipsis-v"></i></a>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item"
-                                                                        href="edit-appointment.html"><i
-                                                                            class="fa-solid fa-pen-to-square m-r-5"></i>
-                                                                        Edit</a>
-                                                                    <a class="dropdown-item" href="#"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete_appointment"><i
-                                                                            class="fa fa-trash-alt m-r-5"></i>
-                                                                        Delete</a>
+                                                    @foreach ($historiqueRendezVous as $rendezVous)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check check-tables">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="something">
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-check check-tables">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="something">
-                                                            </div>
-                                                        </td>
-                                                        <td>19/09/2022 </td>
-                                                        <td>Andrea Lalema</td>
-                                                        <td>Blood Test </td>
-                                                        <td>$ 50</td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown dropdown-action">
-                                                                <a href="#" class="action-icon dropdown-toggle"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                                        class="fa fa-ellipsis-v"></i></a>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item"
-                                                                        href="edit-appointment.html"><i
-                                                                            class="fa-solid fa-pen-to-square m-r-5"></i>
-                                                                        Edit</a>
-                                                                    <a class="dropdown-item" href="#"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete_appointment"><i
-                                                                            class="fa fa-trash-alt m-r-5"></i>
-                                                                        Delete</a>
+                                                            </td>
+                                                            <td>{{ Carbon::parse($rendezVous->date)->format('d/m/Y') }}
+                                                            </td>
+                                                            <td>{{ $rendezVous->doctor->name }}</td>
+                                                            <td>{{ $rendezVous->motif }}</td>
+                                                            <td>{{ $rendezVous->prix }}</td>
+                                                            <td class="text-end">
+                                                                <div class="dropdown dropdown-action">
+                                                                    <a href="#" class="action-icon dropdown-toggle"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <i class="fa fa-ellipsis-v"></i>
+                                                                    </a>
+
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-check check-tables">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="something">
-                                                            </div>
-                                                        </td>
-                                                        <td>20/09/2022 </td>
-                                                        <td>Dr.William Stephin</td>
-                                                        <td>Blood Pressure</td>
-                                                        <td>$ 30</td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown dropdown-action">
-                                                                <a href="#" class="action-icon dropdown-toggle"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                                        class="fa fa-ellipsis-v"></i></a>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item"
-                                                                        href="edit-appointment.html"><i
-                                                                            class="fa-solid fa-pen-to-square m-r-5"></i>
-                                                                        Edit</a>
-                                                                    <a class="dropdown-item" href="#"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete_appointment"><i
-                                                                            class="fa fa-trash-alt m-r-5"></i>
-                                                                        Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
+                                        
+                                        <div class="d-flex justify-content-center mt-3">
+                                            {{ $historiqueRendezVous->links('pagination::bootstrap-5') }}
+                                        </div>
+                                        
                                     </div>
                                 </div>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -317,6 +266,3 @@
 
 
 @endsection
-
-
-

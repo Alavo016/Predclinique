@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultations;
 use App\Models\Disponibilites;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Importez la classe Auth
 
@@ -124,5 +126,23 @@ class DoctorDashboardController extends Controller
 
         return redirect()->route('doctor.liste.dispo')->with('success', 'Disponibilité supprimée avec succès.');
     }
+
+    public function listepatient()
+    {
+        $user = Auth::user();
+        $patients = User::where('id_role',1)->get();
+
+        return view("users.doctor.liste_patient", compact("user","patients"));
+
+    }
+    public function dossierMedical($id)
+{
+    $user = Auth::user(); 
+    $patient = User::find($id);
+    $consultations = Consultations::where('user_id', $patient->id)->get(); // Correction de la requête
+
+    return view('users.doctor.Dossiermedicalepatient', compact('patient', 'user', 'consultations'));
+}
+
 
 }

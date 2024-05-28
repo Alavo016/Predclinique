@@ -4,9 +4,7 @@
 @section('content')
 
     <div class="page-wrapper">
-
         <div class="content container-fluid">
-
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
@@ -18,20 +16,20 @@
                     </div>
                 </div>
             </div>
-
+            <x-session />
 
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ route('patient.updatePassword') }}">
                                 @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <h4 class="page-title">Change Password</h4>
                                     <div class="col-12 col-md-6 col-xl-12">
                                         <div class="input-block local-forms">
-                                            <label for="old_password">Old password <span
-                                                    class="login-danger">*</span></label>
+                                            <label for="old_password">Old password <span class="login-danger">*</span></label>
                                             <input id="old_password"
                                                 class="form-control @error('old_password') is-invalid @enderror"
                                                 type="password" name="old_password" required
@@ -71,7 +69,6 @@
                                     </div>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -79,3 +76,4 @@
         </div>
     </div>
 @endsection
+    

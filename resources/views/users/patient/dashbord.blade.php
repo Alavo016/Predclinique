@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-
+<x-session/>
 
             <div class="row">
                 <div class="col-12 col-md-12 col-xl-12">
@@ -78,7 +78,7 @@
                                                             <h2>{{ $doctorNames[$index] }}</h2>
                                                         </td>
                                                         <td
-                                                            style="{{ $rendezVous->statut === 'rdv pris' ? 'background-color: rgba(59, 235, 59, 0.541); color: black;' : 'background-color: rgba(255, 0, 0, 0.393); color: black;' }}">
+                                                            style="{{ $rendezVous->statut === 'Rdv Pris' ? 'background-color: rgba(59, 235, 59, 0.541); color: black;' : 'background-color: rgba(255, 0, 0, 0.393); color: black;' }}">
                                                             {{ $rendezVous->statut }}
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($rendezVous->date)->format('d.m.Y') }}

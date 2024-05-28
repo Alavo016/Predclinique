@@ -35,8 +35,8 @@
                         <span>Rendez-Vous</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('patients') ? 'active' : '' }}">
-                    <a href="#"><span class="menu-side"><img
+                <li class="">
+                    <a href="{{ route('doc.patien_liste') }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-03.svg') }}" alt></span>
                         <span>Liste Patients</span>
                     </a>
