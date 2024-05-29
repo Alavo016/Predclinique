@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-
+<x-session />
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table show-entire">
@@ -75,7 +75,7 @@
                                                         <a class="dropdown-item bg-success" href="{{ route('consultations.edit', $consultation->id) }}">
                                                             <i class="fa-solid fa-pen-to-square m-r-5"></i> Edit
                                                         </a>
-                                                        <form action="{{ route('consultations.destroy', $consultation->id) }}" method="POST">
+                                                        <form action="{{ route('consultations.destroy', $consultation->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette consultation ?');">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="dropdown-item bg-danger">

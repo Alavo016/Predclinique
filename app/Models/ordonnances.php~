@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property string $medicaments
  * @property string $posologie
- * @property string $date
+ * @property string $dateDebut
+ * @property string $dateFin
  * @property string $created_at
  * @property string $updated_at
  * @property Consultation[] $consultations
@@ -18,13 +19,13 @@ class ordonnances extends Model
     /**
      * @var array
      */
-    protected $fillable = ['medicaments', 'posologie', 'date', 'created_at', 'updated_at'];
+    protected $fillable = ['medicaments', 'posologie', 'dateDebut', 'dateFin', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function consultations()
     {
-        return $this->hasMany('App\Models\Consultation');
+        return $this->hasMany(Consultations::class);
     }
 }

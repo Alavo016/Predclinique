@@ -1,6 +1,6 @@
 @extends('users.doctor.masterdoc')
 
-@section('title', 'Créer une Consultation')
+@section('title', 'Modifier une Consultation')
 
 @section('content')
 <div class="page-wrapper">
@@ -10,7 +10,8 @@
                 <div class="col-sm-12">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Créer une Consultation</li>
+                        <li class="breadcrumb-item"><a href="{{ route('consultations.index') }}">Consultations du Docteur</a></li>
+                        <li class="breadcrumb-item active">Modifier une Consultation</li>
                     </ul>
                 </div>
             </div>
@@ -18,61 +19,63 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="card p-2">
+                <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('consultations.store') }}" method="POST">
+                        <form action="{{ route('consultations.update', $consultation->id) }}" method="POST">
                             @csrf
-                            <input type="hidden" name="patient_id" value="{{ request('patient_id') }}">
+                            @method('PUT')
 
                             <div class="row">
                                 <div class="col-sm-6">
                                     <h3 class="text-muted text-center">Information de la consultation</h3>
+
                                     <div class="form-group">
-                                        <label class="form-label" for="motif">Motif <span class="text-danger">*</span></label>
-                                        <input type="text" name="motif" id="motif" class="form-control" required>
+                                        <label for="motif">Motif</label>
+                                        <input type="text" name="motif" id="motif" class="form-control" value="{{ old('motif', $consultation->motif) }}" required>
                                         @error('motif')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="symptomes">Symptômes <span class="text-danger">*</span></label>
-                                        <textarea name="symptomes" id="symptomes" class="form-control" rows="3" required></textarea>
+                                        <label for="symptomes">Symptômes</label>
+                                        <textarea name="symptomes" id="symptomes" class="form-control" rows="3" required>{{ old('symptomes', $consultation->symptomes) }}</textarea>
                                         @error('symptomes')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="diagnostic">Diagnostic <span class="text-danger">*</span></label>
-                                        <textarea name="diagnostic" id="diagnostic" class="form-control" rows="3" required></textarea>
+                                        <label for="diagnostic">Diagnostic</label>
+                                        <textarea name="diagnostic" id="diagnostic" class="form-control" rows="3" required>{{ old('diagnostic', $consultation->diagnostic) }}</textarea>
                                         @error('diagnostic')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="heure_fin">Heure de Fin <span class="text-danger">*</span></label>
-                                        <input type="datetime-local" name="heure_fin" id="heure_fin" class="form-control" required>
+                                        <label for="heure_fin">Heure de Fin</label>
+                                        <input type="datetime-local" name="heure_fin" id="heure_fin" class="form-control" value="{{ old('heure_fin', \Carbon\Carbon::parse($consultation->heure_fin)->format('Y-m-d\TH:i')) }}" required>
                                         @error('heure_fin')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
+                                        
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 border-left">
+                                <div class="col-sm-6">
                                     <h3 class="text-muted text-center">Ordonnance</h3>
                                     <div class="form-group">
-                                        <label class="form-label" for="medicaments">Médicaments <span class="text-danger">*</span></label>
-                                        <textarea name="medicaments" id="medicaments" class="form-control" rows="3" required></textarea>
+                                        <label for="medicaments">Médicaments</label>
+                                        <textarea name="medicaments" id="medicaments" class="form-control" rows="3" required>{{ old('medicaments', $consultation->ordonnance->medicaments ?? '') }}</textarea>
                                         @error('medicaments')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="posologie">Posologie <span class="text-danger">*</span></label>
-                                        <textarea name="posologie" id="posologie" class="form-control" rows="3" required></textarea>
+                                        <label for="posologie">Posologie</label>
+                                        <textarea name="posologie" id="posologie" class="form-control" rows="3" required>{{ old('posologie', $consultation->ordonnance->posologie ?? '') }}</textarea>
                                         @error('posologie')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
@@ -80,9 +83,10 @@
                                 </div>
                             </div>
 
-                            <div class="text-center mt-3">
-                                <button type="submit" class="btn btn-outline-info col-3"><i class="fas fa-save mr-2"></i><strong>  Enregistrer</strong></button>
+                            <div class="text-center">
+                                <button type="submit" class="btn mt-2 btn-outline-info col-3"><strong>Enregistrer</strong></button>
                             </div>
+                            
                         </form>
                     </div>
                 </div>
@@ -90,39 +94,4 @@
         </div>
     </div>
 </div>
-
 @endsection
-
-
-
-<style>
-    .form-label {
-        font-weight: bold;
-    }
-    .form-control {
-        border-radius: 0.25rem;
-    }
-    .card {
-        border: none;
-    }
-    .card-body {
-        padding: 2rem;
-    }
-    .border-left {
-        border-left: 1px solid #dee2e6 !important;
-    }
-    .btn-outline-info {
-        border: 2px solid #17a2b8;
-        color: #17a2b8;
-    }
-    .btn-outline-info:hover {
-        background-color: #17a2b8;
-        color: #fff;
-    }
-    .alert-danger {
-        color: #721c24;
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        border-radius: 0.25rem;
-    }
-</style>

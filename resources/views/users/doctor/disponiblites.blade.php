@@ -27,7 +27,7 @@
 
             <div class="row">
     <div class="col-sm-12">
-        <div class="card">
+        <div class="card p-3">
             <div class="card-body">
                 <form method="POST" action="{{ route('doctor.store.dispo') }}">
                     @csrf
@@ -87,9 +87,7 @@
                                 <button type="submit" class="btn btn-primary submit-form me-2">
                                     Créer un emploi du temps
                                 </button>
-                                <button type="button" class="btn btn-primary add-another-schedule">
-                                    Ajouter un autre emploi du temps
-                                </button>
+                                
                                 <button type="reset" class="btn btn-primary cancel-form">
                                     Annuler
                                 </button>
