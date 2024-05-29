@@ -14,18 +14,28 @@ class Consulationdoc extends Controller
      */
     public function index()
     {
-        $user =  Auth::user();
-        $consultations= Consultations::where('doctor_id',$user->id)->get();
-        $patient = User::where('id',$consultations->user_id);
-        return view("users.doctor.liste_consultationdoc", compact("user","consultations","patient"));
-    } 
+        $user = Auth::user();
+        // Charger les consultations avec les patients associés
+        $consultations = Consultations::where('doctor_id', $user->id)->with('patient')->get();
+    
+        return view('users.doctor.liste_consultationdoc', compact('user', 'consultations'));
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($patient_id = null)
     {
-        //
+        $user = Auth::user();
+        $patient = $patient_id ? User::find($patient_id) : null;
+
+        if ($patient_id && !$patient) {
+            return redirect()->route('consultations.index')->with('error', 'Patient non trouvé.');
+        }
+
+        return view("users.doctor.add_consulation", compact('user', 'patient'));
     }
+
 
     /**
      * Store a newly created resource in storage.

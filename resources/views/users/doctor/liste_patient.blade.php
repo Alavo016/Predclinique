@@ -115,9 +115,11 @@
                                                             <a class="dropdown-item bg-success" href="{{ route('doc.dossier', $patient->id) }}">
                                                                 <i class="fa-solid fa-folder-open m-r-5"></i> Dossier médical
                                                             </a>
-                                                            <a class="dropdown-item bg-primary" href="#">
+                                                            <a class="dropdown-item bg-primary" href="{{ route('consultations.create', ['patient_id' => $patient->id]) }}">
                                                                 <i class="fa-solid fa-stethoscope m-r-5"></i> Nouvelle consultation
                                                             </a>
+                                                            
+                                                            
                                                         </div>
                                                     </div>
                                                 </td>

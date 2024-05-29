@@ -43,7 +43,7 @@
                 </li>
                 <li class="">
                     <a href="{{ route("consultations.index") }}"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-14 .svg') }}" alt></span>
+                                src="{{ asset('assets/assets/img/icons/menu-icon-14.svg') }}" alt></span>
                         <span>Liste Consultation </span>
                     </a>
                 </li>

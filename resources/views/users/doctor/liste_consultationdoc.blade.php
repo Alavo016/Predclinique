@@ -54,7 +54,14 @@
                                     @foreach ($consultations as $consultation)
                                         <tr>
                                             <td>
-                                                {{ $patient->name }} {{ $patient->prenom }} 
+                                                @if ($consultation->patient)
+                                                    <a href="{{ route('doc.dossier', $consultation->patient->id) }}">
+                                                        <img width="28" height="28" src="{{ asset($consultation->patient->photo) }}" class="rounded-circle m-r-5">
+                                                        {{ $consultation->patient->name }} {{ $consultation->patient->prenom }}
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">Patient non trouvé</span>
+                                                @endif
                                             </td>
                                             <td>{{ $consultation->date }}</td>
                                             <td>{{ $consultation->motif }}</td>

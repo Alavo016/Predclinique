@@ -118,7 +118,13 @@ Route::middleware('auth')->group(function () {
         Route::get('rendezvous', [RendezvousController::class, 'showRendezvous'])->name('doctor.rendezvous');
         Route::get('rendezvous/events', [RendezvousController::class, 'getRendezvousEvents'])->name('doctor.rendezvous.events');
 
-        Route::resource('/Consultation',Consulationdoc::class)->names("consultations");
+        
+
+        Route::get('/Consultation/create/{patient_id?}', [Consulationdoc::class, 'create'])->name('consultations.create');
+        Route::resource('/Consultation', Consulationdoc::class)->names('consultations');
+        
+
+
         
 
         Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');

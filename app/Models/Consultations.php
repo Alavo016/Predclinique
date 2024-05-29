@@ -52,7 +52,7 @@ class Consultations extends Model
 
     public function patient()
     {
-        return $this->belongsTo(User::class, 'patient_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 
