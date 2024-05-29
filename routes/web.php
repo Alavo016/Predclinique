@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Consulationdoc;
 use App\Http\Controllers\contries;
 use App\Http\Controllers\Creance;
 use App\Http\Controllers\Departement;
@@ -117,6 +118,8 @@ Route::middleware('auth')->group(function () {
         Route::get('rendezvous', [RendezvousController::class, 'showRendezvous'])->name('doctor.rendezvous');
         Route::get('rendezvous/events', [RendezvousController::class, 'getRendezvousEvents'])->name('doctor.rendezvous.events');
 
+        Route::resource('/Consultation',Consulationdoc::class)->names("consultations");
+        
 
         Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');
     });

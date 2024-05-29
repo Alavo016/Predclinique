@@ -1,0 +1,94 @@
+@extends("users.doctor.masterdoc")
+
+@section('title', 'Consultations du Docteur')
+@section('content')
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Consultations du Docteur</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table show-entire">
+                    <div class="card-body">
+
+                        <div class="page-table-header mb-2">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="doctor-table-blk">
+                                        <h3>Liste des Consultations</h3>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-end float-end ms-auto download-grp">
+                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-01.svg') }}" alt></a>
+                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-02.svg') }}" alt></a>
+                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-03.svg') }}" alt></a>
+                                    <a href="javascript:;"><img src="{{ asset('assets/img/icons/pdf-icon-04.svg') }}" alt></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table border-0 custom-table comman-table datatable mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Motif</th>
+                                        <th>Symptômes</th>
+                                        <th>Diagnostic</th>
+                                        <th>Heure de Fin</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($consultations as $consultation)
+                                        <tr>
+                                            <td>
+                                                {{ $patient->name }} {{ $patient->prenom }} 
+                                            </td>
+                                            <td>{{ $consultation->date }}</td>
+                                            <td>{{ $consultation->motif }}</td>
+                                            <td>{{ $consultation->symptomes }}</td>
+                                            <td>{{ $consultation->diagnostic }}</td>
+                                            <td>{{ $consultation->heure_fin }}</td>
+                                            <td class="text-end">
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item bg-success" href="{{ route('consultations.edit', $consultation->id) }}">
+                                                            <i class="fa-solid fa-pen-to-square m-r-5"></i> Edit
+                                                        </a>
+                                                        <form action="{{ route('consultations.destroy', $consultation->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item bg-danger">
+                                                                <i class="fa fa-trash-alt m-r-5"></i> Supprimer
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection

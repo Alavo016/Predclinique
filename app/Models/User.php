@@ -62,11 +62,15 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    // User.php
+
     public function consultations()
     {
-        return $this->hasMany('App\Models\Consultations');
-
+        return $this->hasMany(Consultations::class, 'doctor_id');
     }
+
+    
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -130,5 +134,12 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo('App\Models\Roles');
+    }
+    // User.php
+
+
+    public function patientConsultations()
+    {
+        return $this->hasMany(Consultations::class, 'patient_id');
     }
 }

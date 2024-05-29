@@ -43,10 +43,18 @@ class Consultations extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    // Consultation.php
+
     public function doctor()
     {
-        return $this->belongsTo('App\Models\User', 'doctor_id');
+        return $this->belongsTo(User::class, 'doctor_id');
     }
+
+    public function patient()
+    {
+        return $this->belongsTo(User::class, 'patient_id');
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -55,4 +63,9 @@ class Consultations extends Model
     {
         return $this->belongsTo(ordonnances::class);
     }
+
+    // Consultation.php
+
+
+    
 }
