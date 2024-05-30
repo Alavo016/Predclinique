@@ -15,12 +15,11 @@
                 </div>
             </div>
         </div>
-<x-session />
+        <x-session />
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table show-entire">
                     <div class="card-body">
-
                         <div class="page-table-header mb-2">
                             <div class="row align-items-center">
                                 <div class="col">
@@ -28,17 +27,10 @@
                                         <h3>Liste des Consultations</h3>
                                     </div>
                                 </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-01.svg') }}" alt></a>
-                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-02.svg') }}" alt></a>
-                                    <a href="javascript:;" class="me-2"><img src="{{ asset('assets/img/icons/pdf-icon-03.svg') }}" alt></a>
-                                    <a href="javascript:;"><img src="{{ asset('assets/img/icons/pdf-icon-04.svg') }}" alt></a>
-                                </div>
                             </div>
                         </div>
-
                         <div class="table-responsive">
-                            <table class="table border-0 custom-table comman-table datatable mb-0">
+                            <table id="consultationsTable" class="table table-hover border-0 custom-table comman-table mb-0">
                                 <thead>
                                     <tr>
                                         <th>Patient</th>
@@ -90,12 +82,14 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 @endsection
