@@ -194,7 +194,7 @@
                                     use Carbon\Carbon;
                                 @endphp
 
-                                <div class="card">
+                                <div class="card ">
                                     <div class="card-header">
                                         <h4 class="card-title">Medical History</h4>
                                     </div>
@@ -236,7 +236,6 @@
                                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <i class="fa fa-ellipsis-v"></i>
                                                                     </a>
-
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -244,13 +243,12 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        
                                         <div class="d-flex justify-content-center mt-3">
                                             {{ $historiqueRendezVous->links('pagination::bootstrap-5') }}
                                         </div>
-                                        
                                     </div>
                                 </div>
+
 
 
 

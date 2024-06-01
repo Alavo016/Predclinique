@@ -2,11 +2,11 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                <li class="menu-title">Main</li>
-                <li class="submenu">
-                    <a href="{{ route('patient.statistique') }}"><span class="menu-side"><img
+                <li class="menu-title"></li>
+                <li class="">
+                    <a href="{{ route('patient.index') }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
-                        <span> Statitique</span> </span></a>
+                        <span> Dashboard</span> </span></a>
 
                 </li>
 

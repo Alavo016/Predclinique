@@ -26,13 +26,14 @@ class mypatient extends Controller
             // L'utilisateur est connecté
             // Récupérez l'utilisateur complet
             $user = Auth::user();
-
-            $rdvs = Rendez_vous::where('patient_id', $user->id)->get();
+    
+            // Utilisez paginate() pour paginer les résultats
+            $rdvs = Rendez_vous::where('patient_id', $user->id)->paginate(5);
             $doctors = User::where('id_role', 2)->get();
-
+    
             // Créez un tableau pour stocker les noms des médecins associés à chaque rendez-vous
             $doctorNames = [];
-
+    
             // Boucle sur les rendez-vous pour récupérer les noms des médecins
             foreach ($rdvs as $rdv) {
                 // Récupérez le nom du médecin associé au rendez-vous
@@ -40,15 +41,15 @@ class mypatient extends Controller
                 // Ajoutez le nom du médecin au tableau
                 $doctorNames[] = $doctorName;
             }
-
-            // Passez les données à la vue
+    
+            // Passez les données paginées à la vue
             return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames'));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
         }
     }
-
+    
 
     /**
      * Show the form for creating a new resource.

@@ -9,11 +9,7 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('statistics') ? 'active' : '' }}">
-                    <a href="#"><span class="menu-side"><img
-                                src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
-                        <span>Statistique</span></a>
-                </li>
+                
                 <li
                     class="submenu {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'active' : '' }}">
                     <a href="#"><span class="menu-side"><img

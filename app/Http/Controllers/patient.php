@@ -182,4 +182,13 @@ class Patient extends Controller
             return redirect()->back()->with('error', "L'Patient n\'a pas été trouvé.");
         }
     }
+
+    public function contact(){
+        return view("contact");
+
+        
+    }
+    public function faqs(){
+        return view('faqs');
+    }
 }

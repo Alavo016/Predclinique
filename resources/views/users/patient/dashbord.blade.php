@@ -40,7 +40,7 @@
                 <div class="col-12 col-md-12 col-xl-12">
                     <div class="row">
                         <div class="col-12 col-md-12 col-xl-12">
-                            <div class="card">
+                            <div class="card p-3">
                                 <div class="card-header">
                                     <h4 class="card-title d-inline-block">Rendez-vous</h4>
                                 </div>
@@ -94,6 +94,11 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="float-right">
+                                        {{ $rdvs->links('vendor.pagination.bootstrap-4') }}
                                     </div>
                                 </div>
                             </div>

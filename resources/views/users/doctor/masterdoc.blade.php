@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
     <!-- Inclure le CSS de FullCalendar -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet">
-
+    {{-- <link rel="stylesheet" href="{{ asset('style1.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/assets/css/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/assets/plugins/fontawesome/css/all.min.css') }}">

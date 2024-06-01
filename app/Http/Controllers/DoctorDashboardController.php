@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Consultations;
 use App\Models\Disponibilites;
+use App\Models\Rendez_vous;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Importez la classe Auth
@@ -18,8 +19,19 @@ class DoctorDashboardController extends Controller
             // Récupérez l'utilisateur complet
             $user = Auth::user();
 
-            // Passez l'utilisateur à la vue
-            return view('users.doctor.dashbord', compact('user'));
+            // Récupérer le nombre de disponibilités pour le médecin connecté
+            $dispo = Disponibilites::where('doctor_id', $user->id)->count();
+
+            // Récupérer le nombre d'utilisateurs avec le rôle de patient (id_role = 1)
+            $nbrUser = User::where('id_role', 1)->count();
+
+            // Récupérer le nombre de consultations pour le médecin connecté
+            $nbrConsultation = Consultations::where('doctor_id', $user->id)->count();
+
+            $nbrrdv = Rendez_vous::where('doctor_id', $user->id)->count();
+
+            // Passez les données à la vue
+            return view('users.doctor.dashbord', compact('user', 'dispo', 'nbrUser', 'nbrConsultation',"nbrrdv"));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
