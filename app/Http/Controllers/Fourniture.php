@@ -55,6 +55,7 @@ class Fourniture extends Controller
             'photo.required' => 'Veuillez télécharger une photo.',
             'photo.image' => 'Le fichier doit être une image.',
         ]);
+        // dd($request->input());
 
         // Gestion du téléchargement de la photo
         $photoPath = $request->file('photo')->store('fourniture', 'public');
@@ -65,8 +66,10 @@ class Fourniture extends Controller
         $fourniture->quantite = $request->quantite;
         $fourniture->seuil_minimum = $request->seuil_minimum;
         $fourniture->prix_unitaire = $request->prix_unitaire;
+        $fourniture->type_fourniture_id = $request->type_fourniture_id;
 
-        $fourniture->photo = 'storage/' . $photoPath; // Enregistrement de l'URL de l'image
+
+        $fourniture->photo =  $photoPath; // Enregistrement de l'URL de l'image
         $fourniture->save(); // Sauvegarde de la fourniture dans la base de données
 
         // Redirection avec message de succès

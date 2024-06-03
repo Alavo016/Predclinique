@@ -42,7 +42,7 @@ class ConsultationSeeder extends Seeder
                 // Sélectionner aléatoirement des symptômes et les convertir en chaîne de caractères
                 $selectedSymptoms = implode(', ', $faker->randomElements($symptoms, rand(4, 6)));
 
-                // Créer une consultation
+                // Créer une consultation avec les nouveaux attributs
                 $consultation = new Consultations();
                 $consultation->date = $date;
                 $consultation->heure_fin = $heureFin;
@@ -51,6 +51,11 @@ class ConsultationSeeder extends Seeder
                 $consultation->diagnostic = $faker->sentence();
                 $consultation->user_id = $patient->id;
                 $consultation->doctor_id = $doctor->id;
+                $consultation->temperature = $faker->randomFloat(1, 36.0, 40.0); // Température entre 36.0 et 40.0
+                $consultation->tension = $faker->randomFloat(1, 90.0, 140.0); // Tension entre 90.0 et 140.0
+                $consultation->poids = $faker->randomFloat(1, 50.0, 100.0); // Poids entre 50.0 et 100.0 kg
+                $consultation->taille = $faker->randomFloat(2, 1.5, 2.0); // Taille entre 1.5m et 2.0m
+                $consultation->imc = $consultation->poids / ($consultation->taille * $consultation->taille); // Calcul de l'IMC
                 $consultation->save();
             }
         }
