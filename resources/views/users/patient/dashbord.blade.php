@@ -73,8 +73,7 @@
                                                             </div>
                                                         </td>
                                                         <td class="table-image">
-                                                            <img width="28" height="28" class="rounded-circle"
-                                                                src="assets/img/profiles/avatar-02.jpg" alt>
+                                                            <img width="28" height="28" class="rounded-circle" src="{{ URL::asset($doctorPhotos[$index]) }}" alt>
                                                             <h2>{{ $doctorNames[$index] }}</h2>
                                                         </td>
                                                         <td

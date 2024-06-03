@@ -147,81 +147,85 @@
             let currentPage = 1;
             const itemsPerPage = 4;
 
-            async function fetchDoctors(specialiteId, page = 1) {
-                showLoadingSpinner();
+            const baseUrl = 'http://127.0.0.1:8000/';
 
-                try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/api/specialites/${specialiteId}/medecins`);
-                    if (!response.ok) {
-                        throw new Error('La réponse du serveur n\'est pas valide');
-                    }
+async function fetchDoctors(specialiteId, page = 1) {
+    showLoadingSpinner();
 
-                    const data = await response.json();
-                    const doctorCardsWrapper = document.getElementById('doctor-cards-wrapper');
-                    doctorCardsWrapper.innerHTML = ''; // Clear previous cards
+    try {
+        const response = await fetch(
+            `http://127.0.0.1:8000/api/specialites/${specialiteId}/medecins`
+        );
+        if (!response.ok) {
+            throw new Error('La réponse du serveur n\'est pas valide');
+        }
 
-                    // Pagination logic
-                    const startIndex = (page - 1) * itemsPerPage;
-                    const endIndex = page * itemsPerPage;
-                    const paginatedData = data.slice(startIndex, endIndex);
+        const data = await response.json();
+        const doctorCardsWrapper = document.getElementById('doctor-cards-wrapper');
+        doctorCardsWrapper.innerHTML = ''; // Clear previous cards
 
-                    // Add doctor cards
-                    paginatedData.forEach(medecin => {
-                        const imageUrl = medecin.photo ? medecin.photo :
-                            'no-photo'; // Default image URL if necessary
+        // Pagination logic
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = page * itemsPerPage;
+        const paginatedData = data.slice(startIndex, endIndex);
 
-                        const card = document.createElement('div');
-                        card.className = 'col-xl-3 col-lg-3 col-sm-3 mt-3';
-                        card.innerHTML = `
-                    <div class="card overflow-hidden shadow mb-3">
-                        <div class="card-body text-center">
-                            <div class="profile-photo">
-                                <img src="${imageUrl}" width="100" class="img-fluid rounded-circle" alt="">
-                            </div>
-                            <h3 class="mt-4
-                            mb-1">${medecin.name}</h3>
-                            <p class="text-muted">${medecin.prenom}</p>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="medecinRadio" id="medecin-${medecin.id}" value="${medecin.id}">
-                                <label class="form-check-label" for="medecin-${medecin.id}">
-                                    Choisir
-                                </label>
-                            </div>
+        // Add doctor cards
+        paginatedData.forEach(medecin => {
+            const imageUrl = medecin.photo ? `${baseUrl}${medecin.photo}` : `${baseUrl}storage/avatars/user.jpg`;
+
+            const card = document.createElement('div');
+            card.className = 'col-xl-3 col-lg-3 mt-3';
+            card.innerHTML = `
+                <div class="card overflow-hidden shadow mb-3">
+                    <div class="card-body text-center">
+                        <div class="profile-photo">
+                            <img src="${imageUrl}" width="100" class="img-fluid rounded-circle" alt="">
+                        </div>
+                        <h3 class="mt-4 mb-1">${medecin.name}</h3>
+                        <p class="text-muted">${medecin.prenom}</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="medecinRadio" id="medecin-${medecin.id}" value="${medecin.id}">
+                            <label class="form-check-label" for="medecin-${medecin.id}">
+                                Choisir
+                            </label>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
 
-                        doctorCardsWrapper.appendChild(card); // Add doctor card to wrapper
-                    });
+            doctorCardsWrapper.appendChild(card); // Add doctor card to wrapper
+        });
 
-                    // Add pagination buttons
-                    const totalPages = Math.ceil(data.length / itemsPerPage);
-                    const paginationWrapper = document.createElement('div');
-                    paginationWrapper.className = 'd-flex justify-content-center mt-4';
+        // Add pagination buttons
+        const totalPages = Math.ceil(data.length / itemsPerPage);
+        const paginationWrapper = document.createElement('div');
+        paginationWrapper.className = 'd-flex justify-content-center mt-4';
 
-                    for (let i = 1; i <= totalPages; i++) {
-                        const button = document.createElement('button');
-                        button.type = "button";
-                        button.className = 'btn btn-primary mx-1';
-                        button.textContent = i;
-                        button.disabled = i === page;
-                        button.addEventListener('click', () => {
-                            currentPage = i;
-                            fetchDoctors(specialiteId, i);
-                        });
-                        paginationWrapper.appendChild(button); // Add the button to paginationWrapper
-                    }
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.type = "button";
+            button.className = 'btn btn-primary mx-1';
+            button.textContent = i;
+            button.disabled = i === page;
+            button.addEventListener('click', () => {
+                fetchDoctors(specialiteId, i);
+            });
+            paginationWrapper.appendChild(button); // Add the button to paginationWrapper
+        }
 
-                    doctorCardsWrapper.appendChild(
-                        paginationWrapper); // Add paginationWrapper to doctorCardsWrapper
+        doctorCardsWrapper.appendChild(
+            paginationWrapper
+        ); // Add paginationWrapper to doctorCardsWrapper
 
-                } catch (error) {
-                    console.error('Error fetching doctors:', error);
-                } finally {
-                    hideLoadingSpinner();
-                }
-            }
+    } catch (error) {
+        console.error('Error fetching doctors:', error);
+    } finally {
+        hideLoadingSpinner();
+    }
+}
+http://127.0.0.1:8000/public/storage/avatars/user.jpg
+
+
 
             // Fonction pour créer une carte de disponibilité avec la date et l'heure de début
             function createDisponibiliteCard(creneau) {

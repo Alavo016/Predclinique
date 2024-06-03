@@ -26,30 +26,40 @@ class mypatient extends Controller
             // L'utilisateur est connecté
             // Récupérez l'utilisateur complet
             $user = Auth::user();
-    
+
             // Utilisez paginate() pour paginer les résultats
             $rdvs = Rendez_vous::where('patient_id', $user->id)->paginate(5);
             $doctors = User::where('id_role', 2)->get();
-    
+
             // Créez un tableau pour stocker les noms des médecins associés à chaque rendez-vous
             $doctorNames = [];
-    
-            // Boucle sur les rendez-vous pour récupérer les noms des médecins
+            $doctorPhotos = [];
+
             foreach ($rdvs as $rdv) {
-                // Récupérez le nom du médecin associé au rendez-vous
-                $doctorName = $doctors->where('id', $rdv->doctor_id)->first()->name;
-                // Ajoutez le nom du médecin au tableau
-                $doctorNames[] = $doctorName;
+                // Récupérez le médecin associé au rendez-vous
+                $doctor = $doctors->where('id', $rdv->doctor_id)->first();
+                if ($doctor) {
+                    // Récupérez le nom du médecin
+                    $doctorName = $doctor->name;
+                    // Récupérez la photo du médecin
+                    $doctorPhoto = $doctor->photo;
+
+                    // Ajoutez le nom et la photo du médecin aux tableaux
+                    $doctorNames[] = $doctorName;
+                    $doctorPhotos[] = $doctorPhoto;
+                }
             }
-    
+
+            
+
             // Passez les données paginées à la vue
-            return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames'));
+            return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames',"doctorPhotos"));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
         }
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
