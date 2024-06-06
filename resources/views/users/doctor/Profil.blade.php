@@ -30,10 +30,10 @@
                                     <div class="col-md-5">
                                         <div class="profile-info-left">
                                             <h3 class="user-name m-t-0 mb-0">{{ $user->name }} {{ $user->prenom }}</h3>
-                                            <small class="text-muted">Gynecologist</small>
+                                            <small class="text-muted">{{ $specialites->nom }}</small>
                                             <div class="staff-id">Employee ID : DR-0001</div>
                                             <div class="staff-msg"><a
-                                                    href="{{ route('mdpass.infirmier', ['id' => $user->id]) }}"
+                                                    href="{{ route('mdpass.doc', ['id' => $user->id]) }}"
                                                     class="btn btn-primary">
                                                     Modifier Password</a></div>
                                         </div>
@@ -70,7 +70,7 @@
                                                 <span class="text"> {{ $user->etat_civile }} </span>
                                                 </li>
 
-                                            
+
                                         </ul>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
     </div>

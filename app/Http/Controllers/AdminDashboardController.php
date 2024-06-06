@@ -56,13 +56,13 @@ class AdminDashboardController extends Controller
             'telephone' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_naissance' => ['required', 'date'],
-            'sexe' => ['required', 'string', 'in:male,female'],
+            'sexe' => ['required', 'string', 'in:F,M'],
             'specialite' => ['required', 'integer'],
             'address' => ['nullable', 'string'],
             'ville' => ['nullable', 'string'],
             'nationalite' => ['nullable', 'string'],
             'photo' => ['nullable', 'image'],
-            'status' => ['required', 'string', 'in:active,inactive'],
+            'status' => ['required', 'string', 'in:0,1'],
         ]);
 
 
@@ -151,7 +151,7 @@ class AdminDashboardController extends Controller
             'ville' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'photo' => 'nullable|image|max:2048', // Taille maximale de l'image : 2MB
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
 
         ]);
 
@@ -192,5 +192,20 @@ class AdminDashboardController extends Controller
 
         // Passer les informations de l'utilisateur à la vue pour l'affichage
         return view("users.admin.profile", ['user' => $user]);
+    }
+
+    public function toggleDocteurStatus($id)
+    {
+        $docteur = User::find($id);
+
+        if ($docteur) {
+            // Inverser le statut du docteur
+            $docteur->status = $docteur->status == 1 ? 0 : 1;
+            $docteur->save();
+
+            return redirect()->back()->with('success', 'Statut  modifié avec succès.');
+        } else {
+            return redirect()->back()->with('error', 'Utilisateur  non trouvé.');
+        }
     }
 }

@@ -9,23 +9,13 @@
     <a id="toggle_btn" href="javascript:void(0);"><img src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
     <a id="mobile_btn" class="mobile_btn float-start" href="#sidebar"><img
             src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
-    <div class="top-nav-search mob-view">
-        <form action="{{ route('search') }}" method="POST">
-            @csrf
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search here" name="query">
-                <button class="btn" type="submit"><img
-                        src="{{ asset('assets/assets/img/icons/search-normal.svg') }}" alt></button>
-            </div>
-        </form>
 
-    </div>
     <ul class="nav user-menu float-end">
         <li class="nav-item dropdown d-none d-md-block">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown"><img
                     src="{{ asset('assets/assets/img/icons/note-icon-02.svg') }}" alt><span class="pulse"></span> </a>
             <div class="dropdown-menu notifications">
-                <div class="topnav-dropdown-header">
+                {{-- <div class="topnav-dropdown-header">
                     <span>Notifications</span>
                 </div>
                 <div class="drop-scroll">
@@ -108,7 +98,7 @@
                 </div>
                 <div class="topnav-dropdown-footer">
                     <a href="activities.html">View all Notifications</a>
-                </div>
+                </div> --}}
             </div>
         </li>
         <li class="nav-item dropdown d-none d-md-block">
@@ -136,10 +126,10 @@
                 </form>
             </div>
         </li>
-        <li class="nav-item ">
+        {{-- <li class="nav-item ">
             <a href="settings.html" class="hasnotifications nav-link"><img
                     src="{{ asset('assets/assets/img/icons/setting-icon-01.svg') }}" alt> </a>
-        </li>
+        </li> --}}
     </ul>
     <div class="dropdown mobile-user-menu float-end">
         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i

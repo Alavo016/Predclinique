@@ -46,13 +46,13 @@ class Patient extends Controller
             'telephone' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_naissance' => ['required', 'date'],
-            'sexe' => ['required', 'string', 'in:male,female'],
+            'sexe' => ['required', 'string', 'in:M,F'],
 
             'address' => ['nullable', 'string'],
             'ville' => ['nullable', 'string'],
             'nationalite' => ['nullable', 'string'],
             'photo' => ['nullable', 'image'],
-            'status' => ['required', 'string', 'in:active,inactive'],
+            'status' => ['required', 'string', 'in:0,1'],
         ]);
 
 
@@ -129,12 +129,12 @@ class Patient extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
 
             'date_naissance' => 'required|date',
-            'sexe' => 'required|in:male,female',
+            'sexe' => 'required|in:M,F',
             'address' => 'nullable|string',
             'ville' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'photo' => 'nullable|image|max:2048', // Taille maximale de l'image : 2MB
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
 
         ]);
 
@@ -158,8 +158,8 @@ class Patient extends Controller
         // Si une nouvelle photo est soumise, enregistrer
         if ($request->hasFile('photo')) {
             // Gérer l'enregistrement de la nouvelle photo
-            $photoPath = $request->photo->store('avatars'); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
-            $Patient->photo = $photoPath;
+            $photoPath = $request->photo->store('avatars',"public"); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
+            $Patient->photo = "/storage/". $photoPath;
         }
 
         $Patient->save();
@@ -186,7 +186,7 @@ class Patient extends Controller
     public function contact(){
         return view("contact");
 
-        
+
     }
     public function faqs(){
         return view('faqs');

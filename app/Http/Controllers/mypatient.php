@@ -65,7 +65,7 @@ class mypatient extends Controller
 
             // Calculer le dernier IMC de l'utilisateur
             $latestBMI = 0;
-            $bmiCategory= "";
+            $bmiCategory = "";
             if ($latestWeight > 0 && $latestHeight > 0) {
                 $latestBMI = $latestWeight / ($latestHeight * $latestHeight);
                 // Déterminer la catégorie d'IMC en fonction de la valeur récupérée
@@ -298,6 +298,7 @@ class mypatient extends Controller
 
     public function getMedecinsBySpecialite($specialiteId)
     {
+
         try {
             // Récupérer les utilisateurs ayant le rôle_id égal à 2 et la spécialité spécifiée
             $medecins = User::where('id_role', 2)
@@ -312,48 +313,44 @@ class mypatient extends Controller
     }
 
     public function getDisponibilites($medecinId)
-    {
-        try {
-            // Récupérer les disponibilités du médecin avec le statut 1
-            $disponibilites = Disponibilites::where('doctor_id', $medecinId)
-                ->where('status', 1)
-                ->get();
+{
+    try {
+        $disponibilites = Disponibilites::where('doctor_id', $medecinId)
+            ->where('status', 1)
+            ->get();
 
-            // Diviser chaque disponibilité en créneaux d'une heure et vérifier si le créneau est pris par un rendez-vous
-            $disponibilitesAvecCreneaux = [];
-            foreach ($disponibilites as $disponibilite) {
-                $heureDebut = Carbon::parse($disponibilite->heure_debut);
-                $heureFin = Carbon::parse($disponibilite->heure_fin);
-                $creneaux = [];
+        $disponibilitesAvecCreneaux = [];
+        foreach ($disponibilites as $disponibilite) {
+            $heureDebut = Carbon::parse($disponibilite->heure_debut)->format('H:i:s');
+            $heureFin = Carbon::parse($disponibilite->heure_fin)->format('H:i:s');
+            $creneaux = [];
 
-                while ($heureDebut < $heureFin) {
-                    // Vérifier si le créneau est disponible en vérifiant s'il y a un rendez-vous à ce moment-là
-                    $rendezVousExistants = Rendez_vous::where('doctor_id', $medecinId)
-                        ->where('date', $heureDebut)
-                        ->exists();
+            while ($heureDebut < $heureFin) {
+                $rendezVousExistants = Rendez_vous::where('doctor_id', $medecinId)
+                    ->where('date', $heureDebut)
+                    ->exists();
 
-                    if (!$rendezVousExistants) {
-                        $creneaux[] = [
-                            'heure_debut' => $heureDebut->toIso8601String(),
-                            'heure_fin' => $heureDebut->addHour()->toIso8601String(), // Créneau d'une heure
-                        ];
-                    } else {
-                        // Passer au prochain créneau
-                        $heureDebut->addHour();
-                    }
+                if (!$rendezVousExistants) {
+                    $creneaux[] = [
+                        'heure_debut' => $heureDebut,
+                        'heure_fin' => Carbon::parse($heureDebut)->addHour()->format('H:i:s'),
+                        'jour' => $disponibilite->jour, // Ajout du jour de disponibilité
+                    ];
                 }
-
-                $disponibilitesAvecCreneaux[] = [
-                    'id' => $disponibilite->id,
-                    'creneaux' => $creneaux,
-                ];
+                $heureDebut = Carbon::parse($heureDebut)->addHour()->format('H:i:s');
             }
 
-            return response()->json($disponibilitesAvecCreneaux);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors de la récupération des disponibilités: ' . $e->getMessage()], 500);
+            $disponibilitesAvecCreneaux[] = [
+                'id' => $disponibilite->id,
+                'creneaux' => $creneaux,
+            ];
         }
+
+        return response()->json($disponibilitesAvecCreneaux);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Erreur lors de la récupération des disponibilités: ' . $e->getMessage()], 500);
     }
+}
 
 
 

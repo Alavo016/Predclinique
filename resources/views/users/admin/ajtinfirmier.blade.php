@@ -123,13 +123,13 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="male" checked>Homme
+                                                        value="M" checked>Homme
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="female">Femme
+                                                        value="F">Femme
                                                 </label>
                                             </div>
                                         </div>
@@ -205,13 +205,13 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="active">Actif
+                                                        value="1">Actif
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="inactive">Inactif
+                                                        value="0">Inactif
                                                 </label>
                                             </div>
                                         </div>

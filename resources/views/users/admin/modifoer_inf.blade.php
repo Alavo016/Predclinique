@@ -109,15 +109,15 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="male"
-                                                        {{ $infirmier->sexe == 'male' ? 'checked' : '' }}>Homme
+                                                        value="M"
+                                                        {{ $infirmier->sexe == 'M' ? 'checked' : '' }}>Homme
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="female"
-                                                        {{ $infirmier->sexe == 'female' ? 'checked' : '' }}>Femme
+                                                        value="F"
+                                                        {{ $infirmier->sexe == 'F' ? 'checked' : '' }}>Femme
                                                 </label>
                                             </div>
                                         </div>
@@ -196,13 +196,13 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="active" {{ $infirmier->status == "active" ? 'checked' : '' }}>Actif
+                                                        value="1" {{ $infirmier->status == "1" ? 'checked' : '' }}>Actif
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="inactive" {{ $infirmier->status == "inactive" ? 'checked' : '' }}>Inactif
+                                                        value="0" {{ $infirmier->status == "0" ? 'checked' : '' }}>Inactif
                                                 </label>
                                             </div>
                                         </div>

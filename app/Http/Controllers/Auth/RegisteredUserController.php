@@ -50,7 +50,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'id_role' => '1',
-            
+            "status"=>"1",
+            'photo' => 'storage/avatars/user.jpg', // Chemin de la photo par défaut
+
+
+
+
         ]);
 
         event(new Registered($user));

@@ -71,7 +71,7 @@
                                                 </div>
                                             </th>
                                             <th>Non et Prénom</th>
-                                            
+
                                             <th>Pseudo</th>
                                             <th>Email</th>
                                             <th>Telephone</th>
@@ -90,8 +90,7 @@
                                                 <td class="profile-image">
                                                     <a href="profile.html">
                                                         <img width="28" height="28"
-                                                            src="{{ asset($patient->photo) }}"
-                                                            class="rounded-circle m-r-5">
+                                                            src="{{ asset($patient->photo) }}" class="rounded-circle m-r-5">
                                                         {{ $patient->prenom }} {{ $patient->name }}
                                                     </a>
                                                 </td>
@@ -99,8 +98,7 @@
                                                 <td>{{ $patient->pseudo }}</td>
                                                 <td><a href="mailto:{{ $patient->email }}">{{ $patient->email }}</a>
                                                 </td>
-                                                <td><a
-                                                        href="tel:{{ $patient->telephone }}">{{ $patient->telephone }}</a>
+                                                <td><a href="tel:{{ $patient->telephone }}">{{ $patient->telephone }}</a>
                                                 </td>
                                                 <td><a href="{{ route('admin.profile', ['id' => $patient->id]) }}"
                                                         class="btn btn-primary">
@@ -116,14 +114,25 @@
                                                                 href="{{ route('adm_Patient.edit', $patient->id) }}">
                                                                 <i class="fa-solid fa-pen-to-square m-r-5"></i> Edit
                                                             </a>
-                                                            <form
-                                                                action="{{ route('adm_Patient.destroy', $patient->id) }}"
-                                                                method="POST">
+                                                            @if ($patient->status == 1)
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.toggle.docteur', ['id' => $patient->id]) }}"
+                                                                    onclick="event.preventDefault(); document.getElementById('toggle-form-{{ $patient->id }}').submit();">
+                                                                    <i class="fa fa-ban m-r-5"></i> Bloquer
+                                                                </a>
+                                                            @else
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.toggle.docteur', ['id' => $patient->id]) }}"
+                                                                    onclick="event.preventDefault(); document.getElementById('toggle-form-{{ $patient->id }}').submit();">
+                                                                    <i class="fa fa-check m-r-5"></i> Activer
+                                                                </a>
+                                                            @endif
+
+                                                            <form id="toggle-form-{{ $patient->id }}"
+                                                                action="{{ route('admin.toggle.docteur', ['id' => $patient->id]) }}"
+                                                                method="POST" style="display: none;">
                                                                 @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="dropdown-item">
-                                                                    <i class="fa fa-trash-alt m-r-5"></i> Supprimer
-                                                                </button>
+                                                                @method('PUT')
                                                             </form>
 
 

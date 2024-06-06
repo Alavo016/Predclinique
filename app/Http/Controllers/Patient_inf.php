@@ -33,7 +33,7 @@ class Patient_inf extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

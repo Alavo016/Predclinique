@@ -8,14 +8,7 @@
     <a id="mobile_btn" class="mobile_btn float-start" href="#sidebar"><img
             src="{{ asset('assets/assets/img/icons/bar-icon.svg') }}" alt></a>
     <div class="top-nav-search mob-view">
-        <form action="{{ route('search') }}" method="POST">
-            @csrf
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search here" name="query">
-                <button class="btn" type="submit"><img
-                        src="{{ asset('assets/assets/img/icons/search-normal.svg') }}" alt></button>
-            </div>
-        </form>
+        
 
     </div>
     <ul class="nav user-menu float-end">

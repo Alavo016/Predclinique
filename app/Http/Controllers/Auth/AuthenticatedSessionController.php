@@ -31,21 +31,23 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
+        if ($user->id_role != 4 && $user->status == '0') {
+            Auth::logout();
+            return redirect()->route('blocked');
+        }
+
         switch ($user->id_role) {
             case 4: // Admin role ID
                 return redirect()->route('admin.dashboard');
-                break;
             case 2: // Doctor role ID
                 return redirect()->route('doctor.dashboard');
-                break;
             case 3: // Infirmier role ID
-                return redirect()->route("infirmier.dashboard");
-                break;
+                return redirect()->route('infirmier.dashboard');
             default: // Default redirect
                 return redirect()->route('patient.index');
-                break;
         }
     }
+
 
     /**
      * Destroy an authenticated session.

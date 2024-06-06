@@ -87,11 +87,11 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <img src="{{ asset($user->photo) }}" alt="Photo de {{ $user->name }}"
+                        <img src="{{ asset($patient->photo) }}" alt="Photo de {{ $patient->name }}"
                             class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
-                        <h4 class="card-title">{{ $user->name }} {{ $user->prenom }}</h4>
-                        <p class="card-text">{{ $user->email }}</p>
-                        <p class="card-text">Téléphone : {{ $user->telephone }}</p>
+                        <h4 class="card-title">{{ $patient->name }} {{ $patient->prenom }}</h4>
+                        <p class="card-text">{{ $patient->email }}</p>
+                        <p class="card-text">Téléphone : {{ $patient->telephone }}</p>
                     </div>
                 </div>
             </div>
@@ -102,18 +102,18 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
-                            <li class="list-group-item"><strong>Nom:</strong> {{ $user->name }}</li>
-                            <li class="list-group-item"><strong>Prénom:</strong> {{ $user->prenom }}</li>
-                            <li class="list-group-item"><strong>Sexe:</strong> {{ $user->sexe }}</li>
-                            <li class="list-group-item"><strong>Date de Naissance:</strong> {{ $user->date_naissance }}</li>
-                            <li class="list-group-item"><strong>Adresse:</strong> {{ $user->address }}</li>
-                            <li class="list-group-item"><strong>Nationalité:</strong> {{ $user->nationalite }}</li>
-                            <li class="list-group-item"><strong>Ville:</strong> {{ $user->ville }}</li>
-                            <li class="list-group-item"><strong>État Civil:</strong> {{ $user->etat_civile }}</li>
+                            <li class="list-group-item"><strong>Nom:</strong> {{ $patient->name }}</li>
+                            <li class="list-group-item"><strong>Prénom:</strong> {{ $patient->prenom }}</li>
+                            <li class="list-group-item"><strong>Sexe:</strong> {{ $patient->sexe }}</li>
+                            <li class="list-group-item"><strong>Date de Naissance:</strong> {{ $patient->date_naissance }}</li>
+                            <li class="list-group-item"><strong>Adresse:</strong> {{ $patient->address }}</li>
+                            <li class="list-group-item"><strong>Nationalité:</strong> {{ $patient->nationalite }}</li>
+                            <li class="list-group-item"><strong>Ville:</strong> {{ $patient->ville }}</li>
+                            <li class="list-group-item"><strong>État Civil:</strong> {{ $patient->etat_civile }}</li>
                             <li class="list-group-item"><strong class="text-primary">Allergies:</strong>
-                                @if ($user->allergie)
+                                @if ($patient->allergie)
                                     <ul>
-                                        @foreach (explode(',', $user->allergie) as $allergie)
+                                        @foreach (explode(',', $patient->allergie) as $allergie)
                                             <li class="text-muted ">{{ $allergie }}</li>
                                         @endforeach
                                     </ul>

@@ -6,7 +6,7 @@
                 <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('admin.dashboard') }}"><span class=""><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
-                        <span>Admin Dashboard</span> <span class="menu-arrow"></span>
+                        <span>Admin Dashboard</span>
                     </a>
                 </li>
                 <li class="submenu {{ request()->routeIs('admin.listdocteur') || request()->routeIs('ajtdoc') ? 'active' : '' }}">
@@ -51,18 +51,16 @@
                 </li>
                 <li class="submenu {{ request()->is('instruments') ? 'active' : '' }}">
                     <a href="#"><span class="menu-side"><i class="fa-solid fa-stethoscope"></i></span>
-                        <span>Type d'instruments</span> <span class="menu-arrow"></span>
+                        <span>Type Fourniture</span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: {{ request()->is('instruments') ? 'block' : 'none' }};">
-                        <li><a href="invoices.html" class="{{ request()->is('invoices') ? 'active' : '' }}">Invoices</a></li>
-                        <li><a href="payments.html" class="{{ request()->is('payments') ? 'active' : '' }}">Payments</a></li>
-                        <li><a href="expenses.html" class="{{ request()->is('expenses') ? 'active' : '' }}">Expenses</a></li>
-                        <li><a href="taxes.html" class="{{ request()->is('taxes') ? 'active' : '' }}">Taxes</a></li>
-                        <li><a href="provident-fund.html" class="{{ request()->is('provident-fund') ? 'active' : '' }}">Provident Fund</a></li>
+                        <li><a href="{{ route('typefournitures.index') }}" class="{{ request()->is('invoices') ? 'active' : '' }}">Types fourtniture</a></li>
+                        <li><a href="{{ route('typefournitures.create') }}" class="{{ request()->is('payments') ? 'active' : '' }}">Ajt Type Fourniture</a></li>
+
                     </ul>
                 </li>
             </ul>
-            
+
         </div>
     </div>
 </div>

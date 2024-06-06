@@ -109,15 +109,15 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="male"
-                                                        {{ $patient->sexe == 'male' ? 'checked' : '' }}>Homme
+                                                        value="M"
+                                                        {{ $patient->sexe == 'M' ? 'checked' : '' }}>Homme
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="female"
-                                                        {{ $patient->sexe == 'female' ? 'checked' : '' }}>Femme
+                                                        value="F"
+                                                        {{ $patient->sexe == 'F' ? 'checked' : '' }}>Femme
                                                 </label>
                                             </div>
                                         </div>
@@ -143,7 +143,7 @@
                                         @error('specialite')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div> --}} 
+                                    </div> --}}
                                     <!-- Colonne pour l'adresse -->
                                     <div class="col-12 col-sm-12">
                                         <div class="input-block local-forms">
@@ -195,14 +195,12 @@
                                             <label class="gen-label">Statut <span class="login-danger">*</span></label>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
-                                                    <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="active" {{ $patient->status == "active" ? 'checked' : '' }}>Actif
+                                                    <input type="radio" name="status" class="form-check-input mt-0" value="1" {{ $patient->status == "1" ? 'checked' : '' }}>Actif
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
-                                                    <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="inactive" {{ $patient->status == "inactive" ? 'checked' : '' }}>Inactif
+                                                    <input type="radio" name="status" class="form-check-input mt-0" value="0" {{ $patient->status == "0" ? 'checked' : '' }}>Inactif
                                                 </label>
                                             </div>
                                         </div>

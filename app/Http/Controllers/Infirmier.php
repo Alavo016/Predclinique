@@ -37,58 +37,52 @@ class Infirmier extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+{
+    $validatedData = $request->validate([
+        'prenom' => ['required', 'string', 'max:255'],
+        'name' => ['required', 'string', 'max:255'],
+        'pseudo' => ['required', 'string', 'max:255', 'unique:users'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'telephone' => ['required', 'string', 'max:255'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'date_naissance' => ['required', 'date'],
+        'sexe' => ['required', 'string', 'in:M,F'],
+        'specialite' => ['required', 'integer'],
+        'address' => ['nullable', 'string'],
+        'ville' => ['nullable', 'string'],
+        'nationalite' => ['nullable', 'string'],
+        'photo' => ['nullable', 'image'],
+        'status' => ['required', 'string', 'in:0,1'],
+    ]);
 
-        // Validez les données du formulaire
-        $validatedData = $request->validate([
-            'prenom' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255'],
-            'pseudo' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'telephone' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'date_naissance' => ['required', 'date'],
-            'sexe' => ['required', 'string', 'in:male,female'],
-            'specialite' => ['required', 'integer'],
-            'address' => ['nullable', 'string'],
-            'ville' => ['nullable', 'string'],
-            'nationalite' => ['nullable', 'string'],
-            'photo' => ['nullable', 'image'],
-            'status' => ['required', 'string', 'in:active,inactive'],
-        ]);
+    $user = new User();
+    $user->id_role = 3;
+    $user->prenom = $validatedData['prenom'];
+    $user->name = $validatedData['name'];
+    $user->pseudo = $validatedData['pseudo'];
+    $user->email = $validatedData['email'];
+    $user->telephone = $validatedData['telephone'];
+    $user->password = Hash::make($validatedData['password']);
+    $user->date_naissance = $validatedData['date_naissance'];
+    $user->sexe = $validatedData['sexe'];
+    $user->specialite_id = $validatedData['specialite'];
+    $user->address = $validatedData['address'];
+    $user->ville = $validatedData['ville'];
+    $user->nationalite = $validatedData['nationalite'];
 
-
-        // Créez un nouvel utilisateur avec les données validées
-        $user = new User();
-        $user->id_role = 3;
-        $user->prenom = $validatedData['prenom'];
-        $user->name = $validatedData['name'];
-        $user->pseudo = $validatedData['pseudo'];
-        $user->email = $validatedData['email'];
-        $user->telephone = $validatedData['telephone'];
-        $user->password = Hash::make($validatedData['password']);
-        $user->date_naissance = $validatedData['date_naissance'];
-        $user->sexe = $validatedData['sexe'];
-        $user->specialite_id = $validatedData['specialite'];
-        $user->address = $validatedData['address'];
-        $user->ville = $validatedData['ville'];
-        $user->nationalite = $validatedData['nationalite'];
-        // Vérifie si un fichier a été téléchargé
-        if ($request->hasFile('photo')) {
-            $user->photo = $request->file('photo')->store('avatars', 'public');
-            $user->photo =  'storage/' . $user->photo;
-        } else {
-            // Aucun fichier n'a été téléchargé, donc utilisez l'image par défaut
-            $user->photo = 'storage/avatars/user.jpg'; // Remplacez le chemin par le chemin de votre image par défaut
-        }
-        $user->status = $validatedData['status'];
-
-        // Enregistrez l'utilisateur dans la base de données
-        $user->save();
-
-        // Redirigez l'utilisateur vers une autre page après l'enregistrement
-        return redirect()->route('adm_infirmier.index')->with('success', 'Utilisateur créé avec succès.');
+    if ($request->hasFile('photo')) {
+        $user->photo = $request->file('photo')->store('avatars', 'public');
+        $user->photo = 'storage/' . $user->photo;
+    } else {
+        $user->photo = 'storage/avatars/user.jpg';
     }
+
+    $user->status = $validatedData['status'];
+
+    $user->save();
+
+    return redirect()->route('adm_infirmier.index')->with('success', 'Utilisateur créé avec succès.');
+}
 
     /**
      * Display the specified resource.
@@ -133,13 +127,13 @@ class Infirmier extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
 
             'date_naissance' => 'required|date',
-            'sexe' => 'required|in:male,female',
+            'sexe' => 'required|in:M,F',
             'specialite' => 'required|exists:specialites,id',
             'address' => 'nullable|string',
             'ville' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'photo' => 'nullable|image|max:2048', // Taille maximale de l'image : 2MB
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:1,0',
 
         ]);
 
@@ -163,8 +157,8 @@ class Infirmier extends Controller
         // Si une nouvelle photo est soumise, enregistrer
         if ($request->hasFile('photo')) {
             // Gérer l'enregistrement de la nouvelle photo
-            $photoPath = $request->photo->store('avatars'); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
-            $infirmier->photo = $photoPath;
+            $photoPath = $request->photo->store('avatars','public'); // Stocke la photo dans le dossier "avatars" dans le dossier de stockage
+            $infirmier->photo = "storage/". $photoPath;
         }
 
         $infirmier->save();
@@ -188,9 +182,9 @@ class Infirmier extends Controller
     }
     public function modipass($id)
     {
-        
+
         $user = User::find($id);
-        
+
         //dd($user);
         return view("users.infirmier.pass_modifier", compact("user"));
     }
@@ -213,7 +207,7 @@ class Infirmier extends Controller
         $user->password = Hash::make($request->password);
 
         $user->save();
-        
+
 
         // Redirect with success message
         return back()->with('success', 'Password updated successfully.');

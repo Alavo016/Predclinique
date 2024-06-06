@@ -93,9 +93,9 @@
 
                                     <!-- Colonne pour la date de naissance -->
                                     <div class="col-12 col-md-6 col-xl-6">
-                                        <div class="input-block local-forms cal-icon">
+                                        <div class="input-block ">
                                             <label>Date de naissance <span class="login-danger">*</span></label>
-                                            <input class="form-control datetimepicker" type="date" name="date_naissance"
+                                            <input class="form-control " type="date" name="date_naissance"
                                                 value="{{ $docteur->date_naissance }}">
                                         </div>
                                         @error('date_naissance')
@@ -109,15 +109,15 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="male"
-                                                        {{ $docteur->sexe == 'male' ? 'checked' : '' }}>Homme
+                                                        value="M"
+                                                        {{ $docteur->sexe == 'M' ? 'checked' : '' }}>Homme
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="sexe" class="form-check-input mt-0"
-                                                        value="female"
-                                                        {{ $docteur->sexe == 'female' ? 'checked' : '' }}>Femme
+                                                        value="M"
+                                                        {{ $docteur->sexe == 'M' ? 'checked' : '' }}>Femme
                                                 </label>
                                             </div>
                                         </div>
@@ -196,13 +196,13 @@
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="active" {{ $docteur->status == "active" ? 'checked' : '' }}>Actif
+                                                        value="1" {{ $docteur->status == "1" ? 'checked' : '' }}>Actif
                                                 </label>
                                             </div>
                                             <div class="form-check-inline">
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input mt-0"
-                                                        value="inactive" {{ $docteur->status == "inactive" ? 'checked' : '' }}>Inactif
+                                                        value="0" {{ $docteur->status == "0" ? 'checked' : '' }}>Inactif
                                                 </label>
                                             </div>
                                         </div>

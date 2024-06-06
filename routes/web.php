@@ -19,6 +19,7 @@ use App\Http\Controllers\Specialités;
 use App\Models\Specialites;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RendezvousController;
+use App\Http\Controllers\typefourniture;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -35,6 +36,10 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
+Route::get('/blocked', function () {
+    return view("auth.bloque");
+})->name('blocked');
 
 Route::post('/update-payment-data', [mypatient::class, 'updatePaymentData']);
 
@@ -64,8 +69,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/ajout/docteur', [AdminDashboardController::class, 'ajouterdoc'])
             ->name('ajtdoc');
 
+            Route::put('/toggle/docteur/{id}', [AdminDashboardController::class, 'toggleDocteurStatus'])->name('admin.toggle.docteur');
 
-
+            Route::resource('type_fourniture',typefourniture::class)->names('typefournitures');
         // Route pour enregistrer un nouvel utilisateur
         Route::post('/listdocteur', [AdminDashboardController::class, 'store'])
             ->name('admin.store_docteur');
@@ -131,6 +137,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('/Consultation', Consulationdoc::class)->names('consultations');
 
         Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');
+
+        Route::get(
+            '/{id}/edit_password',
+            [DoctorController::class, "modipass"]
+        )->name('mdpass.doc');
+
+        Route::put('/patient/update-password', [DoctorController::class, 'updatePassword'])->name('infirmier.doc');
     });
 
     Route::prefix('infirmier')->group(function () {

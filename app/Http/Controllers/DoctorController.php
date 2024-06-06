@@ -6,6 +6,7 @@ use App\Models\Specialites;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class DoctorController extends Controller
@@ -39,9 +40,11 @@ class DoctorController extends Controller
      */
     public function show()
     {
-        $user= Auth::user();
-        return view("users.doctor.Profil",compact("user"));
+        $user = Auth::user();
+        $specialites = Specialites::where("id", $user->specialite_id)->first(); // Retrieve the first result
+        return view("users.doctor.Profil", compact("user", "specialites"));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -56,7 +59,7 @@ class DoctorController extends Controller
     // Mettre à jour le profil du docteur
     public function update(Request $request, $id)
 {
-    
+
 
     $request->validate([
         'prenom' => 'required|string|max:255',
@@ -70,10 +73,10 @@ class DoctorController extends Controller
         'address' => 'nullable|string',
         'ville' => 'nullable|string',
         'nationalite' => 'nullable|string',
-      
+
         'photo' => 'nullable|image|max:2048',
     ]);
-   
+
     $user = User::findOrFail($id);
 
     $user->prenom = $request->prenom;
@@ -110,5 +113,38 @@ class DoctorController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function modipass($id)
+    {
+
+        $user = User::find($id);
+
+        //dd($user);
+        return view("users.doctor.modifier_pass", compact("user"));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // Check if old password matches
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
+            return back()->withErrors(['old_password' => 'The old password does not match our records.']);
+        }
+
+        // Update the password
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+
+        // Redirect with success message
+        return back()->with('success', 'Password updated successfully.');
     }
 }
