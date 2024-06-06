@@ -1,23 +1,22 @@
-@extends('users.infirmier.masterinf')
+@extends("users.doctor.masterdoc")
 
-@section('title', "Modification d'une créance")
+@section('title', "Profil doctor")
 @section('content')
     <div class="page-wrapper">
         <div class="content">
             <div class="row">
                 <div class="col-sm-7 col-6">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('infirmier.dashboard') }}">Dashboard </a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard </a></li>
                         <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
                         <li class="breadcrumb-item active">Mon Profil</li>
                     </ul>
                 </div>
                 <div class="col-sm-5 col-6 text-end m-b-30">
-                    <a href="edit-profile.html" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit
-                        Profile</a>
+                    <a href="{{ route('doctor.edit_doctor') }}" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Modifier Profil</a>
                 </div>
             </div>
-            <div class="card-box profile-header">
+            <div class="card-box profile-header ">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="profile-view">
@@ -31,7 +30,7 @@
                                     <div class="col-md-5">
                                         <div class="profile-info-left">
                                             <h3 class="user-name m-t-0 mb-0">{{ $user->name }} {{ $user->prenom }}</h3>
-                                            <small class="text-muted">Infirmier</small>
+                                            <small class="text-muted">Gynecologist</small>
                                             <div class="staff-id">Employee ID : DR-0001</div>
                                             <div class="staff-msg"><a
                                                     href="{{ route('mdpass.infirmier', ['id' => $user->id]) }}"
@@ -63,6 +62,15 @@
                                                 <span class="title">Gender:</span>
                                                 <span class="text">{{ $user->sexe }}</span>
                                             </li>
+                                            <li><span class="title"> Nationnalité</span>
+                                            <span class="text"> {{ $user->nationalite }} </span>
+                                            </li>
+
+                                            <li><span class="title"> Etat Matrimoniale</span>
+                                                <span class="text"> {{ $user->etat_civile }} </span>
+                                                </li>
+
+                                            
                                         </ul>
                                     </div>
                                 </div>

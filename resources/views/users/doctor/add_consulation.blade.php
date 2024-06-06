@@ -58,6 +58,39 @@
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    
+                                    <!-- New Fields -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="temperature">Température <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.1" name="temperature" id="temperature" class="form-control" required>
+                                        @error('temperature')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="tension">Tension <span class="text-danger">*</span></label>
+                                        <input type="text" name="tension" id="tension" class="form-control" required>
+                                        @error('tension')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="poids">Poids <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.1" name="poids" id="poids" class="form-control" required>
+                                        @error('poids')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="taille">Taille <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.01" name="taille" id="taille" class="form-control" required>
+                                        @error('taille')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="col-sm-6 border-left">
@@ -92,8 +125,6 @@
 </div>
 
 @endsection
-
-
 
 <style>
     .form-label {

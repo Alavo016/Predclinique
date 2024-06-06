@@ -44,58 +44,78 @@ class Consulationdoc extends Controller
      */
 
      public function store(Request $request)
-    {
-        // Personnalisation des messages d'erreur
-        $messages = [
-            'motif.required' => 'Le motif de la consultation est obligatoire.',
-            'symptomes.required' => 'Les symptômes sont obligatoires.',
-            'diagnostic.required' => 'Le diagnostic est obligatoire.',
-            'heure_fin.required' => "L'heure de fin est obligatoire.",
-            'heure_fin.date_format' => "Le format de l'heure de fin est invalide.",
-            'medicaments.required' => 'Les médicaments sont obligatoires.',
-            'posologie.required' => 'La posologie est obligatoire.',
-        ];
-
-        // Valider les données de la requête
-        $request->validate([
-            'motif' => 'required|string',
-            'symptomes' => 'required|string',
-            'diagnostic' => 'required|string',
-            'heure_fin' => 'required|date_format:Y-m-d\TH:i',
-            'medicaments' => 'required|string',
-            'posologie' => 'required|string',
-        ], $messages);
-
-        // Récupérer l'ID du médecin connecté
-        $doctor_id = Auth::id();
-
-        // Récupérer le patient_id passé dans un champ caché
-        $patient_id = $request->patient_id;
-
-        // Créer une nouvelle ordonnance
-        $ordonnance = new Ordonnances();
-        $ordonnance->medicaments = $request->medicaments;
-        $ordonnance->posologie = $request->posologie;
-        $ordonnance->date = Carbon::now(); // Ajouter la date et l'heure actuelles
-        $ordonnance->save();
-
-        // Créer une nouvelle consultation
-        $consultation = new Consultations();
-        $consultation->date = Carbon::now(); // Ajouter la date et l'heure actuelles
-        $consultation->motif = $request->motif;
-        $consultation->symptomes = $request->symptomes;
-        $consultation->diagnostic = $request->diagnostic;
-        $consultation->heure_fin = Carbon::createFromFormat('Y-m-d\TH:i', $request->heure_fin);
-        $consultation->user_id = $patient_id; // Associer la consultation au patient
-        $consultation->doctor_id = $doctor_id; // Associer la consultation au médecin
-        $consultation->ordonnance_id = $ordonnance->id; // Associer l'ordonnance à la consultation
-
-        // Enregistrer la consultation
-        $consultation->save();
-
-        // Rediriger l'utilisateur vers une page appropriée
-        return redirect()->route('consultations.index')->with('success', 'La consultation et l\'ordonnance ont été créées avec succès.');
-    }
+     {
+         // Personnalisation des messages d'erreur
+         $messages = [
+             'motif.required' => 'Le motif de la consultation est obligatoire.',
+             'symptomes.required' => 'Les symptômes sont obligatoires.',
+             'diagnostic.required' => 'Le diagnostic est obligatoire.',
+             'heure_fin.required' => "L'heure de fin est obligatoire.",
+             'heure_fin.date_format' => "Le format de l'heure de fin est invalide.",
+             'medicaments.required' => 'Les médicaments sont obligatoires.',
+             'posologie.required' => 'La posologie est obligatoire.',
+             'temperature.required' => 'La température est obligatoire.',
+             'temperature.numeric' => 'La température doit être un nombre.',
+             'tension.required' => 'La tension est obligatoire.',
+             'poids.required' => 'Le poids est obligatoire.',
+             'poids.numeric' => 'Le poids doit être un nombre.',
+             'taille.required' => 'La taille est obligatoire.',
+             'taille.numeric' => 'La taille doit être un nombre.',
+         ];
+     
+         // Valider les données de la requête
+         $request->validate([
+             'motif' => 'required|string',
+             'symptomes' => 'required|string',
+             'diagnostic' => 'required|string',
+             'heure_fin' => 'required|date_format:Y-m-d\TH:i',
+             'medicaments' => 'required|string',
+             'posologie' => 'required|string',
+             'temperature' => 'required|numeric',
+             'tension' => 'required|string',
+             'poids' => 'required|numeric',
+             'taille' => 'required|numeric',
+         ], $messages);
+     
+         // Récupérer l'ID du médecin connecté
+         $doctor_id = Auth::id();
+     
+         // Récupérer le patient_id passé dans un champ caché
+         $patient_id = $request->patient_id;
+     
+         // Calcul de l'IMC
+         $imc = $request->poids / (($request->taille / 100) ** 2);
+     
+         // Créer une nouvelle ordonnance
+         $ordonnance = new Ordonnances();
+         $ordonnance->medicaments = $request->medicaments;
+         $ordonnance->posologie = $request->posologie;
+         $ordonnance->date = Carbon::now(); // Ajouter la date et l'heure actuelles
+         $ordonnance->save();
+     
+         // Créer une nouvelle consultation
+         $consultation = new Consultations();
+         $consultation->date = Carbon::now(); // Ajouter la date et l'heure actuelles
+         $consultation->motif = $request->motif;
+         $consultation->symptomes = $request->symptomes;
+         $consultation->diagnostic = $request->diagnostic;
+         $consultation->heure_fin = Carbon::createFromFormat('Y-m-d\TH:i', $request->heure_fin);
+         $consultation->temperature = $request->temperature;
+         $consultation->tension = $request->tension;
+         $consultation->poids = $request->poids;
+         $consultation->taille = $request->taille;
+         $consultation->imc = $imc;
+         $consultation->user_id = $patient_id; // Associer la consultation au patient
+         $consultation->doctor_id = $doctor_id; // Associer la consultation au médecin
+         $consultation->ordonnance_id = $ordonnance->id; // Associer l'ordonnance à la consultation
+     
+         // Enregistrer la consultation
+         $consultation->save();
+     
+         // Rediriger l'utilisateur vers une page appropriée
+         return redirect()->route('consultations.index')->with('success', 'La consultation et l\'ordonnance ont été créées avec succès.');
+     }
+     
 
     /**
      * Display the specified resource.
@@ -115,49 +135,66 @@ class Consulationdoc extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        // Personnalisation des messages d'erreur
-        $messages = [
-            'motif.required' => 'Le motif de la consultation est obligatoire.',
-            'symptomes.required' => 'Les symptômes sont obligatoires.',
-            'diagnostic.required' => 'Le diagnostic est obligatoire.',
-            'heure_fin.required' => "L'heure de fin est obligatoire.",
-            'heure_fin.date_format' => "L'heure de fin doit être au format valide.",
-            'medicaments.required' => 'Les médicaments sont obligatoires.',
-            'posologie.required' => 'La posologie est obligatoire.',
-        ];
+{
+    // Personnalisation des messages d'erreur
+    $messages = [
+        'motif.required' => 'Le motif de la consultation est obligatoire.',
+        'symptomes.required' => 'Les symptômes sont obligatoires.',
+        'diagnostic.required' => 'Le diagnostic est obligatoire.',
+        'heure_fin.required' => "L'heure de fin est obligatoire.",
+        'heure_fin.date_format' => "Le format de l'heure de fin est invalide.",
+        'medicaments.required' => 'Les médicaments sont obligatoires.',
+        'posologie.required' => 'La posologie est obligatoire.',
+        'temperature.required' => 'La température est obligatoire.',
+        'temperature.numeric' => 'La température doit être un nombre.',
+        'tension.required' => 'La tension est obligatoire.',
+        'poids.required' => 'Le poids est obligatoire.',
+        'poids.numeric' => 'Le poids doit être un nombre.',
+        'taille.required' => 'La taille est obligatoire.',
+        'taille.numeric' => 'La taille doit être un nombre.',
+    ];
 
-        // Valider les données de la requête
-        $request->validate([
-            'motif' => 'required|string',
-            'symptomes' => 'required|string',
-            'diagnostic' => 'required|string',
-            'heure_fin' => 'required|date_format:Y-m-d\TH:i',
-            'medicaments' => 'required|string',
-            'posologie' => 'required|string',
-        ], $messages);
+    // Valider les données de la requête
+    $request->validate([
+        'motif' => 'required|string',
+        'symptomes' => 'required|string',
+        'diagnostic' => 'required|string',
+        'heure_fin' => 'required|date_format:Y-m-d\TH:i',
+        'medicaments' => 'required|string',
+        'posologie' => 'required|string',
+        'temperature' => 'required|numeric',
+        'tension' => 'required|string',
+        'poids' => 'required|numeric',
+        'taille' => 'required|numeric',
+    ], $messages);
 
-        // Récupérer la consultation à modifier
-        $consultation = Consultations::findOrFail($id);
-        $consultation->motif = $request->motif;
-        $consultation->symptomes = $request->symptomes;
-        $consultation->diagnostic = $request->diagnostic;
-        $consultation->heure_fin = Carbon::createFromFormat('Y-m-d\TH:i', $request->heure_fin);
-        $consultation->save();
+    // Récupérer la consultation existante
+    $consultation = Consultations::findOrFail($id);
 
-        // Récupérer l'ordonnance associée à cette consultation
-        $ordonnance = $consultation->ordonnance;
-        if (!$ordonnance) {
-            $ordonnance = new Ordonnances();
-            $ordonnance->consultation_id = $consultation->id;
-        }
-        $ordonnance->medicaments = $request->medicaments;
-        $ordonnance->posologie = $request->posologie;
-        $ordonnance->save();
+    // Mettre à jour l'ordonnance associée
+    $ordonnance = $consultation->ordonnance;
+    $ordonnance->medicaments = $request->medicaments;
+    $ordonnance->posologie = $request->posologie;
+    $ordonnance->save();
 
-        // Rediriger l'utilisateur vers une page appropriée
-        return redirect()->route('consultations.index')->with('success', 'La consultation et l\'ordonnance ont été mises à jour avec succès.');
-    }
+    // Calcul de l'IMC
+    $imc = $request->poids / (($request->taille / 100) ** 2);
+
+    // Mettre à jour les informations de la consultation
+    $consultation->motif = $request->motif;
+    $consultation->symptomes = $request->symptomes;
+    $consultation->diagnostic = $request->diagnostic;
+    $consultation->heure_fin = Carbon::createFromFormat('Y-m-d\TH:i', $request->heure_fin);
+    $consultation->temperature = $request->temperature;
+    $consultation->tension = $request->tension;
+    $consultation->poids = $request->poids;
+    $consultation->taille = $request->taille;
+    $consultation->imc = $imc;
+    $consultation->save();
+
+    // Rediriger l'utilisateur vers une page appropriée
+    return redirect()->route('consultations.index')->with('success', 'La consultation et l\'ordonnance ont été mises à jour avec succès.');
+}
 
     /**
      * Remove the specified resource from storage.

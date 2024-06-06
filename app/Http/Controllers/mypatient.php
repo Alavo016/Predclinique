@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -19,6 +20,7 @@ class mypatient extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         // Vérifie si l'utilisateur est connecté
@@ -50,15 +52,92 @@ class mypatient extends Controller
                 }
             }
 
-            
+            // Récupérer les données de tension pour chaque consultation
+            $tensions = Consultations::where('user_id', $user->id)->pluck('tension');
+
+            // Récupérer les derniers poids et tailles de l'utilisateur
+            $latestConsultation = Consultations::where('user_id', $user->id)
+                ->latest('date')
+                ->first();
+
+            $latestWeight = $latestConsultation ? $latestConsultation->poids : 0;
+            $latestHeight = $latestConsultation ? $latestConsultation->taille : 0;
+
+            // Calculer le dernier IMC de l'utilisateur
+            $latestBMI = 0;
+            $bmiCategory= "";
+            if ($latestWeight > 0 && $latestHeight > 0) {
+                $latestBMI = $latestWeight / ($latestHeight * $latestHeight);
+                // Déterminer la catégorie d'IMC en fonction de la valeur récupérée
+                if ($latestBMI < 18.5) {
+                    $bmiCategory = "Underweight"; // Insuffisance pondérale
+                } elseif ($latestBMI >= 18.5 && $latestBMI < 25) {
+                    $bmiCategory = "Normal"; // Poids normal
+                } elseif ($latestBMI >= 25 && $latestBMI < 30) {
+                    $bmiCategory = "Overweight"; // Surpoids
+                } else {
+                    $bmiCategory = "Obese"; // Obésité
+                }
+            }
+            // Récupérer les données de température pour chaque consultation
+            $temperatures = Consultations::where('user_id', $user->id)->pluck('temperature');
+
+            // Récupérer les dates des consultations pour les utiliser comme catégories
+            $consultationDates = Consultations::where('user_id', $user->id)->pluck('date');
+
 
             // Passez les données paginées à la vue
-            return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames',"doctorPhotos"));
+            return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames', 'doctorPhotos', 'tensions', 'latestHeight', 'latestWeight', 'bmiCategory', 'temperatures', 'consultationDates'));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
         }
     }
+
+
+    // Méthode pour calculer les statistiques mensuelles de santé
+    private function calculateMonthlyStats($userId, $date = null)
+    {
+        if (!$date) {
+            $date = Carbon::now();
+        }
+
+        $startOfMonth = $date->startOfMonth()->format('Y-m-d');
+        $endOfMonth = $date->endOfMonth()->format('Y-m-d');
+
+        $monthlyStats = DB::table('consultations')
+            ->where('user_id', $userId)
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->select(DB::raw('AVG(tension) AS average_tension, AVG(temperature) AS average_temperature, AVG(imc) AS average_imc, AVG(poids) AS average_poids, AVG(taille) AS average_taille, AVG(tension) AS average_bpm'))
+            ->first();
+
+        $averageBPM = $monthlyStats->average_bpm ?? 0;
+
+        // Vérifier si la valeur de average_bpm est non nulle avant de calculer le pourcentage de changement
+        if ($averageBPM != 0) {
+            return [
+                'average_tension' => $monthlyStats->average_tension ?? 0,
+                'average_temperature' => $monthlyStats->average_temperature ?? 0,
+                'average_imc' => $monthlyStats->average_imc ?? 0,
+                'average_poids' => $monthlyStats->average_poids ?? 0,
+                'average_taille' => $monthlyStats->average_taille ?? 0,
+                'average_bpm' => $averageBPM,
+            ];
+        } else {
+            // Si average_bpm est zéro, retourner des valeurs par défaut
+            return [
+                'average_tension' => 0,
+                'average_temperature' => 0,
+                'average_imc' => 0,
+                'average_poids' => 0,
+                'average_taille' => 0,
+                'average_bpm' => 0,
+            ];
+        }
+    }
+
+
+
 
 
     /**

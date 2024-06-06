@@ -5,6 +5,7 @@ use App\Http\Controllers\Consulationdoc;
 use App\Http\Controllers\contries;
 use App\Http\Controllers\Creance;
 use App\Http\Controllers\Departement;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\Fourniture;
 use App\Http\Controllers\Infirmier;
@@ -109,23 +110,25 @@ Route::middleware('auth')->group(function () {
         Route::put('/Disponibilites/modifier/{id}', [DoctorDashboardController::class, "updateDispo"])
             ->name('updateDispo');
 
-            Route::get('/Liste_patient', [DoctorDashboardController::class, "listepatient"])
+        Route::get('/Liste_patient', [DoctorDashboardController::class, "listepatient"])
             ->name('doc.patien_liste');
 
-            Route::get('/{id}/dossier_medical', [DoctorDashboardController::class, 'dossierMedical'])->name('doc.dossier');
+        Route::get('/{id}/dossier_medical', [DoctorDashboardController::class, 'dossierMedical'])->name('doc.dossier');
 
 
         Route::get('rendezvous', [RendezvousController::class, 'showRendezvous'])->name('doctor.rendezvous');
         Route::get('rendezvous/events', [RendezvousController::class, 'getRendezvousEvents'])->name('doctor.rendezvous.events');
+        // Afficher le formulaire de modification
+        Route::get('/doctor/edit', [DoctorController::class,'edit'])->name('doctor.edit_doctor');
 
-        
+        // Mettre à jour le profil du docteur
+        Route::put('/doctor/update/{id}', [DoctorController::class,'update'])->name('doctor.update_doctor');
+
+        Route::get('/doctor/profil', [DoctorController::class,'show'])->name('doctor.show_doctor');
+
 
         Route::get('/Consultation/create/{patient_id?}', [Consulationdoc::class, 'create'])->name('consultations.create');
         Route::resource('/Consultation', Consulationdoc::class)->names('consultations');
-        
-
-
-        
 
         Route::delete('/disponibilites/{id}', [DoctorDashboardController::class, "destroydispo"])->name('disponibilites.destroy');
     });
@@ -140,6 +143,16 @@ Route::middleware('auth')->group(function () {
             ->names("Creance");
         Route::resource("/Fourniture", Fourniture::class)
             ->names("fourniture");
+        Route::get('/Profil', [Infirmier::class, "show"])
+            ->name('infirmier.profil');
+
+
+        Route::get(
+            '/{id}/edit_password',
+            [Infirmier::class, "modipass"]
+        )->name('mdpass.infirmier');
+
+        Route::put('/patient/update-password', [Infirmier::class, 'updatePassword'])->name('infirmier.updatePassword');
     });
 
     Route::prefix('patient')->group(function () {

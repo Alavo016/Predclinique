@@ -145,7 +145,7 @@ class AdminDashboardController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
 
             'date_naissance' => 'required|date',
-            'sexe' => 'required|in:male,female',
+            'sexe' => 'required|in:M,F',
             'specialite' => 'required|exists:specialites,id',
             'address' => 'nullable|string',
             'ville' => 'nullable|string',

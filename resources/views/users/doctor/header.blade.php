@@ -1,3 +1,5 @@
+
+
 <div class="header">
     <div class="header-left">
         <a href="index.html" class="logo">
@@ -116,17 +118,16 @@
         <li class="nav-item dropdown has-arrow user-profile-list">
             <a href="#" class="dropdown-toggle nav-link user-link" data-bs-toggle="dropdown">
                 <div class="user-names">
-                    <h5>Liam Michael </h5>
+                    <h5>{{ auth()->user()->name }} </h5>
                     <span>Docteur</span>
                 </div>
                 <span class="user-img">
-                    <img src="{{ asset('assets/assets/img/user-06.jpg') }}" alt="Admin">
+                    <img src="{{ URL::asset(auth()->user()->photo) }}" alt="Admin">
                 </span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="profile.html">My Profile</a>
-                <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-                <a class="dropdown-item" href="settings.html">Settings</a>
+                <a class="dropdown-item" href="{{ route('doctor.show_doctor') }}">Mon Profil</a>
+                <a class="dropdown-item" href="{{ route('doctor.edit_doctor') }}">Modifier Profil</a>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
                     <button type="submit" class="nav-link">

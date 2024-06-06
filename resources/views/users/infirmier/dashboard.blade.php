@@ -82,7 +82,7 @@
                             </div>
                             <div class="doctor-content dash-count flex-grow-1">
                                 <h4>
-                                    CFA <span class="counter-up">{{ $totalCreances }}</span><span></span>
+                                    <span class="counter-up"> {{ $totalCreances. " "}} </span>CFA<span></span>
                                 </h4>
                                 <h5>Montant en Créances</h5>
                             </div>

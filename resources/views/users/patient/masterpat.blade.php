@@ -21,6 +21,9 @@
     <script src="{{ asset('assets/assets/plugins/datatables/datatables.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('DataTables-1.13.6/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('Buttons-2.4.2/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('simplecalendar.css') }}">
+<script src="{{ asset('simplecalendarjq.js') }}"></script>
+<script src="{{ asset('calendar.js') }}"></script>
 
 </head>
 

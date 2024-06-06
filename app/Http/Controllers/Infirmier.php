@@ -6,6 +6,7 @@ use App\Models\Roles;
 use App\Models\Specialites;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class Infirmier extends Controller
@@ -92,9 +93,10 @@ class Infirmier extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $user= Auth::user();
+        return view("users.infirmier.Profil",compact("user"));
     }
 
     /**
@@ -184,4 +186,38 @@ class Infirmier extends Controller
             return redirect()->back()->with('error', "L'infirmier n\'a pas été trouvé.");
         }
     }
+    public function modipass($id)
+    {
+        
+        $user = User::find($id);
+        
+        //dd($user);
+        return view("users.infirmier.pass_modifier", compact("user"));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // Check if old password matches
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
+            return back()->withErrors(['old_password' => 'The old password does not match our records.']);
+        }
+
+        // Update the password
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        
+
+        // Redirect with success message
+        return back()->with('success', 'Password updated successfully.');
+    }
+
+
 }

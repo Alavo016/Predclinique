@@ -4,15 +4,10 @@
             <ul>
                 <li class="menu-title">Main</li>
                 <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('admin.dashboard') }}"><span class="menu-side"><img
+                    <a href="{{ route('admin.dashboard') }}"><span class=""><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
                         <span>Admin Dashboard</span> <span class="menu-arrow"></span>
                     </a>
-                    <ul style="display: {{ request()->routeIs('admin.dashboard') ? 'block' : 'none' }};">
-                        <li><a href="#" class="{{ request()->is('statistics') ? 'active' : '' }}">Statistique</a></li>
-                        <li><a href="#" class="{{ request()->is('graphique') ? 'active' : '' }}">Graphique</a></li>
-                        <li><a href="#" class="{{ request()->is('rapport') ? 'active' : '' }}">Rapport</a></li>
-                    </ul>
                 </li>
                 <li class="submenu {{ request()->routeIs('admin.listdocteur') || request()->routeIs('ajtdoc') ? 'active' : '' }}">
                     <a href="#"><span class="menu-side"><img

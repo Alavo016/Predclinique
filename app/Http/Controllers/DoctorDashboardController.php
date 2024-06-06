@@ -6,11 +6,14 @@ use App\Models\Consultations;
 use App\Models\Disponibilites;
 use App\Models\Rendez_vous;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Importez la classe Auth
 
 class DoctorDashboardController extends Controller
 {
+
+
     public function index()
     {
         // Vérifie si l'utilisateur est connecté
@@ -28,15 +31,50 @@ class DoctorDashboardController extends Controller
             // Récupérer le nombre de consultations pour le médecin connecté
             $nbrConsultation = Consultations::where('doctor_id', $user->id)->count();
 
+            // Récupérer le nombre de rendez-vous pour le médecin connecté
             $nbrrdv = Rendez_vous::where('doctor_id', $user->id)->count();
 
+            // Récupérer les rendez-vous du médecin
+            $rdvs = Rendez_vous::where('doctor_id', $user->id)->get();
+            // Récupérer le nombre de patients mâles
+            $malePatientsCount = User::where('id_role', 1)->where('sexe', "M")->count();
+
+            // Récupérer le nombre de patients femelles
+            $femalePatientsCount = User::where('id_role', 1)->where('sexe', "F")->count();
+
+            // Récupérer le nombre de nouveaux patients (inscrits il y a moins d'un mois)
+            $newPatientsCount = User::where('id_role', 1)->where('created_at', '>=', now()->subMonth())->count();
+
+            // Récupérer le nombre d'anciens patients (inscrits il y a plus d'un mois)
+            $oldPatientsCount = $nbrUser - $newPatientsCount;
+
+
+            // Créer un tableau pour stocker le nombre de rendez-vous par mois
+            $rdvsPerMonth = [];
+
+            // Boucle à travers les rendez-vous pour compter le nombre de rendez-vous par mois
+            foreach ($rdvs as $rdv) {
+                $month = Carbon::parse($rdv->date)->format('M'); // Récupérer le mois du rendez-vous
+                if (isset($rdvsPerMonth[$month])) {
+                    $rdvsPerMonth[$month]++;
+                } else {
+                    $rdvsPerMonth[$month] = 1;
+                }
+            }
+
+            // Préparer les données pour ApexCharts
+            $months = array_keys($rdvsPerMonth); // Récupérer les mois comme clés
+            $data = array_values($rdvsPerMonth); // Récupérer les valeurs de nombre de rendez-vous
+
             // Passez les données à la vue
-            return view('users.doctor.dashbord', compact('user', 'dispo', 'nbrUser', 'nbrConsultation',"nbrrdv"));
+            return view('users.doctor.dashbord', compact('user', 'dispo', 'nbrUser', 'nbrConsultation', 'nbrrdv', 'months', 'data', 'malePatientsCount', 'femalePatientsCount', 'newPatientsCount',"oldPatientsCount"));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
         }
     }
+
+
 
 
 
@@ -142,19 +180,16 @@ class DoctorDashboardController extends Controller
     public function listepatient()
     {
         $user = Auth::user();
-        $patients = User::where('id_role',1)->get();
+        $patients = User::where('id_role', 1)->get();
 
-        return view("users.doctor.liste_patient", compact("user","patients"));
-
+        return view("users.doctor.liste_patient", compact("user", "patients"));
     }
     public function dossierMedical($id)
-{
-    $user = Auth::user(); 
-    $patient = User::find($id);
-    $consultations = Consultations::where('user_id', $patient->id)->get(); // Correction de la requête
+    {
+        $user = Auth::user();
+        $patient = User::find($id);
+        $consultations = Consultations::where('user_id', $patient->id)->get(); // Correction de la requête
 
-    return view('users.doctor.Dossiermedicalepatient', compact('patient', 'user', 'consultations'));
-}
-
-
+        return view('users.doctor.Dossiermedicalepatient', compact('patient', 'user', 'consultations'));
+    }
 }

@@ -59,7 +59,38 @@
                                         @error('heure_fin')
                                             <div class="alert alert-danger mt-1">{{ $message }}</div>
                                         @enderror
-                                        
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="temperature">Température</label>
+                                        <input type="number" name="temperature" id="temperature" class="form-control" value="{{ old('temperature', $consultation->temperature) }}" required>
+                                        @error('temperature')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="tension">Tension</label>
+                                        <input type="text" name="tension" id="tension" class="form-control" value="{{ old('tension', $consultation->tension) }}" required>
+                                        @error('tension')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="poids">Poids (kg)</label>
+                                        <input type="number" name="poids" id="poids" class="form-control" value="{{ old('poids', $consultation->poids) }}" required>
+                                        @error('poids')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="taille">Taille (cm)</label>
+                                        <input type="number" name="taille" id="taille" class="form-control" value="{{ old('taille', $consultation->taille) }}" required>
+                                        @error('taille')
+                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 

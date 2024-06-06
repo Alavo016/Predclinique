@@ -11,14 +11,7 @@
                     </a>
 
                 </li>
-                <li class="">
-                    <a href="">
-                        <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-01.svg') }}" alt></span>
-                        <span> Statistique</span>
-
-                    </a>
-
-                </li>
+                
                 <li class="submenu">
                     <a href="#">
                         <span class="menu-side"><img src="{{ asset('assets/assets/img/icons/menu-icon-02.svg') }}" alt></span>

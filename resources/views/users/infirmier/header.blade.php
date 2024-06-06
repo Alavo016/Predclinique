@@ -117,7 +117,7 @@
                 </span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="profile.html">Mon Profil</a>
+                <a class="dropdown-item" href="{{ route('infirmier.profil') }}">Mon Profil</a>
             <a class="dropdown-item" href="edit-profile.html">Modifier  Profile</a>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
