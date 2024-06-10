@@ -59,14 +59,15 @@
 <script src="{{ asset('assets/assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script src="{{ asset('jQuery-3.7.0/jquery-3.7.0.min.js') }}"></script>
 <script src="{{ asset('DataTables-1.13.6/datatables.min.js') }}"></script>
-<script src="{{ asset('Buttons-2.4.2/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('JSZip-3.10.1/jszip.min.js') }}"></script>
-<script src="{{ asset('pdfmake-0.2.7/pdfmake.min.js') }}"></script>
-<script src="{{ asset('pdfmake-0.2.7/vfs_fonts.js') }}"></script>
-<script src="{{ asset('Buttons-2.4.2/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('Buttons-2.4.2/buttons.print.min.js') }}"></script>
+    <!-- Lien CDN pour les boutons DataTables -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 
-</body>
+
 
 </html>

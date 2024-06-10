@@ -20,7 +20,7 @@
                 </div>
             </div>
 <x-session />
-            <div class="row">
+            <div class="row p-3">
                 <div class="col-sm-12">
                     <div class="card card-table show-entire">
                         <div class="card-body">
@@ -29,16 +29,24 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="doctor-table-blk">
-                                            <h3>Liste des disponnibilites </h3>
-                                            
+                                            <h3>Liste Dsponinibilites</h3>
+                                            <div class="doctor-search-blk mt-2 mt-md-0">
+                                                <div class="top-nav-search table-search-blk">
+                                                    <input type="text" class="form-control" placeholder="Search here"
+                                                        id="customSearchInput">
+                                                    <a class="btn" id="searchButton"></a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                   
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table border-0 custom-table comman-table  mb-0" id="consultationsTable">
+                                <table class="table border-0 datatable custom-table comman-table  mb-0 " >
                                     <thead>
                                         <tr>
                                             <th>

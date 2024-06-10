@@ -208,4 +208,15 @@ class AdminDashboardController extends Controller
             return redirect()->back()->with('error', 'Utilisateur  non trouvé.');
         }
     }
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            return redirect()->route('admin.dashboard')->with('success', 'Profil supprimé avec succès.');
+        } else {
+            return redirect()->back()->with('error', 'Impossible de trouver le profil.');
+        }
+    }
 }

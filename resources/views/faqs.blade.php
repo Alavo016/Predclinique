@@ -52,18 +52,7 @@
                                         <p>Nous sommes l'une des meilleures entreprises pour vous fournir un bon médecin. Vous pouvez facilement prendre rendez-vous avec un bon médecin grâce à notre agence.</p>
                                     </div>
                                 </li>
-                                <li>
-                                    <h3 class="title">Quelles initiatives prendre en cas de plainte ?</h3>
-                                    <div class="accordion-content">
-                                        <p>Nous sommes une agence bien établie offrant des soins innovants. Nous avons beaucoup de services pour fournir des directives appropriées à tous les patients.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <h3 class="title">Comment puis-je obtenir de l'aide en cas d'urgence ?</h3>
-                                    <div class="accordion-content">
-                                        <p>Nous sommes l'une des meilleures agences pour vous fournir un bon médecin. Cela nous aide à travailler de manière appropriée et efficace.</p>
-                                    </div>
-                                </li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -72,7 +61,7 @@
             <div class="col-lg-6">
                 <div class="frequently-img">
                     <div class="main-img">
-                        <img src="assets/img/frequently.jpg" alt="Image">
+                        <img src="{{ asset('_2.jpg') }}" alt="Image">
                     </div>
                     <div class="shape-1">
                         <img src="assets/img/shapes/shape-14.png" alt="Shape">

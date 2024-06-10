@@ -9,20 +9,15 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                
-                <li
-                    class="submenu {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'active' : '' }}">
+
+                <li class="submenu {{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'active' : '' }}">
                     <a href="#"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-05.svg') }}" alt></span>
-                        <span>Disponibilites</span> <span class="menu-arrow"></span>
+                        <span>Disponibilités</span> <span class="menu-arrow"></span>
                     </a>
-                    <ul style="display:  none; }};">
-                        <li ><a href="{{ route('doctor.liste.dispo') }}" class="{{ request()->routeIs('doctor.liste.dispo') ? 'active' : '' }}">Liste disponibilités</a></li>
-                        <li ><a href="{{ route('doctor.dispo') }}"
-                            class="{{ request()->routeIs('doctor.dispo') ? 'active' : '' }}">Ajouter Disponibilités</a>
-                        </li>
-
-
+                    <ul style="{{ request()->routeIs('doctor.liste.dispo') || request()->routeIs('doctor.dispo') ? 'display: block;' : 'display: none;' }}">
+                        <li><a href="{{ route('doctor.liste.dispo') }}" class="{{ request()->routeIs('doctor.liste.dispo') ? 'active' : '' }}">Liste disponibilités</a></li>
+                        <li><a href="{{ route('doctor.dispo') }}" class="{{ request()->routeIs('doctor.dispo') ? 'active' : '' }}">Ajouter Disponibilités</a></li>
                     </ul>
                 </li>
                 <li class="{{ request()->routeIs('doctor.rendezvous') ? 'active' : '' }}">
@@ -31,16 +26,16 @@
                         <span>Rendez-Vous</span>
                     </a>
                 </li>
-                <li class="">
+                <li class="{{ request()->routeIs('doc.patien_liste') ? 'active' : '' }}">
                     <a href="{{ route('doc.patien_liste') }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-03.svg') }}" alt></span>
                         <span>Liste Patients</span>
                     </a>
                 </li>
-                <li class="">
+                <li class="{{ request()->routeIs('consultations.index') ? 'active' : '' }}">
                     <a href="{{ route("consultations.index") }}"><span class="menu-side"><img
                                 src="{{ asset('assets/assets/img/icons/menu-icon-14.svg') }}" alt></span>
-                        <span>Liste Consultation </span>
+                        <span>Liste Consultation</span>
                     </a>
                 </li>
             </ul>

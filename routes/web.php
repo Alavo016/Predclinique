@@ -49,6 +49,10 @@ Route::get('/faqs', [patient::class, 'faqs'])
 Route::get('/contact', [patient::class, 'contact'])
     ->name('patient.contact');
 
+Route::get('/detail_service', function(){
+    return view('detail_service');
+})->name('detail_ervice');
+
 Route::resource('/dashboard', mypatient::class)->middleware(['auth', 'verified'])->names('patient');
 
 Route::middleware('auth')->group(function () {
@@ -96,6 +100,9 @@ Route::middleware('auth')->group(function () {
 
 
         Route::resource('/Specialites', Departement::class)->names('adm_specialites');
+
+        Route::delete('/delete/user/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.delete.user');
+
     });
 
     Route::prefix('doctor')->group(function () {

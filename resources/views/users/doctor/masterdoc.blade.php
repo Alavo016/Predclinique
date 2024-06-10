@@ -8,7 +8,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="{{ asset('assets/assets/css/bootstrap.min.css') }}">
-    <link rel="icon" type="image/png" href="{{ asset('Blue_and_White_Illustrative_Doctor_Health_Care_Logo-removebg-preview.png') }}">
+    <link rel="icon" type="image/png"
+        href="{{ asset('Blue_and_White_Illustrative_Doctor_Health_Care_Logo-removebg-preview.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets/css/fullcalendar.min.css') }}">
     <!-- Inclure FullCalendar.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
@@ -54,44 +55,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-    <script>
-      $(document).ready(function() {
-          $('#consultationsTable').DataTable({
-              dom: 'Bfrtip',
-              buttons: [
-                  {
-                      extend: 'copy',
-                      text: '<i class="fa fa-copy"></i> Copy',
-                      className: 'btn btn-outline-dark'
-                  },
-                  {
-                      extend: 'csv',
-                      text: '<i class="fa fa-file-csv"></i> CSV',
-                      className: 'btn btn-outline-success'
-                  },
-                  {
-                      extend: 'excel',
-                      text: '<i class="fa fa-file-excel"></i> Excel',
-                      className: 'btn btn-outline-success'
-                  },
-                  {
-                      extend: 'pdf',
-                      text: '<i class="fa fa-file-pdf"></i> PDF',
-                      className: 'btn btn-outline-danger'
-                  },
-                  {
-                      extend: 'print',
-                      text: '<i class="fa fa-print"></i> Print',
-                      className: 'btn btn-outline-info'
-                  }
-              ]
-          });
-      });
-  
-      function exportData(format) {
-          $('#consultationsTable').DataTable().button(format + ':name').trigger();
-      }
-  </script>
+     <script>
+
+    </script>
+
+    {{-- <script>
+        // Fonction pour filtrer les résultats de la table en fonction de la recherche
+        function filterTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("customSearchInput");
+            filter = input.value.toUpperCase();
+            table = document.querySelector(".datatable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        }
+
+        // Écoutez les événements de saisie pour déclencher le filtrage automatique
+        document.getElementById("customSearchInput").addEventListener("keyup", filterTable);
+    </script> --}}
 
 </body>
 

@@ -18,6 +18,7 @@
                     </div>
                 </div>
             </div>
+            <x-session />
 
             <div class="good-morning-blk">
                 <div class="row">

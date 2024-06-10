@@ -15,7 +15,7 @@
                         <h1>Votre santé, notre priorité</h1>
                         <p>Bienvenue dans notre clinique, où nous nous engageons à fournir des soins de santé de qualité supérieure. Notre équipe de professionnels est là pour répondre à vos besoins médicaux avec compétence et compassion.</p>
                         <div class="b-two-btn">
-                            <a href="appoinments.html" class="default-btn two">
+                            <a href="{{ route('patient.rdv') }}" class="default-btn two">
                                 Prendre un rendez-vous
                                 <span></span>
                             </a>
@@ -65,7 +65,7 @@
                     <h3>Consultations Médicales</h3>
                     <p>Nos médecins sont à votre disposition pour des consultations complètes, adaptées à vos besoins de santé.</p>
                     <div class="d-card-btn">
-                        <a href="services-details.html" class="default-btn two">
+                        <a href="{{ route('detail_ervice') }}" class="default-btn two">
                             En savoir plus
                             <span></span>
                         </a>
@@ -78,7 +78,7 @@
                     <h3>Soins Infirmiers</h3>
                     <p>Nous offrons des soins infirmiers de qualité pour assurer votre bien-être et votre rétablissement.</p>
                     <div class="d-card-btn">
-                        <a href="services-details.html" class="default-btn two">
+                        <a href="{{ route('detail_ervice') }}" class="default-btn two">
                             En savoir plus
                             <span></span>
                         </a>
@@ -91,7 +91,7 @@
                     <h3>Vaccinations</h3>
                     <p>Protégez-vous et votre famille avec notre gamme complète de services de vaccination.</p>
                     <div class="d-card-btn">
-                        <a href="services-details.html" class="default-btn two">
+                        <a href="{{ route('detail_ervice') }}" class="default-btn two">
                             En savoir plus
                             <span></span>
                         </a>
@@ -104,7 +104,7 @@
                     <h3>Conseils Médicaux</h3>
                     <p>Nos experts sont là pour vous fournir des conseils médicaux personnalisés pour une meilleure santé.</p>
                     <div class="d-card-btn">
-                        <a href="services-details.html" class="default-btn two">
+                        <a href="{{ route('detail_ervice') }}" class="default-btn two">
                             En savoir plus
                             <span></span>
                         </a>
@@ -130,7 +130,7 @@
                 <h3>Médecins qualifiés</h3>
                 <p>Nos médecins hautement qualifiés sont là pour vous fournir des soins de qualité, adaptés à vos besoins spécifiques.</p>
                 <div class="t-card-btn">
-                    <a href="services-details.html" class="default-btn two">
+                    <a href="{{ route('detail_ervice') }}" class="default-btn two">
                         En savoir plus
                         <span></span>
                     </a>
@@ -144,7 +144,7 @@
                 <h3>Équipements modernes</h3>
                 <p>Notre clinique est équipée des technologies médicales les plus récentes pour garantir des diagnostics et des traitements précis.</p>
                 <div class="t-card-btn">
-                    <a href="services-details.html" class="default-btn two">
+                    <a href="{{ route('detail_ervice') }}" class="default-btn two">
                         En savoir plus
                         <span></span>
                     </a>
@@ -158,7 +158,7 @@
                 <h3>Service d'urgence</h3>
                 <p>Nous offrons un service d'urgence 24/7 pour répondre rapidement à toutes vos situations critiques.</p>
                 <div class="t-card-btn">
-                    <a href="services-details.html" class="default-btn two">
+                    <a href="{{ route('detail_ervice') }}" class="default-btn two">
                         En savoir plus
                         <span></span>
                     </a>
@@ -172,7 +172,7 @@
                 <h3>Soins personnalisés</h3>
                 <p>Nous offrons des soins personnalisés pour chaque patient, en tenant compte de ses besoins et de son état de santé.</p>
                 <div class="t-card-btn">
-                    <a href="services-details.html" class="default-btn two">
+                    <a href="{{ route('detail_ervice') }}" class="default-btn two">
                         En savoir plus
                         <span></span>
                     </a>
@@ -391,7 +391,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="offer-img">
-                    <img src="assets/img/offer.jpg" alt="Image">
+                    <img src="{{ asset('_1.jpg') }}" alt="Image">
                 </div>
             </div>
             <div class="col-lg-6">
@@ -406,14 +406,7 @@
                             <i class="bx bx-check-circle"></i>
                             Pour la première fois, nous offrons une remise de 50%.
                         </li>
-                        <li>
-                            <i class="bx bx-check-circle"></i>
-                            Nous offrons un traitement annuel gratuit à nos anciens clients.
-                        </li>
-                        <li>
-                            <i class="bx bx-check-circle"></i>
-                            Nous fournissons un support d'urgence à nos clients.
-                        </li>
+
                         <li>
                             <i class="bx bx-check-circle"></i>
                             Vous obtiendrez un traitement en achetant un service.
