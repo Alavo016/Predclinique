@@ -262,6 +262,25 @@
             border-color: #2196f3;
             color: #ffffff;
         }
+
+        .disponibilite-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .disponibilite-card.selected {
+            border-color: #007bff;
+            background-color: #e9f7ff;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
     </style>
 
 
@@ -397,14 +416,14 @@
             let currentPage = 1;
             const itemsPerPage = 4;
 
-            const baseUrl = 'http://127.0.0.1:8000/';
+            const baseUrl = window.location.origin + '/';
 
             async function fetchDoctors(specialiteId, page = 1) {
                 showLoadingSpinner();
 
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/api/specialites/${specialiteId}/medecins`
+                        `${baseUrl}api/specialites/${specialiteId}/medecins`
                     );
                     if (!response.ok) {
                         throw new Error("La réponse du serveur n'est pas valide");
@@ -426,28 +445,28 @@
                             `${baseUrl}storage/avatars/user.jpg`;
 
                         const card = document.createElement("div");
-                        card.className = "col-xl-6 col-lg-3 mt-3 ";
+                        card.className = "col-xl-6 col-lg-3 mt-3";
                         card.innerHTML = `
-                            <div class="card overflow-hidden shadow mb-3 doctor-card">
-                            <div class="card-body text-center">
-                                <div class="profile-photo">
-                                <img src="${imageUrl}" width="100" class="img-fluid rounded-circle" alt="">
-                                </div>
-                                <h3 class="mt-4 mb-1">${medecin.name}</h3>
-                                <p class="text-muted">${medecin.prenom}</p>
-                                <div class="contact-info">
-                                <p><i class="fas fa-phone-alt"></i> ${medecin.telephone}</p>
-                                <p><i class="fas fa-envelope"></i> ${medecin.email}</p>
-                                </div>
-                                <div class="form-check">
-                                <input class="form-check-input" type="radio" name="medecinRadio" id="medecin-${medecin.id}" value="${medecin.id}">
-                                <label class="form-check-label" for="medecin-${medecin.id}">
-                                    Choisir
-                                </label>
-                                </div>
-                            </div>
-                            </div>
-                        `;
+                <div class="card overflow-hidden shadow mb-3 doctor-card">
+                    <div class="card-body text-center">
+                        <div class="profile-photo">
+                            <img src="${imageUrl}" width="100" class="img-fluid rounded-circle" alt="">
+                        </div>
+                        <h3 class="mt-4 mb-1">${medecin.name}</h3>
+                        <p class="text-muted">${medecin.prenom}</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-phone-alt"></i> ${medecin.telephone}</p>
+                            <p><i class="fas fa-envelope"></i> ${medecin.email}</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="medecinRadio" id="medecin-${medecin.id}" value="${medecin.id}">
+                            <label class="form-check-label" for="medecin-${medecin.id}">
+                                Choisir
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `;
 
                         doctorCardsWrapper.appendChild(card); // Add doctor card to wrapper
                     });
@@ -495,6 +514,7 @@
                     hideLoadingSpinner();
                 }
             }
+
             http: //127.0.0.1:8000/public/storage/avatars/user.jpg
 
 
@@ -525,13 +545,139 @@
                 }
 
             // Fonction pour récupérer et afficher les disponibilités
+
+
+            //    const baseUrl = window.location.origin + '/';
+
+            // async function fetchAndDisplayDisponibilites(medecinId, page = 1) {
+            //     showLoadingSpinner();
+
+            //     try {
+            //         const response = await fetch(`${baseUrl}api/medecins/${medecinId}/disponibilites`);
+            //         if (!response.ok) {
+            //             throw new Error("La réponse du serveur n'est pas valide");
+            //         }
+
+            //         const disponibilites = await response.json();
+            //         console.log('Disponibilités récupérées :', disponibilites);
+
+            //         const disponibilitesWrapper = document.getElementById('disponibilites-wrapper');
+            //         disponibilitesWrapper.innerHTML = '';
+
+            //         if (disponibilites.length === 0) {
+            //             const message = document.createElement('p');
+            //             message.textContent = 'Aucune disponibilité pour ce médecin.';
+            //             message.classList.add('text-muted', 'font-italic', 'text-center', 'mt-3');
+            //             disponibilitesWrapper.appendChild(message);
+            //         } else {
+            //             // Pagination logic
+            //             const itemsPerPage = 5; // 5 disponibilités par page
+            //             const startIndex = (page - 1) * itemsPerPage;
+            //             const paginatedDisponibilites = disponibilites.slice(startIndex, startIndex +
+            //                 itemsPerPage);
+
+            //             paginatedDisponibilites.forEach(creneau => {
+            //                 const card = createDisponibiliteCard(creneau);
+            //                 if (card) {
+            //                     disponibilitesWrapper.appendChild(card);
+            //                 }
+            //             });
+
+            //             // Add pagination buttons
+            //             const totalPages = Math.ceil(disponibilites.length / itemsPerPage);
+            //             const paginationWrapper = document.createElement('div');
+            //             paginationWrapper.className = 'd-flex justify-content-center mt-4';
+
+            //             for (let i = 1; i <= totalPages; i++) {
+            //                 const button = document.createElement('button');
+            //                 button.type = "button";
+            //                 button.className = 'btn btn-primary mx-1';
+            //                 button.textContent = i;
+            //                 button.disabled = i === page;
+            //                 button.addEventListener('click', () => {
+            //                     fetchAndDisplayDisponibilites(medecinId, i);
+            //                 });
+            //                 paginationWrapper.appendChild(button); // Add the button to paginationWrapper
+            //             }
+
+            //             disponibilitesWrapper.appendChild(
+            //                 paginationWrapper); // Add paginationWrapper to disponibilitesWrapper
+            //         }
+            //     } catch (error) {
+            //         console.error('Error fetching disponibilites:', error);
+            //     } finally {
+            //         hideLoadingSpinner();
+            //     }
+            // }
+
+            // Fonction pour créer une carte de disponibilité avec la date et l'heure de début
+            function createDisponibiliteCard(creneau, generatedId) {
+                console.log('Création de la carte pour le créneau:', creneau);
+
+                if (creneau && creneau.creneaux && Array.isArray(creneau.creneaux)) {
+                    const premierCreneau = creneau.creneaux[0];
+                    console.log('Premier créneau:', premierCreneau);
+
+                    const id = premierCreneau.id || generatedId;
+
+                    if (premierCreneau && premierCreneau.jour && premierCreneau.heure_debut && premierCreneau
+                        .heure_fin && id) {
+                        const card = document.createElement('div');
+                        card.classList.add('card', 'shadow', 'mb-3', 'disponibilite-card');
+                        card.id = `disponibilite-card-${id}`;
+
+                        const cardBody = document.createElement('div');
+                        cardBody.classList.add('card-body');
+
+                        const dateHeureDebut = document.createElement('p');
+                        dateHeureDebut.classList.add('card-text', 'mb-0');
+                        dateHeureDebut.textContent =
+                            `Date : ${premierCreneau.jour} | ${premierCreneau.heure_debut} | ${premierCreneau.heure_fin}`;
+                        cardBody.appendChild(dateHeureDebut);
+
+                        const disponibiliteRadio = document.createElement('input');
+                        disponibiliteRadio.type = 'radio';
+                        disponibiliteRadio.name = 'disponibilite';
+                        disponibiliteRadio.value = id;
+                        disponibiliteRadio.id = `disponibilite-${id}`;
+                        disponibiliteRadio.classList.add('form-check-input', 'me-2');
+
+                        const label = document.createElement('label');
+                        label.htmlFor = `disponibilite-${id}`;
+                        label.textContent = 'Choisir';
+                        label.classList.add('form-check-label', 'me-3');
+
+                        cardBody.appendChild(disponibiliteRadio);
+                        cardBody.appendChild(label);
+                        card.appendChild(cardBody);
+
+                        disponibiliteRadio.addEventListener('change', () => {
+                            console.log('Sélection changée:', id);
+                            const allCards = document.querySelectorAll('.disponibilite-card');
+                            allCards.forEach(c => c.classList.remove('selected'));
+                            if (disponibiliteRadio.checked) {
+                                card.classList.add('selected');
+                            }
+                        });
+
+                        return card;
+                    } else {
+                        console.error('Les propriétés de premierCreneau sont manquantes ou indéfinies :',
+                            premierCreneau);
+                        return null;
+                    }
+                } else {
+                    console.error('La propriété creneau.creneaux est manquante ou n\'est pas un tableau :',
+                        creneau);
+                    return null;
+                }
+            }
+
             async function fetchAndDisplayDisponibilites(medecinId, page = 1) {
                 showLoadingSpinner();
 
                 try {
-                    const response = await fetch(
-                        `http://127.0.0.1:8000/api/medecins/${medecinId}/disponibilites`
-                    );
+                    const response = await fetch(`${baseUrl}api/medecins/${medecinId}/disponibilites`);
                     if (!response.ok) {
                         throw new Error("La réponse du serveur n'est pas valide");
                     }
@@ -548,19 +694,19 @@
                         message.classList.add('text-muted', 'font-italic', 'text-center', 'mt-3');
                         disponibilitesWrapper.appendChild(message);
                     } else {
-                        // Pagination logic
-                        const itemsPerPage = 5; // 10 disponibilités par page
+                        const itemsPerPage = 5;
                         const startIndex = (page - 1) * itemsPerPage;
                         const paginatedDisponibilites = disponibilites.slice(startIndex, startIndex +
                             itemsPerPage);
 
-
-                        paginatedDisponibilites.forEach(creneau => {
-                            const card = createDisponibiliteCard(creneau);
-                            disponibilitesWrapper.appendChild(card);
+                        paginatedDisponibilites.forEach((creneau, index) => {
+                            const generatedId = `generated-id-${startIndex + index}`;
+                            const card = createDisponibiliteCard(creneau, generatedId);
+                            if (card) {
+                                disponibilitesWrapper.appendChild(card);
+                            }
                         });
 
-                        // Add pagination buttons
                         const totalPages = Math.ceil(disponibilites.length / itemsPerPage);
                         const paginationWrapper = document.createElement('div');
                         paginationWrapper.className = 'd-flex justify-content-center mt-4';
@@ -574,11 +720,10 @@
                             button.addEventListener('click', () => {
                                 fetchAndDisplayDisponibilites(medecinId, i);
                             });
-                            paginationWrapper.appendChild(button); // Add the button to paginationWrapper
+                            paginationWrapper.appendChild(button);
                         }
 
-                        disponibilitesWrapper.appendChild(
-                            paginationWrapper); // Add paginationWrapper to disponibilitesWrapper
+                        disponibilitesWrapper.appendChild(paginationWrapper);
                     }
                 } catch (error) {
                     console.error('Error fetching disponibilites:', error);
@@ -586,70 +731,6 @@
                     hideLoadingSpinner();
                 }
             }
-
-            // Fonction pour créer une carte de disponibilité avec la date et l'heure de début
-            function createDisponibiliteCard(creneau) {
-                // Vérifier si creneau.creneaux existe et est un tableau
-                if (creneau && creneau.creneaux && Array.isArray(creneau.creneaux)) {
-                    // Utiliser la première disponibilité de creneau.creneaux
-                    const premierCreneau = creneau.creneaux[0];
-                    // Vérifier si les propriétés nécessaires existent et ont une valeur
-                    if (premierCreneau && premierCreneau.jour && premierCreneau.heure_debut && premierCreneau
-                        .heure_fin) {
-                        // Création de la carte
-                        const card = document.createElement('div');
-                        card.classList.add('card', 'shadow', 'mb-3', 'disponibilite-card');
-                        card.id = `disponibilite-card-${premierCreneau.id}`;
-
-                        // Contenu de la carte
-                        const cardBody = document.createElement('div');
-                        cardBody.classList.add('card-body');
-
-                        // Date et heure de début
-                        const dateHeureDebut = document.createElement('p');
-                        dateHeureDebut.classList.add('card-text', 'mb-0');
-                        dateHeureDebut.textContent =
-                            `Date : ${premierCreneau.jour} |  ${premierCreneau.heure_debut} |  ${premierCreneau.heure_fin}`;
-
-                        // Ajout de la date et de l'heure de début au corps de la carte
-                        cardBody.appendChild(dateHeureDebut);
-
-                        // Bouton radio
-                        const disponibiliteRadio = document.createElement('input');
-                        disponibiliteRadio.type = 'radio';
-                        disponibiliteRadio.name = 'disponibilite';
-                        disponibiliteRadio.value = premierCreneau.id;
-                        disponibiliteRadio.id = `disponibilite-${premierCreneau.id}`;
-                        disponibiliteRadio.classList.add('form-check-input', 'me-2');
-
-                        // Label pour le bouton radio
-                        const label = document.createElement('label');
-                        label.htmlFor = `disponibilite-${premierCreneau.id}`;
-                        label.textContent = 'Choisir';
-                        label.classList.add('form-check-label', 'me-3');
-
-                        // Ajouter le bouton radio et le label au corps de la carte
-                        cardBody.appendChild(disponibiliteRadio);
-                        cardBody.appendChild(label);
-
-                        // Ajout du corps à la carte
-                        card.appendChild(cardBody);
-
-                        return card;
-                    } else {
-                        // Si les propriétés nécessaires de premierCreneau sont manquantes ou indéfinies, retourner null
-                        console.error('Les propriétés de premierCreneau sont manquantes ou indéfinies :',
-                            premierCreneau);
-                        return null;
-                    }
-                } else {
-                    // Si creneau.creneaux n'existe pas ou n'est pas un tableau, afficher un message d'erreur et retourner null
-                    console.error('La propriété creneau.creneaux est manquante ou n\'est pas un tableau :',
-                    creneau);
-                    return null;
-                }
-            }
-
 
 
 

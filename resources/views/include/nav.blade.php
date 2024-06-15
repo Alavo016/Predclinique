@@ -6,7 +6,7 @@
             <div class="main-responsive-menu">
                 <div class="logo">
                     <a href="{{ route('home') }}">
-                        <img src="{{ asset('1-removebg-preview.png') }}" alt="image" width="10%" height="75px"> <strong>E-clinique</strong>
+                        <img src="{{ asset('1-removebg-preview.png') }}" alt="image" width="40%" height="75px"> <strong>E-clinique</strong>
                     </a>
                 </div>
             </div>

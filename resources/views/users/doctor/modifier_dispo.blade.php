@@ -96,7 +96,7 @@
                                                 <label class="form-check-label">
                                                     <input type="radio" name="status" class="form-check-input"
                                                         value="0"
-                                                        {{ old('status'<span class="menu-arrow"></span>, $disponibilite->status) == '0' ? 'checked' : '' }}>
+                                                        {{ old('status', $disponibilite->status) == '0' ? 'checked' : '' }}>
                                                     Inactif
                                                 </label>
                                             </div>
