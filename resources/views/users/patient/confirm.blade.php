@@ -53,55 +53,50 @@
     <script amount="{{ $specialite->prix }}" callback="" data="" position="right" theme="#0095ff" sandbox="true"
         key="d82799a011c811efa9a90353f2353e80" src="https://cdn.kkiapay.me/k.js"></script>
 
-    <script>
-        function updatePayment(status, statut_paiement) {
-            const prixInput = document.querySelector('input[name="prix"]');
-            const prix = prixInput ? parseFloat(prixInput.value) : 0;
-            const rendezVousId = document.getElementById('rendezVousId').value;
+   <script>
+    function updatePayment(status, statut_paiement) {
+        const prixInput = document.querySelector('input[name="prix"]');
+        const prix = prixInput ? parseFloat(prixInput.value) : 0;
+        const rendezVousId = document.getElementById('rendezVousId').value;
 
-            // Récupérer le jeton CSRF à partir de la balise meta
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // Récupérer le jeton CSRF à partir de la balise meta
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            fetch('{{ route('payement') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken, // Ajouter le jeton CSRF à l'en-tête de la requête
-                    },
-                    body: JSON.stringify({
-                        status: status,
-                        prix: prix,
-                        statut_paiement: statut_paiement,
-                        rendezVousId: rendezVousId
-                    }),
-                })
-                // .then(response => {
-                //     if (response.ok) {
-                //         console.log('Données mises à jour avec succès dans la base de données');
-                //     } else {
-                //         console.error('Erreur lors de la mise à jour des données dans la base de données');
-                //     }
-                // })
-                .then(response => response.json()) // Ajout de cette ligne pour convertir la réponse en JSON
-                .then(data => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect; // Rediriger vers l'URL spécifiée
-                    }
-                })
+        fetch('{{ route('payement') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, // Ajouter le jeton CSRF à l'en-tête de la requête
+                },
+                body: JSON.stringify({
+                    status: status,
+                    prix: prix,
+                    statut_paiement: statut_paiement,
+                    rendezVousId: rendezVousId
+                }),
+            })
+            .then(response => response.json()) // Convertir la réponse en JSON
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect; // Rediriger vers l'URL spécifiée
+                } else {
+                    console.error('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la mise à jour des données dans la base de données:', error);
+            });
+    }
 
-                .catch(error => {
-                    console.error('Erreur lors de la mise à jour des données dans la base de données:', error);
-                });
-        }
+    addSuccessListener(response => {
+        updatePayment('Rdv Pris', 'Accepté');
+    });
 
-        addSuccessListener(response => {
-            updatePayment('Rdv Pris', 'Accepté');
-        });
+    addFailedListener(error => {
+        updatePayment('Rdv non cloturé', 'Refusé');
+    });
+</script>
 
-        addFailedListener(error => {
-            updatePayment('Rdv non cloturé', 'Refusé');
-        });
-    </script>
 
 
 

@@ -28,4 +28,3 @@ Route::get('/medecins/{medecinId}/disponibilites', [mypatient::class, 'getDispon
 
 Route::get('/get-prix-consultation/{specialiteId}', [mypatient::class, 'getPrixConsultation']);
 
-Route::post('/update-payment-data', [mypatient::class, 'updatePaymentData'])->name('payement');

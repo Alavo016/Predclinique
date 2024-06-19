@@ -203,6 +203,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/patient/update-password', [mypatient::class, 'updatePassword'])->name('patient.updatePassword');
 
 
+        Route::post('/update-payment-data', [mypatient::class, 'updatePaymentData'])->name('payement');
 
 
         Route::get("ListeCreance", [Creance::class, "listeCreance"])->name("ListeCreance");

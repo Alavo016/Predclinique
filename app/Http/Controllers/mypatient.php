@@ -30,7 +30,7 @@ class mypatient extends Controller
             $user = Auth::user();
 
             // Utilisez paginate() pour paginer les résultats
-            $rdvs = Rendez_vous::where('patient_id', $user->id)->paginate(5);
+            $rdvs = Rendez_vous::where('patient_id', $user->id)->get();
             $doctors = User::where('id_role', 2)->get();
 
             // Créez un tableau pour stocker les noms des médecins associés à chaque rendez-vous
@@ -54,8 +54,9 @@ class mypatient extends Controller
 
             // Récupérer les données de tension pour chaque consultation
             $tensions = Consultations::where('user_id', $user->id)->pluck('tension');
+            $poids = Consultations::where('user_id', $user->id)->pluck('poids');
 
-            // Récupérer les derniers poids et tailles de l'utilisateur
+            // Récupérer les dernières informations de l'utilisateur
             $latestConsultation = Consultations::where('user_id', $user->id)
                 ->latest('date')
                 ->first();
@@ -66,33 +67,56 @@ class mypatient extends Controller
             // Calculer le dernier IMC de l'utilisateur
             $latestBMI = 0;
             $bmiCategory = "";
+            $progressClass = "";
+
             if ($latestWeight > 0 && $latestHeight > 0) {
                 $latestBMI = $latestWeight / ($latestHeight * $latestHeight);
-                // Déterminer la catégorie d'IMC en fonction de la valeur récupérée
+                // Déterminer la catégorie d'IMC et la classe CSS en fonction de la valeur récupérée
                 if ($latestBMI < 18.5) {
-                    $bmiCategory = "Underweight"; // Insuffisance pondérale
+                    $bmiCategory = "Sous-poids"; // Insuffisance pondérale
+                    $progressClass = "bg-warning";
                 } elseif ($latestBMI >= 18.5 && $latestBMI < 25) {
                     $bmiCategory = "Normal"; // Poids normal
+                    $progressClass = "bg-success";
                 } elseif ($latestBMI >= 25 && $latestBMI < 30) {
-                    $bmiCategory = "Overweight"; // Surpoids
+                    $bmiCategory = "Surpoids"; // Surpoids
+                    $progressClass = "bg-warning";
                 } else {
-                    $bmiCategory = "Obese"; // Obésité
+                    $bmiCategory = "Obésité"; // Obésité
+                    $progressClass = "bg-danger";
                 }
             }
+
             // Récupérer les données de température pour chaque consultation
             $temperatures = Consultations::where('user_id', $user->id)->pluck('temperature');
 
             // Récupérer les dates des consultations pour les utiliser comme catégories
             $consultationDates = Consultations::where('user_id', $user->id)->pluck('date');
 
-
             // Passez les données paginées à la vue
-            return view("users.patient.dashbord", compact('user', 'rdvs', 'doctors', 'doctorNames', 'doctorPhotos', 'tensions', 'latestHeight', 'latestWeight', 'bmiCategory', 'temperatures', 'consultationDates'));
+            return view("users.patient.dashbord", compact(
+                'user',
+                'rdvs',
+                'doctors',
+                'doctorNames',
+                'doctorPhotos',
+                'tensions',
+                'latestHeight',
+                'latestWeight',
+                'bmiCategory',
+                'temperatures',
+                'consultationDates',
+                'poids',
+                'latestBMI',
+                'progressClass'
+            ));
         } else {
             // L'utilisateur n'est pas connecté, vous pouvez le rediriger vers la page de connexion par exemple
             return redirect()->route('login');
         }
     }
+
+
 
 
     // Méthode pour calculer les statistiques mensuelles de santé
@@ -435,17 +459,23 @@ class mypatient extends Controller
                 $payment->statut_paiement = $statut_paiement;
                 $payment->save();
 
-                // Si la mise à jour des données de paiement est réussie
-                return response()->json(['message' => 'Données de paiement mises à jour avec succès', 'redirect' => route('patient.index')], 200);
+                // Stocker le message de succès dans la session
+                session()->flash('success', 'Rendez-vous pris avec success');
+
+                // Redirection vers le tableau de bord avec section spécifique
+                return response()->json(['redirect' => route('patient.index', ['section' => 'payments'])], 200);
             } else {
-                return response()->json(['error' => 'Rendez-vous non trouvé'], 404);
+                session()->flash('error', 'Rendez-vous non trouvé');
+                return response()->json(['redirect' => route('patient.index', ['section' => 'payments'])], 404);
             }
         } catch (\Exception $e) {
             Log::error('Erreur lors de la mise à jour des données de paiement: ' . $e->getMessage());
 
-            return response()->json(['error' => 'Erreur lors de la mise à jour des données de paiement'], 500);
+            session()->flash('error', 'Erreur lors de la mise à jour des données de paiement');
+            return response()->json(['redirect' => route('patient.index', ['section' => 'payments'])], 500);
         }
     }
+
 
     public function modipass($id)
     {

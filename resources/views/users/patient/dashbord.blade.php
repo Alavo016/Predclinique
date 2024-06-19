@@ -20,6 +20,19 @@
                     </div>
                 </div>
             </div>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Succès!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Erreur!</strong> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <div class="good-morning-blk">
                 <div class="row">
@@ -36,14 +49,14 @@
                     </div>
                 </div>
             </div>
-            <x-session />
+
 
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12 col-xl-7">
                     <div class="card">
                         <div class="card-body">
                             <div class="chart-title patient-visit mb-0">
-                                <h4>Statistiques de votre Santé</h4>
+                                <h4>Tension</h4>
                                 <div class="input-block mb-0">
                                     <select class="form-control select" id="yearSelect">
                                         <option value="2022">2022</option>
@@ -98,7 +111,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="chart-title patient-visit">
-                                <h4>Body Mass Index</h4>
+                                <h4>Indice de Masse Corporelle</h4>
                             </div>
                             <div class="body-mass-blk">
                                 <div class="row">
@@ -143,16 +156,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="progress weight-bar">
-                                    <div class="progress-bar progress-bar-success" role="progressbar"></div>
+                                <div class="mt-4">
+                                    <h5>Votre IMC : {{ number_format($latestBMI, 1) }}</h5>
+                                    <div class="progress weight-bar">
+                                        <div class="progress-bar {{ $progressClass }}" role="progressbar"
+                                            style="width: {{ ($latestBMI / 40) * 100 }}%"
+                                            aria-valuenow="{{ $latestBMI }}" aria-valuemin="0" aria-valuemax="40"></div>
+                                    </div>
+                                    <ul class="weight-checkit mt-3">
+                                        <li class="mx-auto">{{ $bmiCategory }}</li>
+                                    </ul>
                                 </div>
-                                <ul class="weight-checkit">
-                                    <li class="mx-auto">{{ $bmiCategory }}</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="row">
@@ -161,46 +180,56 @@
                         <div class="card-body">
                             <div class="report-head">
                                 <h4><img src="{{ asset('assets/assets/img/icons/report-icon-01.svg') }}" class="me-2"
-                                        alt>Heart Rate</h4>
+                                        alt>Poids </h4>
                             </div>
-                            <div id="heart-rate"></div>
+                            <div id="weight-chart"></div>
                             <div class="dash-content">
-                                <h5>{{ $tensions->last() }} <span>bpm</span></h5>
-                                <!-- Vous pouvez ajouter la comparaison par rapport au mois dernier ici -->
+                                @if ($poids->isNotEmpty())
+                                    <h5>{{ $poids->last() }} <span>Kg</span></h5>
+                                    <!-- Vous pouvez ajouter la comparaison par rapport au mois dernier ici -->
+                                @else
+                                    <p>Aucune donnée de poids disponible.</p>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <script>
-                    if ($('#heart-rate').length > 0) {
-                        var options = {
-                            chart: {
-                                height: 200,
-                                type: "line",
-                                toolbar: {
-                                    show: false
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if ($('#weight-chart').length > 0) {
+                            var options = {
+                                chart: {
+                                    height: 200,
+                                    type: "line",
+                                    toolbar: {
+                                        show: false
+                                    },
                                 },
-                            },
-                            dataLabels: {
-                                enabled: false
-                            },
-                            stroke: {
-                                curve: "smooth"
-                            },
-                            series: [{
-                                name: "Health",
-                                color: '#FF3667',
-                                data: @json($tensions)
-                            }],
-                            xaxis: {
-                                categories: @json($rdvs->pluck('date'))
-                            },
-                        };
-                        var chart = new ApexCharts(document.querySelector("#heart-rate"), options);
-                        chart.render();
-                    }
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                stroke: {
+                                    curve: "smooth"
+                                },
+                                series: [{
+                                    name: "Poids",
+                                    data: @json($poids)
+                                }],
+                                xaxis: {
+                                    categories: @json($consultationDates)
+                                },
+                            };
+
+                            var chart1 = new ApexCharts(document.querySelector("#weight-chart"), options);
+                            chart1.render();
+                        }
+                    });
                 </script>
+
+
+
+
 
                 <div class="col-12 col-md-6 col-xl-3 d-flex">
                     <div class="card report-blk">
@@ -277,95 +306,51 @@
                 <div class="col-12 col-md-12 col-xl-6">
                     <div class="card flex-fill mb-2">
                         <div class="card-body">
-                            <div id="calendar-doctor1" class="calendar-container" > </div>
+                            <div id="calendar-doctor1" class="calendar-container"> </div>
                         </div>
                     </div>
                 </div>
-
                 <script>
                     $(document).ready(function() {
+                        // Configurer Moment.js pour utiliser le français
+                        moment.locale('fr');
+
+                        // Récupérer les rendez-vous depuis Blade
+                        let appointments = @json(
+                            $rdvs->map(function ($rdv) {
+                                return [
+                                    'date' => $rdv->date,
+                                    'doctorName' => $rdv->doctor->name,
+                                ];
+                            }));
+
+                        // Convertir les rendez-vous en événements pour simpleCalendar
+                        let events = appointments.map(appointment => {
+                            return {
+                                startDate: moment(appointment.date).format('YYYY-MM-DDTHH:mm:ssZ'),
+                                endDate: moment(appointment.date).add(1, 'hour').format(
+                                    'YYYY-MM-DDTHH:mm:ssZ'), // Supposons une durée de 1 heure
+                                summary: 'Rendez-vous avec ' + appointment.doctorName
+                            };
+                        });
+
                         $("#calendar-doctor1").simpleCalendar({
                             fixedStartDay: 0,
                             disableEmptyDetails: true,
-                            events: [{
-                                    startDate: new Date(new Date().setHours(new Date().getHours() + 24))
-                                        .toDateString(),
-                                    endDate: new Date(new Date().setHours(new Date().getHours() + 25))
-                                    .toISOString(),
-                                    summary: 'Conference with teachers'
-                                },
-                                {
-                                    startDate: new Date(new Date().setHours(new Date().getHours() - new Date()
-                                        .getHours() - 12, 0)).toISOString(),
-                                    endDate: new Date(new Date().setHours(new Date().getHours() - new Date()
-                                        .getHours() - 11)).getTime(),
-                                    summary: 'Old classes'
-                                },
-                                {
-                                    startDate: new Date(new Date().setHours(new Date().getHours() - 48))
-                                        .toISOString(),
-                                    endDate: new Date(new Date().setHours(new Date().getHours() - 24)).getTime(),
-                                    summary: 'Old Lessons'
-                                }
+                            events: events,
+                            // Traduire les éléments de calendrier en français
+                            lang: 'fr',
+                            months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août',
+                                'Septembre', 'Octobre', 'Novembre', 'Décembre'
                             ],
+                            days: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
                         });
                     });
                 </script>
+
             </div>
-            <div class="col-6 col-md-12 col-xl-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title d-inline-block text-primary" >Rendez-vous</h4>
-                        <a href="appointments.html" class="patient-views float-end">Afficher tous</a>
-                    </div>
-                    <div class="card-body p-0 table-dash">
-                        <div class="table-responsive">
-                            <table class="table mb-0 border-0  custom-table patient-table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Médecin</th>
-                                        <th>Date</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($rdvs as $rdv)
-                                    <tr>
-                                        <td>
-                                            <div class="form-check check-tables">
-                                                <input class="form-check-input" type="checkbox" value="something">
-                                            </div>
-                                        </td>
-                                        <td class="table-image">
-                                            <!-- Supposons que vous stockiez les noms et les photos des médecins dans des tableaux -->
-                                            <img width="28" height="28" class="rounded-circle" src="{{ asset($doctorPhotos[$loop->index]) }}" alt="">
-                                            <h2>{{ $doctorNames[$loop->index] }}</h2>
-                                        </td>
-                                        <td>{{ $rdv->date }}</td>
-                                        <td><button class="custom-badge status-gray re-shedule">Reschedule</button></td>
-                                        <td class="text-end">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="edit-appointment.html"><i class="fa-solid fa-pen-to-square m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_appointment"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
         </div>
-    </div>
-    <div class="sidebar-overlay" data-reff></div>
+        <div class="sidebar-overlay" data-reff></div>
 
 
-@endsection
+    @endsection
