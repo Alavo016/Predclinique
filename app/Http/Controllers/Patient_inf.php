@@ -25,7 +25,7 @@ class Patient_inf extends Controller
      */
     public function create()
     {
-        //
+        return view("users.infirmier.Create_patient");
     }
 
     /**
@@ -33,7 +33,7 @@ class Patient_inf extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**

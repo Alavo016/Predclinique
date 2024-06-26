@@ -28,11 +28,21 @@
                                             <h3>Liste des types de fournitures</h3>
                                             <div class="doctor-search-blk">
                                                 <div class="top-nav-search table-search-blk">
-
+                                                    <form>
+                                                        <input type="text" class="form-control" placeholder="Search here"
+                                                            id="customSearchInput">
+                                                        <a class="btn"><img
+                                                                src="{{ asset('assets/assets/img/icons/search-normal.svg') }}"
+                                                                alt></a>
+                                                    </form>
                                                 </div>
                                                 <div class="add-group">
-                                                    <a href="{{ route('typefournitures.create') }}" class="btn btn-primary add-pluss ms-2"><img src="{{ asset('assets/assets/img/icons/plus.svg') }}" alt></a>
-                                                    <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img src="{{ asset('assets/assets/img/icons/re-fresh.svg') }}" alt></a>
+                                                    <a href="{{ route('typefournitures.create') }}"
+                                                        class="btn btn-primary add-pluss ms-2"><img
+                                                            src="{{ asset('assets/assets/img/icons/plus.svg') }}" alt></a>
+                                                    <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
+                                                            src="{{ asset('assets/assets/img/icons/re-fresh.svg') }}"
+                                                            alt></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,13 +78,17 @@
                                                 <td>{{ $typeFourniture->id }}</td>
                                                 <td>{{ $typeFourniture->nom }}</td>
                                                 <td class="text-end">
-                                                    <a class="btn btn-outline-success" href="{{ route('typefournitures.edit', $typeFourniture->id) }}">
+                                                    <a class="btn btn-outline-success"
+                                                        href="{{ route('typefournitures.edit', $typeFourniture->id) }}">
                                                         <i class="fa-solid fa-pen-to-square m-r-5"></i> Modifier
                                                     </a>
-                                                    <form action="{{ route('typefournitures.destroy', $typeFourniture->id) }}" method="POST" style="display: inline;">
+                                                    <form
+                                                        action="{{ route('typefournitures.destroy', $typeFourniture->id) }}"
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce type de fourniture?')">
+                                                        <button type="submit" class="btn btn-outline-danger"
+                                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce type de fourniture?')">
                                                             <i class="fa fa-trash-alt m-r-5"></i> Supprimer
                                                         </button>
                                                     </form>

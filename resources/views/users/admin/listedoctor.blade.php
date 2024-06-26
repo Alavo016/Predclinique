@@ -28,9 +28,15 @@
                                     <div class="col">
                                         <div class="doctor-table-blk">
                                             <h3>Doctors List</h3>
-                                            <div class="doctor-search-blk">
-
-                                            </div>
+                                            <div class="top-nav-search table-search-blk">
+                                                    <form>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search here" id="customSearchInput">
+                                                        <a class="btn"><img
+                                                                src="{{ asset('assets/assets/img/icons/search-normal.svg') }}"
+                                                                alt></a>
+                                                    </form>
+                                                </div>
                                             <div class="add-group">
                                                 <a href="{{ route('ajtdoc') }}" class="btn btn-primary add-pluss ms-2"><img
                                                         src="{{ asset('assets/assets/img/icons/plus.svg') }}" alt></a>

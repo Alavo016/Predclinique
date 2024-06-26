@@ -32,7 +32,7 @@
                                                 <div class="top-nav-search table-search-blk">
                                                     <form>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Search here">
+                                                            placeholder="Search here" id="customSearchInput">
                                                         <a class="btn"><img
                                                                 src="{{ asset('assets/assets/img/icons/search-normal.svg') }}"
                                                                 alt></a>

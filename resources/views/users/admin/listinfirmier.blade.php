@@ -30,9 +30,9 @@
                                             <h3>Liste des infirmiers</h3>
                                             <div class="doctor-search-blk">
                                                 <div class="top-nav-search table-search-blk">
-                                                    <form>
+                                                   <form>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Search here">
+                                                            placeholder="Search here" id="customSearchInput">
                                                         <a class="btn"><img
                                                                 src="{{ asset('assets/assets/img/icons/search-normal.svg') }}"
                                                                 alt></a>
